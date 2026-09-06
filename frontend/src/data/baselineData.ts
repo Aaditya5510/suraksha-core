@@ -27,11 +27,11 @@ export const BASELINE_HABITATIONS: Habitation[] = [
     id: 'HAB-02',
     name: 'Helang Lower Bastion',
     latitude: 30.5280,
-    longitude: 79.5100,
+    longitude: 79.5120,
     population: 1120,
-    slopeDegrees: 31.0,
+    slopeDegrees: 34.0,
     landslideHazardIndex: 68.0,
-    floodRiskIndex: 72.0,
+    floodRiskIndex: 30.0,
     vulnerabilityFactor: 0.70,
     cutoffRisk: 0.70,
     compositeRiskIndex: 71.2,
@@ -114,3 +114,16 @@ export const DEFAULT_EVALUATION: EvaluationResultResponse = {
   requiresSpillover: false,
   spilloverAllocation: {},
 };
+
+export function getBaselineEvaluation(habitationId: string): EvaluationResultResponse {
+  const hab = BASELINE_HABITATIONS.find((h) => h.id === habitationId) || BASELINE_HABITATIONS[0];
+  const evalCopy: EvaluationResultResponse = JSON.parse(JSON.stringify(DEFAULT_EVALUATION));
+  evalCopy.habitation = hab;
+
+  if (hab.id === 'HAB-02') {
+    evalCopy.operationalDirectiveSummary =
+      'AMBER MONITORING DIRECTIVE: Helang Lower Bastion under slope stability watch (CRI 71.2). Prepare secondary transit corridor to Site-C and Site-A for rapid staging if rainfall threshold exceeds 65mm/hr.';
+  }
+
+  return evalCopy;
+}

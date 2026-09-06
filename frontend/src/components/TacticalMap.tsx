@@ -32,22 +32,15 @@ interface TacticalMapProps {
 }
 
 /**
- * MapController component to invalidate size and prevent grey/unrendered tile artifacts on mount.
+ * MapController component to invalidate size and auto-pan (flyTo) when the active sector changes.
  */
-const MapController: React.FC = () => {
+const MapController: React.FC<{ targetPos: [number, number] }> = ({ targetPos }) => {
   const map = useMap();
 
   useEffect(() => {
-    // Trigger immediate resize recalculation
     map.invalidateSize();
-
-    // Delayed invalidation for tab switches or container layout shifts
-    const timer = setTimeout(() => {
-      map.invalidateSize();
-    }, 250);
-
-    return () => clearTimeout(timer);
-  }, [map]);
+    map.flyTo(targetPos, 13.5, { duration: 1.2 });
+  }, [map, targetPos]);
 
   return null;
 };
@@ -59,8 +52,8 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
 }) => {
   const { habitation, tacticalShelterImmediate, candidateSites } = evaluation;
 
-  // Chamoli Pilot Origin & Target Site Coordinates
-  const nandikotPos: [number, number] = [habitation.latitude, habitation.longitude]; // [30.4150, 79.3240]
+  // Active Crisis Habitation Origin & Target Site Coordinates
+  const originPos: [number, number] = [habitation.latitude, habitation.longitude];
   const siteCPos: [number, number] = [
     tacticalShelterImmediate.latitude,
     tacticalShelterImmediate.longitude,
@@ -74,13 +67,13 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
 
   // Mountain Valley Waypoints (Haversine mountain tortuosity geometry)
   const routeToSiteC: [number, number][] = [
-    nandikotPos,
+    originPos,
     [30.4135, 79.3225],
     siteCPos,
   ];
 
   const routeToSiteA: [number, number][] = [
-    nandikotPos,
+    originPos,
     [30.4110, 79.3215],
     siteAPos,
   ];
@@ -92,17 +85,17 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
         <div className="pointer-events-auto flex items-center gap-2 px-3 py-1.5 rounded-lg bg-cardDark/90 border border-borderDark backdrop-blur-md shadow-lg text-xs font-mono text-slate-200">
           <Compass className="w-3.5 h-3.5 text-infoBlue animate-spin-slow" />
           <span className="text-slate-400">SECTOR:</span>
-          <span className="font-bold text-slate-100">ALAKNANDA-01</span>
+          <span className="font-bold text-slate-100">{habitation.id} {habitation.name.toUpperCase()}</span>
           <span className="text-slate-600">|</span>
-          <span className="text-slate-400">CENTER:</span>
-          <span className="text-amber-400 font-semibold">30.4150° N, 79.3500° E</span>
+          <span className="text-slate-400">POS:</span>
+          <span className="text-amber-400 font-semibold">{habitation.latitude.toFixed(4)}° N, {habitation.longitude.toFixed(4)}° E</span>
         </div>
 
         {/* Map Legend Pill */}
         <div className="pointer-events-auto hidden sm:flex items-center gap-3 px-3 py-1.5 rounded-lg bg-cardDark/90 border border-borderDark backdrop-blur-md shadow-lg text-[11px] font-mono">
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded-full bg-alertRed animate-pulse" />
-            <span className="text-slate-300">Red Zone Origin</span>
+            <span className="text-slate-300">Crisis Origin</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded bg-amber-500" />
@@ -121,12 +114,12 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
 
       {/* Leaflet Map Engine Container */}
       <MapContainer
-        center={[30.4150, 79.3500]}
+        center={originPos}
         zoom={13}
         scrollWheelZoom={true}
         className="w-full h-full z-0 tactical-dark-tiles"
       >
-        <MapController />
+        <MapController targetPos={originPos} />
 
         {/* Clean OpenStreetMap TileLayer with Dark Mode CSS Filter (Zero Watermark / Zero API Key Required) */}
         <TileLayer
@@ -135,13 +128,13 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
           maxZoom={19}
         />
 
-        {/* Layer 1: Permanent Red Zone Hazard Runout (900m buffer) */}
+        {/* Layer 1: Crisis Hazard Runout Buffer (900m / 500m) */}
         <Circle
-          center={nandikotPos}
-          radius={900}
+          center={originPos}
+          radius={habitation.riskZone === 'CRITICAL_RED_ZONE' ? 900 : 500}
           pathOptions={{
-            color: '#ef4444',
-            fillColor: '#ef4444',
+            color: habitation.riskZone === 'CRITICAL_RED_ZONE' ? '#ef4444' : '#f59e0b',
+            fillColor: habitation.riskZone === 'CRITICAL_RED_ZONE' ? '#ef4444' : '#f59e0b',
             fillOpacity: 0.2,
             weight: 2,
             dashArray: '4, 4',
@@ -149,19 +142,19 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
         >
           <Popup>
             <div className="p-2 space-y-1 font-mono text-xs">
-              <div className="flex items-center gap-1.5 text-alertRed font-bold">
+              <div className={`flex items-center gap-1.5 font-bold ${habitation.riskZone === 'CRITICAL_RED_ZONE' ? 'text-alertRed' : 'text-warnAmber'}`}>
                 <AlertTriangle className="w-4 h-4" />
-                <span>NON-MITIGABLE LANDSLIDE RUNOUT ZONE</span>
+                <span>{habitation.riskZone === 'CRITICAL_RED_ZONE' ? 'NON-MITIGABLE LANDSLIDE RUNOUT ZONE' : 'SLOPE DEFORMATION MONITORING BUFFER'}</span>
               </div>
               <p className="text-slate-300 text-[11px]">
-                Radius: 900m buffer • 42° critical debris avalanche slope • In situ civil mitigation impossible.
+                Radius: {habitation.riskZone === 'CRITICAL_RED_ZONE' ? '900m' : '500m'} buffer • {habitation.slopeDegrees}° critical slope • {habitation.riskZone === 'CRITICAL_RED_ZONE' ? 'In situ civil mitigation impossible.' : 'Active slope deformation monitoring.'}
               </p>
             </div>
           </Popup>
         </Circle>
 
         {/* Layer 3: Dynamic Route Vectors (Evacuation Corridors) */}
-        {/* Route 1: HAB-01 to SITE-C (Immediate Transit Triage - Amber Glowing Dashed Line) */}
+        {/* Route 1: Habitation to SITE-C (Immediate Transit Triage - Amber Glowing Dashed Line) */}
         <Polyline
           positions={routeToSiteC}
           pathOptions={{
@@ -178,13 +171,13 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
                 <span>HORIZON 1: IMMEDIATE TRANSIT TRIAGE CORRIDOR</span>
               </div>
               <p className="text-slate-300 text-[11px]">
-                Route: Nandikot $\to$ Govt Inter-College Ground (2.1 km mountain road access)
+                Route: {habitation.name} $\to$ Govt Inter-College Ground (2.1 km mountain road access)
               </p>
             </div>
           </Popup>
         </Polyline>
 
-        {/* Route 2: HAB-01 to SITE-A (Primary Resettlement Corridor - Tactical Emerald Solid Line) */}
+        {/* Route 2: Habitation to SITE-A (Primary Resettlement Corridor - Tactical Emerald Solid Line) */}
         <Polyline
           positions={routeToSiteA}
           pathOptions={{
@@ -200,23 +193,23 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
                 <span>HORIZON 2: PRIMARY RESETTLEMENT CORRIDOR</span>
               </div>
               <p className="text-slate-300 text-[11px]">
-                Route: Nandikot $\to$ Gopeshwar Enclave (3.4 km dual-lane arterial corridor)
+                Route: {habitation.name} $\to$ Gopeshwar Enclave (3.4 km dual-lane arterial corridor)
               </p>
             </div>
           </Popup>
         </Polyline>
 
         {/* Layer 2: Markers with Distinct Div-Icons */}
-        {/* HAB-01: Nandikot Red Zone Origin */}
-        <Marker position={nandikotPos} icon={NandikotMarker}>
+        {/* Habitation Crisis Origin */}
+        <Marker position={originPos} icon={NandikotMarker}>
           <Popup>
             <div className="p-2.5 font-mono text-xs space-y-2 min-w-[220px]">
               <div className="flex items-center justify-between border-b border-slate-700 pb-1.5">
-                <span className="font-bold text-alertRed flex items-center gap-1">
+                <span className={`font-bold flex items-center gap-1 ${habitation.riskZone === 'CRITICAL_RED_ZONE' ? 'text-alertRed' : 'text-warnAmber'}`}>
                   <MapPin className="w-3.5 h-3.5" /> {habitation.name}
                 </span>
-                <span className="px-1.5 py-0.5 rounded text-[10px] bg-red-900/50 text-red-300 border border-red-700">
-                  HAB-01
+                <span className="px-1.5 py-0.5 rounded text-[10px] bg-slate-800 text-slate-300 border border-slate-600">
+                  {habitation.id}
                 </span>
               </div>
               <div className="space-y-1 text-slate-300 text-[11px]">
@@ -226,19 +219,21 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-400">Composite Risk (CRI):</span>
-                  <span className="font-bold text-alertRed">{habitation.compositeRiskIndex} (CRITICAL)</span>
+                  <span className={`font-bold ${habitation.riskZone === 'CRITICAL_RED_ZONE' ? 'text-alertRed' : 'text-warnAmber'}`}>
+                    {habitation.compositeRiskIndex} ({habitation.riskZone === 'CRITICAL_RED_ZONE' ? 'CRITICAL' : 'MONITORING'})
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-400">Slope:</span>
-                  <span className="font-bold text-alertRed">{habitation.slopeDegrees}°</span>
+                  <span className="font-bold text-amber-400">{habitation.slopeDegrees}°</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-400">Red Zone Declared:</span>
-                  <span className="font-bold text-slate-200">{habitation.redZoneDeclaredDate || '2024-08-15'}</span>
+                  <span className="text-slate-400">Landslide Hazard:</span>
+                  <span className="font-bold text-slate-200">{habitation.landslideHazardIndex}%</span>
                 </div>
               </div>
-              <div className="pt-1 border-t border-slate-800 text-[10px] text-red-400 font-semibold">
-                STATUS: NON-MITIGABLE RED ZONE — MANDATORY EVACUATION
+              <div className={`pt-1 border-t border-slate-800 text-[10px] font-semibold ${habitation.riskZone === 'CRITICAL_RED_ZONE' ? 'text-red-400' : 'text-amber-400'}`}>
+                STATUS: {habitation.riskZone === 'CRITICAL_RED_ZONE' ? 'NON-MITIGABLE RED ZONE — MANDATORY EVACUATION' : 'AMBER MONITORING — PREPARE EVACUATION CORRIDORS'}
               </div>
             </div>
           </Popup>

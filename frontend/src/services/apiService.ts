@@ -1,4 +1,4 @@
-import { DEFAULT_EVALUATION, BASELINE_HABITATIONS } from '../data/baselineData';
+import { getBaselineEvaluation, BASELINE_HABITATIONS } from '../data/baselineData';
 import type { EvaluationResultResponse, Habitation } from '../types/suraksha';
 
 export interface ApiResponse<T> {
@@ -48,7 +48,7 @@ export async function evaluateRelocation(
   }
 
   // Pure TypeScript Offline Fallback Engine
-  const base = JSON.parse(JSON.stringify(DEFAULT_EVALUATION)) as EvaluationResultResponse;
+  const base = getBaselineEvaluation(habitationId);
   base.habitation.population = simulatedPopulation;
 
   // Dynamically adjust candidate site headrooms and spillover for UI reactivity
