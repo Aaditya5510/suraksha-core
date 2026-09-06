@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   MapContainer,
   TileLayer,
@@ -6,13 +6,14 @@ import {
   Popup,
   Circle,
   Polyline,
+  useMap,
 } from 'react-leaflet';
 import type { EvaluationResultResponse } from '../types/suraksha';
 import {
-  nandikotMarker,
-  recommendedPrimaryMarker,
-  transitShelterMarker,
-  rejectedSiteMarker,
+  NandikotMarker,
+  SiteAMarker,
+  SiteBMarker,
+  SiteCMarker,
 } from './MapMarkers';
 import {
   Layers,
@@ -29,6 +30,27 @@ interface TacticalMapProps {
   selectedSiteId?: string;
   onSelectSite?: (siteId: string) => void;
 }
+
+/**
+ * MapController component to invalidate size and prevent grey/unrendered tile artifacts on mount.
+ */
+const MapController: React.FC = () => {
+  const map = useMap();
+
+  useEffect(() => {
+    // Trigger immediate resize recalculation
+    map.invalidateSize();
+
+    // Delayed invalidation for tab switches or container layout shifts
+    const timer = setTimeout(() => {
+      map.invalidateSize();
+    }, 250);
+
+    return () => clearTimeout(timer);
+  }, [map]);
+
+  return null;
+};
 
 export const TacticalMap: React.FC<TacticalMapProps> = ({
   evaluation,
@@ -53,16 +75,13 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
   // Mountain Valley Waypoints (Haversine mountain tortuosity geometry)
   const routeToSiteC: [number, number][] = [
     nandikotPos,
-    [30.4138, 79.3228],
-    [30.4128, 79.3218],
+    [30.4135, 79.3225],
     siteCPos,
   ];
 
   const routeToSiteA: [number, number][] = [
     nandikotPos,
-    [30.4138, 79.3228],
-    [30.4110, 79.3212],
-    [30.4095, 79.3200],
+    [30.4110, 79.3215],
     siteAPos,
   ];
 
@@ -76,7 +95,7 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
           <span className="font-bold text-slate-100">ALAKNANDA-01</span>
           <span className="text-slate-600">|</span>
           <span className="text-slate-400">CENTER:</span>
-          <span className="text-amber-400 font-semibold">30.4150° N, 79.3240° E</span>
+          <span className="text-amber-400 font-semibold">30.4150° N, 79.3500° E</span>
         </div>
 
         {/* Map Legend Pill */}
@@ -103,28 +122,29 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
       {/* Leaflet Map Engine Container */}
       <MapContainer
         center={[30.4150, 79.3500]}
-        zoom={12}
+        zoom={13}
         scrollWheelZoom={true}
-        className="w-full h-full z-0"
+        className="w-full h-full z-0 tactical-dark-tiles"
       >
-        {/* CartoDB Dark Matter Tactical TileLayer */}
+        <MapController />
+
+        {/* Clean OpenStreetMap TileLayer with Dark Mode CSS Filter (Zero Watermark / Zero API Key Required) */}
         <TileLayer
-          attribution='&copy; <a href="https://carto.com/">CARTO</a> | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-          subdomains="abcd"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           maxZoom={19}
         />
 
-        {/* Layer 1: Permanent Red Zone Hazard Contour */}
+        {/* Layer 1: Permanent Red Zone Hazard Runout (900m buffer) */}
         <Circle
           center={nandikotPos}
-          radius={1200}
+          radius={900}
           pathOptions={{
             color: '#ef4444',
             fillColor: '#ef4444',
-            fillOpacity: 0.22,
+            fillOpacity: 0.2,
             weight: 2,
-            dashArray: '6, 6',
+            dashArray: '4, 4',
           }}
         >
           <Popup>
@@ -134,28 +154,28 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
                 <span>NON-MITIGABLE LANDSLIDE RUNOUT ZONE</span>
               </div>
               <p className="text-slate-300 text-[11px]">
-                Radius: 1,200m buffer • 42° critical debris avalanche slope • Immediate evacuation active.
+                Radius: 900m buffer • 42° critical debris avalanche slope • In situ civil mitigation impossible.
               </p>
             </div>
           </Popup>
         </Circle>
 
-        {/* Layer 3: Evacuation Corridors (Polylines) */}
-        {/* Route 1: HAB-01 to SITE-C (Immediate 0-72h Transit Triage - Glowing Amber Dashed) */}
+        {/* Layer 3: Dynamic Route Vectors (Evacuation Corridors) */}
+        {/* Route 1: HAB-01 to SITE-C (Immediate Transit Triage - Amber Glowing Dashed Line) */}
         <Polyline
           positions={routeToSiteC}
           pathOptions={{
             color: '#f59e0b',
-            weight: 3.5,
-            dashArray: '8, 6',
-            opacity: 0.9,
+            weight: 4,
+            dashArray: '6, 6',
+            opacity: 0.95,
           }}
         >
           <Popup>
             <div className="p-2 font-mono text-xs space-y-1">
               <div className="text-amber-400 font-bold flex items-center gap-1">
                 <Navigation className="w-3.5 h-3.5" />
-                <span>HORIZON 1 TRANSIT TRIAGE CORRIDOR</span>
+                <span>HORIZON 1: IMMEDIATE TRANSIT TRIAGE CORRIDOR</span>
               </div>
               <p className="text-slate-300 text-[11px]">
                 Route: Nandikot $\to$ Govt Inter-College Ground (2.1 km mountain road access)
@@ -164,7 +184,7 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
           </Popup>
         </Polyline>
 
-        {/* Route 2: HAB-01 to SITE-A (Permanent Resettlement Corridor - Tactical Emerald Green) */}
+        {/* Route 2: HAB-01 to SITE-A (Primary Resettlement Corridor - Tactical Emerald Solid Line) */}
         <Polyline
           positions={routeToSiteA}
           pathOptions={{
@@ -177,7 +197,7 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
             <div className="p-2 font-mono text-xs space-y-1">
               <div className="text-emerald-400 font-bold flex items-center gap-1">
                 <Navigation className="w-3.5 h-3.5" />
-                <span>HORIZON 2 PERMANENT RESETTLEMENT CORRIDOR</span>
+                <span>HORIZON 2: PRIMARY RESETTLEMENT CORRIDOR</span>
               </div>
               <p className="text-slate-300 text-[11px]">
                 Route: Nandikot $\to$ Gopeshwar Enclave (3.4 km dual-lane arterial corridor)
@@ -186,9 +206,9 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
           </Popup>
         </Polyline>
 
-        {/* Layer 2: Markers */}
+        {/* Layer 2: Markers with Distinct Div-Icons */}
         {/* HAB-01: Nandikot Red Zone Origin */}
-        <Marker position={nandikotPos} icon={nandikotMarker}>
+        <Marker position={nandikotPos} icon={NandikotMarker}>
           <Popup>
             <div className="p-2.5 font-mono text-xs space-y-2 min-w-[220px]">
               <div className="flex items-center justify-between border-b border-slate-700 pb-1.5">
@@ -227,7 +247,7 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
         {/* SITE-C: Govt Model Inter-College Grounds (Transit Shelter 0-72h) */}
         <Marker
           position={siteCPos}
-          icon={transitShelterMarker}
+          icon={SiteCMarker}
           eventHandlers={{ click: () => onSelectSite?.('SITE-C') }}
         >
           <Popup>
@@ -267,7 +287,7 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
         {/* SITE-A: Gopeshwar Enclave (Recommended Primary Enclave) */}
         <Marker
           position={siteAPos}
-          icon={recommendedPrimaryMarker}
+          icon={SiteAMarker}
           eventHandlers={{ click: () => onSelectSite?.('SITE-A') }}
         >
           <Popup>
@@ -283,7 +303,7 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
               <div className="space-y-1 text-slate-300 text-[11px]">
                 <div className="flex justify-between">
                   <span className="text-slate-400">Status:</span>
-                  <span className="font-bold text-emerald-400">RECOMMENDED PRIMARY</span>
+                  <span className="font-bold text-emerald-400">RECOMMENDED PRIMARY (SAFE)</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-400">Effective Capacity:</span>
@@ -312,7 +332,7 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
         {siteB && (
           <Marker
             position={siteBPos}
-            icon={rejectedSiteMarker}
+            icon={SiteBMarker}
             eventHandlers={{ click: () => onSelectSite?.('SITE-B') }}
           >
             <Popup>
@@ -353,7 +373,7 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
       <div className="absolute bottom-3 left-3 right-3 z-[1000] pointer-events-none flex flex-col sm:flex-row items-center justify-between gap-2">
         <div className="pointer-events-auto px-3 py-1.5 rounded-lg bg-cardDark/90 border border-borderDark backdrop-blur-md shadow-lg text-xs font-mono text-slate-300 flex items-center gap-2">
           <Layers className="w-3.5 h-3.5 text-infoBlue" />
-          <span>SPATIAL CONSTRAINTS: 1 HAZARD RUNOUT ZONE • 2 ACTIVE CORRIDORS</span>
+          <span>SPATIAL CONSTRAINTS: 900M HAZARD RUNOUT ZONE • 2 ACTIVE CORRIDORS</span>
         </div>
 
         <div className="pointer-events-auto px-3 py-1.5 rounded-lg bg-cardDark/90 border border-borderDark backdrop-blur-md shadow-lg text-[11px] font-mono text-slate-400">

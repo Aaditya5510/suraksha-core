@@ -75,6 +75,11 @@
   font-family: inherit;
 }
 
+/* Clean OpenStreetMap Inverted Tactical Dark Tiles */
+.tactical-dark-tiles .leaflet-tile {
+  filter: invert(100%) hue-rotate(180deg) brightness(90%) contrast(90%);
+}
+
 .leaflet-popup-content-wrapper {
   background: rgba(17, 24, 39, 0.95) !important;
   color: #f1f5f9 !important;

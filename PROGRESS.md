@@ -167,6 +167,7 @@ All autonomous coding agents and human engineers operating on this codebase must
 | **2026-09-06 16:13** | GATE 5 (Phase F2) | `npm run build` in `frontend/` | `BUILD SUCCESS` (Tactical Leaflet Map + custom divIcons + Corridors compiled with 0 errors) | ✅ VERIFIED |
 | **2026-09-06 16:16** | GATE 5 (Phase F3) | `npm run build` in `frontend/` | `BUILD SUCCESS` (Surge Simulator + Sphere Meters + SDMA Modal compiled in 2.02s) | ✅ VERIFIED |
 | **2026-09-06 16:20** | GATE 6 | Full-Stack Handshake & Zero-Failover Verification | `BUILD SUCCESS` (Vite proxy + API Service + Seamless Fallback verified) | ✅ VERIFIED |
+| **2026-09-06 16:55** | GATE 5 (Map Overhaul) | `npm run build` in `frontend/` | `BUILD SUCCESS` (Clean OSM inverted dark tiles + MapController invalidateSize + distinct SVG markers verified) | ✅ VERIFIED |
 
 ---
 
