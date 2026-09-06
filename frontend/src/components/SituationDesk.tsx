@@ -10,6 +10,7 @@ import {
   ShieldCheck,
   AlertOctagon,
   ChevronDown,
+  Flame,
 } from 'lucide-react';
 
 interface SituationDeskProps {
@@ -20,6 +21,7 @@ interface SituationDeskProps {
   simulatedPopulation: number;
   onPopulationChange: (pop: number) => void;
   primaryCapacity: number; // e.g. 3266
+  isLoading?: boolean;
 }
 
 export const SituationDesk: React.FC<SituationDeskProps> = ({
@@ -30,10 +32,12 @@ export const SituationDesk: React.FC<SituationDeskProps> = ({
   simulatedPopulation,
   onPopulationChange,
   primaryCapacity = 3266,
+  isLoading = false,
 }) => {
   const isRedZone = selectedHabitation.riskZone === 'CRITICAL_RED_ZONE';
   const residualHeadroom = primaryCapacity - simulatedPopulation;
   const isDeficit = residualHeadroom < 0;
+  const excessEvacuees = Math.max(0, simulatedPopulation - primaryCapacity);
 
   const baselinePop = selectedHabitation.population;
   const surge25Pop = Math.round(baselinePop * 1.25);
@@ -72,7 +76,7 @@ export const SituationDesk: React.FC<SituationDeskProps> = ({
             >
               {habitations.map((hab) => (
                 <option key={hab.id} value={hab.id} className="bg-slate-900 text-slate-100">
-                  {hab.id}: {hab.name} ({hab.riskZone === 'CRITICAL_RED_ZONE' ? 'RED' : 'AMBER'})
+                  {hab.id}: {hab.name} ({hab.riskZone === 'CRITICAL_RED_ZONE' ? 'RED ZONE' : 'AMBER ZONE'})
                 </option>
               ))}
             </select>
@@ -81,8 +85,8 @@ export const SituationDesk: React.FC<SituationDeskProps> = ({
         </div>
       </div>
 
-      {/* 2. Threat Matrix Card */}
-      <div className="tactical-card p-4 space-y-3.5">
+      {/* 2. Threat Matrix Card (with crisp skeleton loading state) */}
+      <div className={`tactical-card p-4 space-y-3.5 transition-opacity duration-200 ${isLoading ? 'opacity-50' : 'opacity-100'}`}>
         <div className="flex items-center justify-between border-b border-borderDark pb-2">
           <span className="text-slate-400 font-bold uppercase tracking-wider text-[11px] flex items-center gap-1.5">
             <AlertTriangle className="w-3.5 h-3.5 text-alertRed" /> Threat Matrix Telemetry
@@ -138,12 +142,12 @@ export const SituationDesk: React.FC<SituationDeskProps> = ({
                   selectedHabitation.slopeDegrees >= 35 ? 'text-alertRed' : 'text-warnAmber'
                 }`}
               >
-                {selectedHabitation.slopeDegrees}° (Debris Avalanche)
+                {selectedHabitation.slopeDegrees}° ({selectedHabitation.slopeDegrees >= 35 ? 'Debris Avalanche' : 'Moderate Slope'})
               </span>
             </div>
             <div className="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
               <div
-                className={`h-full rounded-full ${
+                className={`h-full rounded-full transition-all duration-500 ${
                   selectedHabitation.slopeDegrees >= 35 ? 'bg-alertRed' : 'bg-warnAmber'
                 }`}
                 style={{ width: `${Math.min((selectedHabitation.slopeDegrees / 60) * 100, 100)}%` }}
@@ -167,7 +171,7 @@ export const SituationDesk: React.FC<SituationDeskProps> = ({
             </div>
             <div className="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
               <div
-                className="h-full rounded-full bg-alertRed"
+                className="h-full rounded-full bg-alertRed transition-all duration-500"
                 style={{ width: `${selectedHabitation.landslideHazardIndex}%` }}
               />
             </div>
@@ -185,7 +189,7 @@ export const SituationDesk: React.FC<SituationDeskProps> = ({
             </div>
             <div className="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
               <div
-                className="h-full rounded-full bg-infoBlue"
+                className="h-full rounded-full bg-infoBlue transition-all duration-500"
                 style={{ width: `${selectedHabitation.floodRiskIndex}%` }}
               />
             </div>
@@ -219,6 +223,19 @@ export const SituationDesk: React.FC<SituationDeskProps> = ({
             </div>
           )}
         </div>
+
+        {/* Reactive Spillover Protocol Alert Card */}
+        {isDeficit && (
+          <div className="p-2.5 rounded-lg bg-alertRed/20 border border-alertRed/60 text-xs font-mono space-y-1.5 animate-pulse shadow-[0_0_12px_rgba(239,68,68,0.3)]">
+            <div className="flex items-center gap-1.5 text-alertRed font-extrabold text-[11px]">
+              <Flame className="w-3.5 h-3.5 shrink-0" />
+              <span>🚨 CAPACITY DEFICIT: Primary site saturated at {primaryCapacity.toLocaleString()}</span>
+            </div>
+            <p className="text-[10px] text-slate-300 leading-snug">
+              Spillover Protocol active — Re-routing remaining <strong className="text-amber-300 font-bold">{excessEvacuees.toLocaleString()} evacuees</strong> to Site-C Transit Triage.
+            </p>
+          </div>
+        )}
 
         {/* Presets Grid */}
         <div className="grid grid-cols-3 gap-1.5">

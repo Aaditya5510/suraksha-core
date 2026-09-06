@@ -40,15 +40,17 @@ export const Header: React.FC<HeaderProps> = ({ isLive = false }) => {
 
           {/* Backend Connection Status Badge */}
           {isLive ? (
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/40 text-safeGreen text-xs font-mono font-bold shadow-[0_0_10px_rgba(16,185,129,0.2)]">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/50 text-safeGreen text-xs font-mono font-bold shadow-[0_0_12px_rgba(16,185,129,0.35)] animate-pulse">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
               <Server className="w-3.5 h-3.5" />
-              <span>SPRING BOOT LIVE (PORT 8080)</span>
-              <CheckCircle2 className="w-3.5 h-3.5" />
+              <span>LIVE ENGINE: CONNECTED (SPRING BOOT 8080)</span>
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
             </div>
           ) : (
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/40 text-safeGreen text-xs font-mono font-medium">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/50 text-warnAmber text-xs font-mono font-bold shadow-[0_0_10px_rgba(245,158,11,0.2)]">
+              <span className="w-2 h-2 rounded-full bg-amber-400" />
               <Activity className="w-3.5 h-3.5" />
-              <span>STANDALONE / ZERO-FAILOVER</span>
+              <span>EDGE FALLBACK MODE</span>
             </div>
           )}
 

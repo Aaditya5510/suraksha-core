@@ -137,6 +137,13 @@ All autonomous coding agents and human engineers operating on this codebase must
   - [x] Synchronized geospatial state in `App.tsx` and `TacticalMap.tsx` with smooth auto-pan (`map.flyTo([lat, lng], 13.5)`) on sector transition
   - [x] Upgraded to responsive 3-pane Operations Dashboard layout (Left: Situation Desk, Center: Tactical Map & Candidate Enclaves, Right: Sphere Meters & Immediate Transit)
 
+- [x] **UI Overhaul Sprint 3: Reactive API Integration & Dynamic State Mutation**:
+  - [x] Hardened API client service (`src/services/apiService.ts`) with dual-path endpoints (`GET /api/v1/relocation/evaluate/{habitationId}?population=...` & `POST /api/v1/capacity/audit`) with automatic zero-failover edge fallback
+  - [x] Dynamic Habitation synchronization across Dropdown and Clickable Map Pins (`HAB-01` Nandikot and `HAB-02` Helang) with 0.2s smooth skeleton transition and auto-pan
+  - [x] Bidirectional Candidate Site Inspector & Map Synchronization: Clickable Site-A (safe primary) and Site-B (failure audit with 550 sanitation ceiling and pulsing hazard ring)
+  - [x] Interactive Population Surge Slider with debounced real-time reactive spillover routing card and modal generation
+  - [x] Live Engine Connection Status Badge: "● LIVE ENGINE: CONNECTED (SPRING BOOT 8080)" with seamless failover indicator
+
 ---
 
 ### 🔗 GATE 6: E2E Handshake, Load Audit & Zero-Failover Test [x] VERIFIED
@@ -176,8 +183,10 @@ All autonomous coding agents and human engineers operating on this codebase must
 | **2026-09-06 16:20** | GATE 6 | Full-Stack Handshake & Zero-Failover Verification | `BUILD SUCCESS` (Vite proxy + API Service + Seamless Fallback verified) | ✅ VERIFIED |
 | **2026-09-06 16:55** | GATE 5 (Map Overhaul) | `npm run build` in `frontend/` | `BUILD SUCCESS` (Clean OSM inverted dark tiles + MapController invalidateSize + distinct SVG markers verified) | ✅ VERIFIED |
 | **2026-09-06 17:00** | GATE 5 (Sprint 2) | `npm run build` in `frontend/` | `BUILD SUCCESS` (SituationDesk + Sector Switcher + flyTo zoom 13.5 + 3-pane layout verified in 1.26s) | ✅ VERIFIED |
+| **2026-09-06 17:10** | GATE 5 (Sprint 3) | `curl.exe /api/v1/relocation/evaluate/HAB-01` & `POST /api/v1/capacity/audit` | HTTP 200: Live Spring Boot & Vite proxy bidirectional handshake verified | ✅ VERIFIED |
+| **2026-09-06 17:12** | GATE 5 (Sprint 3) | `npm run build` in `frontend/` & `mvn test` in `backend/` | `BUILD SUCCESS` (17/17 tests passing, frontend 0 errors compiled in 1.38s) | ✅ VERIFIED |
 
 ---
 
-🏆 **SURAKSHA SYSTEM COMPLETE & SEALED — ALL GATES (1 THROUGH 6) & UI OVERHAUL SPRINT 2 VERIFIED & GRAND FINALE JURY READY**  
+🏆 **SURAKSHA SYSTEM COMPLETE & SEALED — ALL GATES (1 THROUGH 6) & SPRINT 3 REACTIVE INTEGRATION VERIFIED & GRAND FINALE JURY READY**  
 *SURAKSHA Engine — Autonomous State Machine Protocol v1.0.0 — SIH26191*

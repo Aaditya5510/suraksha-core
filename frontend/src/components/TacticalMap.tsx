@@ -11,10 +11,12 @@ import {
 import type { EvaluationResultResponse } from '../types/suraksha';
 import {
   NandikotMarker,
+  HelangMarker,
   SiteAMarker,
   SiteBMarker,
   SiteCMarker,
 } from './MapMarkers';
+import { BASELINE_HABITATIONS } from '../data/baselineData';
 import {
   Layers,
   MapPin,
@@ -23,37 +25,47 @@ import {
   ShieldCheck,
   Building2,
   Navigation,
+  XCircle,
 } from 'lucide-react';
 
 interface TacticalMapProps {
   evaluation: EvaluationResultResponse;
   selectedSiteId?: string;
   onSelectSite?: (siteId: string) => void;
+  onSelectHabitation?: (habId: string) => void;
 }
 
 /**
- * MapController component to invalidate size and auto-pan (flyTo) when the active sector changes.
+ * MapController component to invalidate size and auto-pan (flyTo) when the active sector or site changes.
  */
-const MapController: React.FC<{ targetPos: [number, number] }> = ({ targetPos }) => {
+const MapController: React.FC<{ targetPos: [number, number]; zoom?: number }> = ({ targetPos, zoom = 13.5 }) => {
   const map = useMap();
 
   useEffect(() => {
     map.invalidateSize();
-    map.flyTo(targetPos, 13.5, { duration: 1.2 });
-  }, [map, targetPos]);
+    map.flyTo(targetPos, zoom, { duration: 1.2 });
+  }, [map, targetPos, zoom]);
 
   return null;
 };
 
 export const TacticalMap: React.FC<TacticalMapProps> = ({
   evaluation,
-  selectedSiteId: _selectedSiteId,
+  selectedSiteId = 'SITE-A',
   onSelectSite,
+  onSelectHabitation,
 }) => {
   const { habitation, tacticalShelterImmediate, candidateSites } = evaluation;
 
   // Active Crisis Habitation Origin & Target Site Coordinates
-  const originPos: [number, number] = [habitation.latitude, habitation.longitude];
+  const activeOriginPos: [number, number] = [habitation.latitude, habitation.longitude];
+
+  const hab01 = BASELINE_HABITATIONS.find((h) => h.id === 'HAB-01') || BASELINE_HABITATIONS[0];
+  const hab02 = BASELINE_HABITATIONS.find((h) => h.id === 'HAB-02') || BASELINE_HABITATIONS[1];
+
+  const hab01Pos: [number, number] = [hab01.latitude, hab01.longitude];
+  const hab02Pos: [number, number] = [hab02.latitude, hab02.longitude];
+
   const siteCPos: [number, number] = [
     tacticalShelterImmediate.latitude,
     tacticalShelterImmediate.longitude,
@@ -67,16 +79,27 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
 
   // Mountain Valley Waypoints (Haversine mountain tortuosity geometry)
   const routeToSiteC: [number, number][] = [
-    originPos,
+    activeOriginPos,
     [30.4135, 79.3225],
     siteCPos,
   ];
 
   const routeToSiteA: [number, number][] = [
-    originPos,
+    activeOriginPos,
     [30.4110, 79.3215],
     siteAPos,
   ];
+
+  // Determine active pan target based on selection
+  let currentTargetPos = activeOriginPos;
+  let currentZoom = 13.5;
+  if (selectedSiteId === 'SITE-B' && siteB) {
+    currentTargetPos = siteBPos;
+    currentZoom = 14;
+  } else if (selectedSiteId === 'SITE-A' && siteA) {
+    currentTargetPos = siteAPos;
+    currentZoom = 14;
+  }
 
   return (
     <div className="relative w-full h-[520px] md:h-[580px] rounded-xl overflow-hidden border border-borderDark bg-bgDark shadow-2xl">
@@ -95,31 +118,31 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
         <div className="pointer-events-auto hidden sm:flex items-center gap-3 px-3 py-1.5 rounded-lg bg-cardDark/90 border border-borderDark backdrop-blur-md shadow-lg text-[11px] font-mono">
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded-full bg-alertRed animate-pulse" />
-            <span className="text-slate-300">Crisis Origin</span>
+            <span className="text-slate-300">Origin Red</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded bg-amber-500" />
-            <span className="text-slate-300">0-72h Transit</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />
+            <span className="text-slate-300">Origin Amber</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded bg-emerald-500" />
-            <span className="text-slate-300">Primary Enclave</span>
+            <span className="text-slate-300">Site-A Primary</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded bg-slate-600" />
-            <span className="text-slate-400">Rejected Site</span>
+            <span className="text-slate-400">Site-B Rejected</span>
           </div>
         </div>
       </div>
 
       {/* Leaflet Map Engine Container */}
       <MapContainer
-        center={originPos}
+        center={activeOriginPos}
         zoom={13}
         scrollWheelZoom={true}
         className="w-full h-full z-0 tactical-dark-tiles"
       >
-        <MapController targetPos={originPos} />
+        <MapController targetPos={currentTargetPos} zoom={currentZoom} />
 
         {/* Clean OpenStreetMap TileLayer with Dark Mode CSS Filter (Zero Watermark / Zero API Key Required) */}
         <TileLayer
@@ -128,9 +151,9 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
           maxZoom={19}
         />
 
-        {/* Layer 1: Crisis Hazard Runout Buffer (900m / 500m) */}
+        {/* Layer 1: Active Habitation Hazard Runout Buffer (900m / 500m) */}
         <Circle
-          center={originPos}
+          center={activeOriginPos}
           radius={habitation.riskZone === 'CRITICAL_RED_ZONE' ? 900 : 500}
           pathOptions={{
             color: habitation.riskZone === 'CRITICAL_RED_ZONE' ? '#ef4444' : '#f59e0b',
@@ -152,6 +175,42 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
             </div>
           </Popup>
         </Circle>
+
+        {/* Pulsing Hazard Ring around Site-B when selected */}
+        {selectedSiteId === 'SITE-B' && siteB && (
+          <Circle
+            center={siteBPos}
+            radius={700}
+            pathOptions={{
+              color: '#ef4444',
+              fillColor: '#ef4444',
+              fillOpacity: 0.35,
+              weight: 3,
+              dashArray: '6, 6',
+            }}
+          >
+            <Popup>
+              <div className="p-2 font-mono text-xs text-alertRed font-bold flex items-center gap-1">
+                <XCircle className="w-4 h-4" />
+                <span>SITE-B PIPALKOTI: SANITATION CAPACITY CEILING (550 SOULS) & 66% ROAD CUTOFF</span>
+              </div>
+            </Popup>
+          </Circle>
+        )}
+
+        {/* Glowing Emerald Ring around Site-A when selected */}
+        {selectedSiteId === 'SITE-A' && siteA && (
+          <Circle
+            center={siteAPos}
+            radius={600}
+            pathOptions={{
+              color: '#10b981',
+              fillColor: '#10b981',
+              fillOpacity: 0.25,
+              weight: 2,
+            }}
+          />
+        )}
 
         {/* Layer 3: Dynamic Route Vectors (Evacuation Corridors) */}
         {/* Route 1: Habitation to SITE-C (Immediate Transit Triage - Amber Glowing Dashed Line) */}
@@ -200,40 +259,84 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
         </Polyline>
 
         {/* Layer 2: Markers with Distinct Div-Icons */}
-        {/* Habitation Crisis Origin */}
-        <Marker position={originPos} icon={NandikotMarker}>
+
+        {/* HAB-01: Nandikot Settlement Origin Pin (Clickable) */}
+        <Marker
+          position={hab01Pos}
+          icon={NandikotMarker}
+          eventHandlers={{ click: () => onSelectHabitation?.('HAB-01') }}
+        >
           <Popup>
             <div className="p-2.5 font-mono text-xs space-y-2 min-w-[220px]">
               <div className="flex items-center justify-between border-b border-slate-700 pb-1.5">
-                <span className={`font-bold flex items-center gap-1 ${habitation.riskZone === 'CRITICAL_RED_ZONE' ? 'text-alertRed' : 'text-warnAmber'}`}>
-                  <MapPin className="w-3.5 h-3.5" /> {habitation.name}
+                <span className="font-bold text-alertRed flex items-center gap-1">
+                  <MapPin className="w-3.5 h-3.5" /> {hab01.name}
                 </span>
-                <span className="px-1.5 py-0.5 rounded text-[10px] bg-slate-800 text-slate-300 border border-slate-600">
-                  {habitation.id}
+                <span className="px-1.5 py-0.5 rounded text-[10px] bg-red-900/50 text-red-300 border border-red-700">
+                  HAB-01
                 </span>
               </div>
               <div className="space-y-1 text-slate-300 text-[11px]">
                 <div className="flex justify-between">
                   <span className="text-slate-400">Population:</span>
-                  <span className="font-bold text-slate-100">{habitation.population.toLocaleString()}</span>
+                  <span className="font-bold text-slate-100">{hab01.population.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-400">Composite Risk (CRI):</span>
-                  <span className={`font-bold ${habitation.riskZone === 'CRITICAL_RED_ZONE' ? 'text-alertRed' : 'text-warnAmber'}`}>
-                    {habitation.compositeRiskIndex} ({habitation.riskZone === 'CRITICAL_RED_ZONE' ? 'CRITICAL' : 'MONITORING'})
-                  </span>
+                  <span className="font-bold text-alertRed">{hab01.compositeRiskIndex} (CRITICAL)</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-400">Slope:</span>
-                  <span className="font-bold text-amber-400">{habitation.slopeDegrees}°</span>
+                  <span className="text-slate-400">Slope Angle:</span>
+                  <span className="font-bold text-alertRed">{hab01.slopeDegrees}°</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-400">Landslide Hazard:</span>
-                  <span className="font-bold text-slate-200">{habitation.landslideHazardIndex}%</span>
+                  <span className="font-bold text-slate-200">{hab01.landslideHazardIndex}%</span>
                 </div>
               </div>
-              <div className={`pt-1 border-t border-slate-800 text-[10px] font-semibold ${habitation.riskZone === 'CRITICAL_RED_ZONE' ? 'text-red-400' : 'text-amber-400'}`}>
-                STATUS: {habitation.riskZone === 'CRITICAL_RED_ZONE' ? 'NON-MITIGABLE RED ZONE — MANDATORY EVACUATION' : 'AMBER MONITORING — PREPARE EVACUATION CORRIDORS'}
+              <div className="pt-1 border-t border-slate-800 text-[10px] text-red-400 font-semibold">
+                STATUS: NON-MITIGABLE RED ZONE — MANDATORY EVACUATION (CLICK TO SELECT)
+              </div>
+            </div>
+          </Popup>
+        </Marker>
+
+        {/* HAB-02: Helang Lower Bastion Origin Pin (Clickable) */}
+        <Marker
+          position={hab02Pos}
+          icon={HelangMarker}
+          eventHandlers={{ click: () => onSelectHabitation?.('HAB-02') }}
+        >
+          <Popup>
+            <div className="p-2.5 font-mono text-xs space-y-2 min-w-[220px]">
+              <div className="flex items-center justify-between border-b border-slate-700 pb-1.5">
+                <span className="font-bold text-amber-400 flex items-center gap-1">
+                  <MapPin className="w-3.5 h-3.5" /> {hab02.name}
+                </span>
+                <span className="px-1.5 py-0.5 rounded text-[10px] bg-amber-900/50 text-amber-300 border border-amber-700">
+                  HAB-02
+                </span>
+              </div>
+              <div className="space-y-1 text-slate-300 text-[11px]">
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Population:</span>
+                  <span className="font-bold text-slate-100">{hab02.population.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Composite Risk (CRI):</span>
+                  <span className="font-bold text-amber-400">{hab02.compositeRiskIndex} (MONITORING)</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Slope Angle:</span>
+                  <span className="font-bold text-amber-400">{hab02.slopeDegrees}°</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Landslide Hazard:</span>
+                  <span className="font-bold text-slate-200">{hab02.landslideHazardIndex}%</span>
+                </div>
+              </div>
+              <div className="pt-1 border-t border-slate-800 text-[10px] text-amber-400 font-semibold">
+                STATUS: AMBER MONITORING — PREPARE EVACUATION CORRIDORS (CLICK TO SELECT)
               </div>
             </div>
           </Popup>

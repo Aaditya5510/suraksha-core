@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Header } from './components/Header';
 import { TacticalMap } from './components/TacticalMap';
 import { SphereConstraintMeter } from './components/SphereConstraintMeter';
 import { SituationDesk } from './components/SituationDesk';
 import { SdmaDirectiveModal } from './components/SdmaDirectiveModal';
 import { BASELINE_HABITATIONS, DEFAULT_EVALUATION } from './data/baselineData';
-import { evaluateRelocation } from './services/apiService';
+import { fetchEvaluation } from './services/apiService';
 import type { EvaluationResultResponse, CandidateSiteEvaluationDTO, Habitation } from './types/suraksha';
 import {
   AlertTriangle,
@@ -30,35 +30,52 @@ export const App: React.FC = () => {
   const [selectedSiteId, setSelectedSiteId] = useState<string>('SITE-A');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isLiveBackend, setIsLiveBackend] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Active selected habitation record
   const selectedHabitation: Habitation =
     BASELINE_HABITATIONS.find((h) => h.id === selectedHabitationId) || BASELINE_HABITATIONS[0];
 
-  // Handler when user selects a different crisis sector / habitation
+  // Core reactive evaluation dispatcher
+  const loadEvaluation = useCallback(async (habId: string, pop: number) => {
+    setIsLoading(true);
+    const startTime = Date.now();
+
+    try {
+      const { data, isLive } = await fetchEvaluation(habId, pop);
+      setEvaluation(data);
+      setIsLiveBackend(isLive);
+    } catch (_err) {
+      // Handled in apiService fallback
+    } finally {
+      const elapsed = Date.now() - startTime;
+      const remainingDelay = Math.max(0, 200 - elapsed);
+      setTimeout(() => setIsLoading(false), remainingDelay);
+    }
+  }, []);
+
+  // Handler when user selects a different crisis sector / habitation (via dropdown or map origin pin)
   const handleHabitationChange = (habId: string) => {
     setSelectedHabitationId(habId);
     const hab = BASELINE_HABITATIONS.find((h) => h.id === habId);
-    if (hab) {
-      setSimulatedPopulation(hab.population);
-    }
+    const newPop = hab ? hab.population : simulatedPopulation;
+    setSimulatedPopulation(newPop);
+    loadEvaluation(habId, newPop);
   };
 
-  // Synchronize evaluation state with backend or local zero-failover engine
+  // Handler when user moves population stress slider
+  const handlePopulationChange = (newPop: number) => {
+    setSimulatedPopulation(newPop);
+  };
+
+  // Debounced population sync to avoid flooding backend requests while dragging slider
   useEffect(() => {
-    let isSubscribed = true;
+    const timer = setTimeout(() => {
+      loadEvaluation(selectedHabitationId, simulatedPopulation);
+    }, 120);
 
-    evaluateRelocation(selectedHabitationId, simulatedPopulation).then(({ data, isLive }) => {
-      if (isSubscribed) {
-        setEvaluation(data);
-        setIsLiveBackend(isLive);
-      }
-    });
-
-    return () => {
-      isSubscribed = false;
-    };
-  }, [selectedHabitationId, simulatedPopulation]);
+    return () => clearTimeout(timer);
+  }, [selectedHabitationId, simulatedPopulation, loadEvaluation]);
 
   const { habitation, tacticalShelterImmediate, candidateSites, operationalDirectiveSummary } = evaluation;
 
@@ -127,7 +144,7 @@ export const App: React.FC = () => {
               <span className="text-[10px] font-mono text-slate-400">Angle</span>
             </div>
             <div className="text-[10px] font-mono text-slate-300">
-              Landslide Index: <strong>{habitation.landslideHazardIndex}%</strong> • Flood: <strong>{habitation.floodRiskIndex}%</strong>
+              Landslide: <strong>{habitation.landslideHazardIndex}%</strong> • Flood: <strong>{habitation.floodRiskIndex}%</strong>
             </div>
           </div>
 
@@ -198,8 +215,9 @@ export const App: React.FC = () => {
               onSelectHabitation={handleHabitationChange}
               selectedHabitation={selectedHabitation}
               simulatedPopulation={simulatedPopulation}
-              onPopulationChange={setSimulatedPopulation}
+              onPopulationChange={handlePopulationChange}
               primaryCapacity={primaryCapacity}
+              isLoading={isLoading}
             />
           </div>
 
@@ -223,6 +241,7 @@ export const App: React.FC = () => {
                 evaluation={evaluation}
                 selectedSiteId={selectedSiteId}
                 onSelectSite={(siteId) => setSelectedSiteId(siteId)}
+                onSelectHabitation={handleHabitationChange}
               />
             </div>
 
@@ -236,7 +255,7 @@ export const App: React.FC = () => {
                   </h3>
                 </div>
                 <span className="text-[10px] font-mono text-slate-400">
-                  Click site to inspect Sphere meters
+                  Click site card to inspect Sphere meters
                 </span>
               </div>
 
@@ -310,7 +329,9 @@ export const App: React.FC = () => {
             {/* 1. 3-Way Sphere Carrying-Capacity Meters */}
             <SphereConstraintMeter
               site={currentSelectedSite}
+              allSites={candidateSites}
               simulatedPopulation={simulatedPopulation}
+              onSelectSite={(siteId) => setSelectedSiteId(siteId)}
             />
 
             {/* 2. Horizon 1 Immediate Transit Triage Quick Card */}

@@ -113,11 +113,41 @@ export const SiteCMarker = L.divIcon({
   popupAnchor: [0, -22],
 });
 
+// 5. HAB-02: Helang Lower Bastion Origin Beacon (Amber Monitoring Beacon with Radar Ping)
+export const HelangMarker = L.divIcon({
+  className: 'custom-tactical-marker',
+  html: `
+    <div class="relative flex flex-col items-center justify-center -translate-x-1/2 -translate-y-1/2 cursor-pointer group z-30">
+      <!-- Radar Ping Outer Rings -->
+      <div class="absolute w-10 h-10 rounded-full border-2 border-amber-500/80 bg-amber-500/20 radar-ping pointer-events-none"></div>
+      
+      <!-- Core Beacon -->
+      <div class="relative z-10 w-7 h-7 rounded-full bg-amber-600 border-2 border-amber-200 flex items-center justify-center shadow-[0_0_16px_rgba(245,158,11,0.9)]">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-white animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+      </div>
+
+      <!-- Badge Label Positioned Below Icon -->
+      <div class="mt-1.5 whitespace-nowrap px-2 py-0.5 rounded bg-slate-950/95 border border-amber-500/80 text-[10px] font-mono font-bold text-amber-400 shadow-[0_2px_8px_rgba(0,0,0,0.8)] pointer-events-none">
+        HAB-02 HELANG (AMBER ZONE)
+      </div>
+    </div>
+  `,
+  iconSize: [0, 0],
+  iconAnchor: [0, 0],
+  popupAnchor: [0, -22],
+});
+
 // Backward-compatibility aliases
 export const nandikotMarker = NandikotMarker;
+export const helangMarker = HelangMarker;
 export const siteAMarker = SiteAMarker;
 export const recommendedPrimaryMarker = SiteAMarker;
 export const siteBMarker = SiteBMarker;
 export const rejectedSiteMarker = SiteBMarker;
 export const siteCMarker = SiteCMarker;
 export const transitShelterMarker = SiteCMarker;
+

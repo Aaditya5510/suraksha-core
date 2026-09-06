@@ -26,8 +26,29 @@ public class RelocationController {
     @PostMapping("/evaluate")
     public ResponseEntity<ApiResponse<EvaluationResultResponse>> evaluateRelocation(
             @Valid @RequestBody RelocationEvaluationRequest request) {
-        log.info("Received relocation evaluation request for Habitation ID: {}, Simulated Pop: {}",
+        log.info("Received POST relocation evaluation request for Habitation ID: {}, Simulated Pop: {}",
                 request.getHabitationId(), request.getSimulatedPopulation());
+
+        EvaluationResultResponse evaluationResult = decisionEngineService.evaluateRelocation(request);
+
+        return ResponseEntity.ok(ApiResponse.success(
+                evaluationResult,
+                "Deterministic relocation carrying-capacity evaluated successfully"
+        ));
+    }
+
+    @GetMapping("/evaluate/{habitationId}")
+    public ResponseEntity<ApiResponse<EvaluationResultResponse>> evaluateRelocationGet(
+            @PathVariable String habitationId,
+            @RequestParam(required = false) Integer population) {
+        log.info("Received GET relocation evaluation request for Habitation ID: {}, Simulated Pop: {}",
+                habitationId, population);
+
+        int pop = (population != null && population > 0) ? population : 2840;
+        RelocationEvaluationRequest request = RelocationEvaluationRequest.builder()
+                .habitationId(habitationId)
+                .simulatedPopulation(pop)
+                .build();
 
         EvaluationResultResponse evaluationResult = decisionEngineService.evaluateRelocation(request);
 
