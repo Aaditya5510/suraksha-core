@@ -1,5 +1,8 @@
 package com.suraksha.engine.model.dto.response;
 
+import com.suraksha.engine.model.enums.RelocationHorizon;
+import com.suraksha.engine.model.enums.RiskZone;
+
 public class HabitationSummaryResponse {
 
     private String id;
@@ -31,6 +34,15 @@ public class HabitationSummaryResponse {
         this.slopeDegrees = slopeDegrees;
         this.vulnerability = vulnerability;
         this.roadCutoffRisk = roadCutoffRisk;
+    }
+
+    public HabitationSummaryResponse(String id, String name, Integer population, Double compositeRisk,
+                                     RiskZone riskZone, RelocationHorizon horizon, Double landslide, Double flood,
+                                     Double slopeDegrees, Double vulnerability, Double roadCutoffRisk) {
+        this(id, name, population, compositeRisk,
+             riskZone != null ? riskZone.name() : null,
+             horizon != null ? horizon.name() : null,
+             landslide, flood, slopeDegrees, vulnerability, roadCutoffRisk);
     }
 
     public String getId() {

@@ -1,9 +1,12 @@
 package com.suraksha.engine;
 
+import com.suraksha.engine.model.entity.CandidateSite;
 import com.suraksha.engine.model.entity.Habitation;
-import com.suraksha.engine.model.entity.RelocationSite;
+import com.suraksha.engine.model.enums.RelocationHorizon;
+import com.suraksha.engine.model.enums.RiskZone;
+import com.suraksha.engine.model.enums.SiteType;
+import com.suraksha.engine.repository.CandidateSiteRepository;
 import com.suraksha.engine.repository.HabitationRepository;
-import com.suraksha.engine.repository.RelocationSiteRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +23,7 @@ class SurakshaEngineApplicationTests {
     private HabitationRepository habitationRepository;
 
     @Autowired
-    private RelocationSiteRepository relocationSiteRepository;
+    private CandidateSiteRepository candidateSiteRepository;
 
     @Test
     @DisplayName("Context Loads and Datastore contains Chamoli Pilot Seed Data")
@@ -31,38 +34,39 @@ class SurakshaEngineApplicationTests {
         Optional<Habitation> nandikotOpt = habitationRepository.findById("HAB-01");
         assertTrue(nandikotOpt.isPresent(), "HAB-01 (Nandikot) must be present");
         Habitation nandikot = nandikotOpt.get();
-        assertEquals("Nandikot Settlement (Joshimath Sector)", nandikot.getName());
+        assertEquals("Nandikot Settlement", nandikot.getName());
         assertEquals(2840, nandikot.getPopulation());
         assertEquals(42.0, nandikot.getSlopeDeg());
         assertEquals(89.4, nandikot.getCompositeRisk());
-        assertEquals("CRITICAL_RED_ZONE", nandikot.getRiskZone());
-        assertEquals("IMMEDIATE", nandikot.getHorizon());
+        assertEquals(RiskZone.CRITICAL_RED_ZONE, nandikot.getRiskZone());
+        assertEquals(RelocationHorizon.IMMEDIATE_0_72H, nandikot.getHorizon());
 
-        // Verify Relocation Sites Seed Data
-        assertEquals(3, relocationSiteRepository.count(), "Should have exactly 3 seeded relocation sites");
+        // Verify Candidate Sites Seed Data
+        assertEquals(3, candidateSiteRepository.count(), "Should have exactly 3 seeded candidate sites");
 
-        Optional<RelocationSite> gopeshwarOpt = relocationSiteRepository.findById("SITE-A");
+        Optional<CandidateSite> gopeshwarOpt = candidateSiteRepository.findById("SITE-A");
         assertTrue(gopeshwarOpt.isPresent(), "SITE-A (Gopeshwar) must be present");
-        RelocationSite gopeshwar = gopeshwarOpt.get();
-        assertEquals("Gopeshwar Administrative Enclave", gopeshwar.getName());
-        assertEquals(16000.0, gopeshwar.getUsableAreaSqm());
-        assertEquals(55000, gopeshwar.getWaterLpd());
-        assertEquals(150, gopeshwar.getToiletsCount());
-        assertEquals(400, gopeshwar.getExistingOccupancy());
+        CandidateSite gopeshwar = gopeshwarOpt.get();
+        assertEquals("Gopeshwar Enclave", gopeshwar.getName());
+        assertEquals(SiteType.RELOCATION_ENCLAVE, gopeshwar.getSiteType());
+        assertEquals(18000.0, gopeshwar.getUsableAreaSqm());
+        assertEquals(65000.0, gopeshwar.getWaterSupplyLpd());
+        assertEquals(140, gopeshwar.getToiletCount());
+        assertEquals(234, gopeshwar.getExistingOccupancy());
 
-        Optional<RelocationSite> pipalkotiOpt = relocationSiteRepository.findById("SITE-B");
+        Optional<CandidateSite> pipalkotiOpt = candidateSiteRepository.findById("SITE-B");
         assertTrue(pipalkotiOpt.isPresent(), "SITE-B (Pipalkoti) must be present");
-        RelocationSite pipalkoti = pipalkotiOpt.get();
-        assertEquals("Pipalkoti Industrial Shelf", pipalkoti.getName());
+        CandidateSite pipalkoti = pipalkotiOpt.get();
+        assertEquals("Pipalkoti Shelf", pipalkoti.getName());
         assertEquals(25000.0, pipalkoti.getUsableAreaSqm());
-        assertEquals(18000, pipalkoti.getWaterLpd());
-        assertEquals(30, pipalkoti.getToiletsCount());
-        assertEquals(34.0, pipalkoti.getRoadReliability());
+        assertEquals(45000.0, pipalkoti.getWaterSupplyLpd());
+        assertEquals(30, pipalkoti.getToiletCount());
+        assertEquals(0.66, pipalkoti.getBridgeCutoffProbability());
 
-        Optional<RelocationSite> schoolOpt = relocationSiteRepository.findById("SITE-C");
+        Optional<CandidateSite> schoolOpt = candidateSiteRepository.findById("SITE-C");
         assertTrue(schoolOpt.isPresent(), "SITE-C (Govt Model Inter-College Grounds) must be present");
-        RelocationSite school = schoolOpt.get();
-        assertEquals("IMMEDIATE_SHELTER", school.getHorizonType());
+        CandidateSite school = schoolOpt.get();
+        assertEquals(SiteType.TRANSIT_SHELTER, school.getSiteType());
         assertEquals(12000.0, school.getUsableAreaSqm());
     }
 }

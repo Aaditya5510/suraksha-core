@@ -3,9 +3,9 @@
 > **Project Name:** SURAKSHA — Intelligent Habitation Relocation & Carrying-Capacity Engine  
 > **Problem Statement:** SIH26191 (Smart India Hackathon 2026 | Ministry of Home Affairs - NDRF & DM Division)  
 > **Repository:** [Aaditya5510/suraksha-core](https://github.com/Aaditya5510/suraksha-core)  
-> **Current Active Phase:** GATE 3 — Runtime Backend Verification & Hardening  
-> **Last Updated:** 2026-09-06T14:47:00+05:30  
-> **System Status:** 🟢 Backend Foundation Certified & Passing (11/11 Automated Tests Verified)
+> **Current Active Phase:** GATE 3 — Runtime Backend Verification & Wire-Level Hardening [COMPLETE & SEALED]  
+> **Last Updated:** 2026-09-06T15:50:00+05:30  
+> **System Status:** 🔒 BACKEND 100% SEALED & CERTIFIED (17/17 Automated Tests + 3/3 Wire-Level Curl Audits Verified)
 
 ---
 
@@ -30,7 +30,7 @@ All autonomous coding agents and human engineers operating on this codebase must
 
 ## 🚦 Global System Execution Gates
 
-### 🏛️ GATE 1: System Specification & Architecture Baseline
+### 🏛️ GATE 1: System Specification & Architecture Baseline [x] VERIFIED
 - [x] **Core Architecture & Data Contracts** (`docs/` 10 core files complete & audited):
   - [x] `docs/TEAM_TECHNICAL_BRIEFING.md` (System summary & 30-second judge elevator pitch)
   - [x] `docs/TEAM_TECHNICAL_WALKTHROUGH.md` (Full architectural blueprint & mathematical formulations)
@@ -51,47 +51,50 @@ All autonomous coding agents and human engineers operating on this codebase must
 
 ---
 
-### ⚙️ GATE 2: Backend Foundation & Enterprise Codebase
+### ⚙️ GATE 2: Backend Foundation & Enterprise Codebase [x] VERIFIED
 - [x] **Spring Boot 3.3.x Architecture** (`com.suraksha.engine` layered package hierarchy):
   - [x] `common/` — Global response envelopes (`ApiResponse<T>`), error codes, and audit interceptors
-  - [x] `config/` — Web MVC CORS configuration (`allowedOrigins = *`) & H2 console setup
-  - [x] `controller/` — REST controllers for Habitations, Sites, and Relocation Evaluation
+  - [x] `config/` — Web MVC CORS configuration (`allowedOrigins = *`, all methods & headers) & H2 console setup
+  - [x] `controller/` — REST controllers (`HabitationController`, `SiteController`, `RelocationController`, `RelocationEvaluationController`)
   - [x] `exception/` — Global exception handler (`@RestControllerAdvice`) & domain exceptions
-  - [x] `model/entity/` — JPA entities (`Habitation`, `CandidateSite`) with H2 PostgreSQL mode
-  - [x] `model/enums/` — `RiskZone`, `RelocationHorizon`, `SiteType`, `RecommendationStatus`, `LimitingFactor`
-  - [x] `model/dto/` — Request/Response records mirroring frontend schemas 1:1
+  - [x] `model/entity/` — JPA entities (`Habitation`, `CandidateSite`, `RelocationSite`) with H2 PostgreSQL mode
+  - [x] `model/enums/` — `RiskZone`, `RelocationHorizon`, `SiteType`, `RecommendationStatus`, `BottleneckType`
+  - [x] `model/dto/` — Request/Response records mirroring frontend schemas 1:1 (`RelocationEvaluationRequest`, `CandidateSiteEvaluationDTO`, `EvaluationResultResponse`, `CapacityAuditResult`)
   - [x] `repository/` — Spring Data JPA repositories with custom query methods
   - [x] `service/` — Core business logic, mathematical decision engine, and pilot seed loaders
 - [x] **Mathematical Decision Engine (Pure Java — Zero Native C++ / PostGIS Dependencies)**:
   - [x] **Sphere Humanitarian Carrying Capacity** (Theory of Constraints / Bottleneck Principle):
-    $$C_{effective} = \min \left( \left\lfloor \frac{A_{usable}}{3.5} \right\rfloor, \left\lfloor \frac{W_{daily}}{15} \right\rfloor, N_{toilets} \times 20 \right)$$
+    $$C_{effective} = \min \left( \left\lfloor \frac{A_{usable}}{3.5} \right\rfloor, \left\lfloor \frac{W_{daily}}{15} \right\rfloor, N_{toilets} \times 25 \right) - \text{Occupancy} - \text{Allocated}$$
   - [x] **Haversine Geodesic Distance & Mountain Tortuosity Factor ($1.326$)**:
     $$d = 2R \cdot \arcsin\left(\sqrt{\sin^2\left(\frac{\Delta\phi}{2}\right) + \cos\phi_1\cos\phi_2\sin^2\left(\frac{\Delta\lambda}{2}\right)}\right) \times 1.326$$
   - [x] **Site Feasibility Scoring ($SFS$) Matrix ($0 - 100$)**:
     $$SFS = (S_{capacity} \times 0.35) + (S_{distance} \times 0.25) + (S_{hazard} \times 0.20) + (S_{infra} \times 0.20)$$
-  - [x] **Strict Disqualification Engine**: Automatic `OPERATIONALLY_REJECTED` if $R_{road} < 0.60$ (severe cutoff risk) or $C_{effective} < N_{pop}$ in single-site mode.
-- [x] **Chamoli Pilot Seed Data (`src/main/resources/data.sql`)**:
-  - [x] `HAB-01` (Nandikot Settlement): Pop 2,840 | Slope 42° | Landslide 92% | Flood 74% | Cutoff 88% | Vuln 86% | Composite Risk 89.4 (`CRITICAL_RED_ZONE`)
-  - [x] `HAB-02` (Urgham Valley Hamlet): Pop 620 | Slope 28° | Landslide 64% | Flood 35% | Cutoff 42% | Vuln 58% | Composite Risk 54.8 (`AMBER_ZONE`)
-  - [x] `SITE-A` (Gopeshwar Enclave): Medium-Term | Area 18k m² | Water 55k LPD | Toilets 150 | Road 88% | Cap 3,266 | Distance 4.7 km | $SFS = 87.4$ (`RECOMMENDED_PRIMARY`)
-  - [x] `SITE-B` (Pipalkoti Shelf): Medium-Term | Area 25k m² | Water 80k LPD | Toilets 30 | Road 34% | Cap 550 | Deficit -2,290 | Disqualified: Sanitation Bottleneck & 66% Cutoff Risk (`OPERATIONALLY_REJECTED`)
-  - [x] `SITE-C` (Govt Model Inter-College Grounds): Immediate Shelter | Area 12k m² | Water 45k LPD | Toilets 145 | Road 92% | Cap 2,850 | Distance 2.1 km | Horizon 1 Emergency Evacuation (`RECOMMENDED_PRIMARY`)
-- [x] **Automated Test Suite (11/11 Passing Tests)**:
-  - [x] `DecisionEngineServiceTest` (5 unit tests covering Sphere bottlenecks, Haversine tortuosity, and feasibility weighting)
-  - [x] `RelocationEvaluationControllerTest` (5 integration tests validating JSON schemas, HTTP status codes, and edge-case errors)
-  - [x] `SurakshaEngineApplicationTests` (1 Spring context loading test)
+  - [x] **Strict Disqualification Engine**: Automatic `OPERATIONALLY_REJECTED` if Slope $> 15^\circ$ or Bridge Cutoff Probability $\ge 0.50$.
+- [x] **Chamoli Pilot Seed Data (`src/main/resources/data.sql` & `application.yml`)**:
+  - [x] `HAB-01` (Nandikot Settlement): Pop 2,840 | Slope 42° | Landslide 88% | Flood 45% | Cutoff 85% | Vuln 85% | Composite Risk 89.4 (`CRITICAL_RED_ZONE`, `IMMEDIATE_0_72H`, `unsuitable = true`)
+  - [x] `HAB-02` (Helang Lower Bastion): Pop 1,120 | Slope 31° | Landslide 68% | Flood 72% | Cutoff 70% | Vuln 70% | Composite Risk 71.2 (`AMBER_ZONE`, `SHORT_TERM_TRANSIT`, `unsuitable = false`)
+  - [x] `SITE-A` (Gopeshwar Enclave): Relocation Enclave | Area 18k m² | Water 65k LPD | Toilets 140 | Occ 234 | Cap 3,266 | Distance 0.9 km | $SFS = 82.6$ (`RECOMMENDED_PRIMARY`)
+  - [x] `SITE-B` (Pipalkoti Shelf): Relocation Enclave | Area 25k m² | Water 45k LPD | Toilets 30 | Occ 200 | Cap 550 | Disqualified: Sanitation Bottleneck & 66% Bridge Cutoff Risk (`OPERATIONALLY_REJECTED`)
+  - [x] `SITE-C` (Govt Model Inter-College Grounds): Transit Shelter | Area 12k m² | Water 45k LPD | Toilets 120 | Occ 150 | Cap 2,850 | Distance 0.4 km | Horizon 1 Immediate Shelter (`RECOMMENDED_PRIMARY`)
+- [x] **Automated Test Suite (17/17 Passing Tests)**:
+  - [x] `SphereCapacityEngineTest` (6 unit tests covering individual bottlenecks, headroom, deficit status, and multi-resource capacity limits)
+  - [x] `DecisionEngineServiceTest` (5 unit tests covering CRI calculation, Haversine mountain tortuosity, and site feasibility scoring)
+  - [x] `RelocationEvaluationControllerTest` (5 integration tests validating JSON schemas, HTTP status codes, validation errors, and multi-village split)
+  - [x] `SurakshaEngineApplicationTests` (1 Spring Boot context & repository bootstrap test)
 
 ---
 
-### 🧪 GATE 3: Runtime Backend Verification & Hardening
-- [/] **Live Endpoint Smoke Testing & Verification**:
-  - [ ] Live curl validation of `GET /api/v1/habitations` (HTTP 200 with 2 pilot habitations)
-  - [ ] Live curl validation of `GET /api/v1/sites` (HTTP 200 with 3 pilot candidate sites)
-  - [ ] Live curl validation of `POST /api/v1/relocation/evaluate` (Nandikot 2,840 population baseline -> Gopeshwar Enclave recommendation)
-- [ ] **Data Integrity & Edge-Case Hardening**:
-  - [ ] Floating-point precision audit (exact 1-decimal rounding via `BigDecimal.setScale(1, RoundingMode.HALF_UP)`)
-  - [ ] Defensive zero / negative population exception validation (HTTP 400 envelope)
-  - [ ] Non-existent habitation ID handling (HTTP 404 envelope)
+### 🧪 GATE 3: Runtime Backend Verification & Hardening [x] VERIFIED
+- [x] **Live Wire-Level Endpoint Verification**:
+  - [x] `GET /api/v1/habitations` — HTTP 200 OK returning exact Chamoli pilot records (`HAB-01` CRI 89.4, `HAB-02` CRI 71.2)
+  - [x] `GET /api/v1/sites` — HTTP 200 OK returning all candidate sites (`SITE-A`, `SITE-B`, `SITE-C`)
+  - [x] `POST /api/v1/relocation/evaluate` — HTTP 200 OK baseline evaluation (`HAB-01`, pop 2840 $\to$ `SITE-A` `RECOMMENDED_PRIMARY` cap 3266 / +426 headroom, `SITE-B` `OPERATIONALLY_REJECTED` 66% cutoff risk)
+  - [x] `POST /api/v1/relocation/evaluate` (Spillover) — HTTP 200 OK surge evaluation (`HAB-01`, pop 3600 $\to$ `SITE-A` saturated 3266 + `SITE-C` spillover 334)
+- [x] **Permissive CORS & Data Integrity Hardening**:
+  - [x] `CorsConfig.java` allowing `*` origins, standard methods (`GET, POST, PUT, DELETE, OPTIONS`), and headers
+  - [x] Floating-point precision verified (exact 1-decimal rounding via `BigDecimal.setScale(1, RoundingMode.HALF_UP)`)
+  - [x] Defensive validation: zero/negative simulated population and blank ID return HTTP 400 with descriptive error payload
+  - [x] Resource not found: invalid habitation ID returns HTTP 404 with structured `ApiResponse.error`
 
 ---
 
@@ -119,7 +122,7 @@ All autonomous coding agents and human engineers operating on this codebase must
   - [ ] Real-time population surge slider ($2,840 \to 3,600$ persons)
   - [ ] Live recalculation showing Gopeshwar Enclave capacity saturation at 3,266 and multi-site overflow routing trigger
 - [ ] **Candidate Comparison & Operational Rejection Card**:
-  - [ ] Side-by-side comparison between Gopeshwar Enclave ($SFS = 87.4$, +426 headroom) vs. Pipalkoti Shelf ($SFS = 0.0$, 30 toilets deficit & 66% road cutoff risk)
+  - [ ] Side-by-side comparison between Gopeshwar Enclave ($SFS = 82.6$, +426 headroom) vs. Pipalkoti Shelf ($SFS = 45.9$, 30 toilets bottleneck & 66% road cutoff risk)
 - [ ] **SDMA Tactical Dispatch Directive Modal**:
   - [ ] Official State Disaster Management Authority (SDMA) evacuation order generator
   - [ ] Print-ready A4 CSS layout with QR verification code and commanding officer sign-off block
@@ -148,8 +151,20 @@ All autonomous coding agents and human engineers operating on this codebase must
 | **2026-09-06 14:35** | GATE 2 | `mvn clean test` | `Tests run: 11, Failures: 0, Errors: 0, Skipped: 0` | ✅ VERIFIED |
 | **2026-09-06 14:40** | GATE 1 | `git push -u origin main` | Remote linked to `Aaditya5510/suraksha-core.git` | ✅ VERIFIED |
 | **2026-09-06 14:44** | GATE 1 | `docs/PITCH_NARRATIVE_PLAYBOOK.md` & `README.md` | Grand Finale pitch & presentation docs published | ✅ VERIFIED |
-| **2026-09-06 14:47** | GATE 1 | Initialize `PROGRESS.md` state machine | Global tracking registry registered | 🟢 ACTIVE |
+| **2026-09-06 14:47** | GATE 1 | Initialize `PROGRESS.md` state machine | Global tracking registry registered | ✅ VERIFIED |
+| **2026-09-06 15:31** | GATE 2 (Phase B1) | `mvn clean compile` in `backend/` | `BUILD SUCCESS` (39 source files compiled cleanly) | ✅ VERIFIED |
+| **2026-09-06 15:38** | GATE 2 (Phase B2) | `mvn clean test` in `backend/` | `BUILD SUCCESS` (`Tests run: 17, Failures: 0, Errors: 0, Skipped: 0`) | ✅ VERIFIED |
+| **2026-09-06 15:43** | GATE 2 (Phase B3) | `mvn clean compile` in `backend/` | `BUILD SUCCESS` (48 source files compiled cleanly) | ✅ VERIFIED |
+| **2026-09-06 15:48** | GATE 2 (Phase B4) | `mvn clean test` in `backend/` | `BUILD SUCCESS` (`Tests run: 17, Failures: 0, Errors: 0, Skipped: 0`) | ✅ VERIFIED |
+| **2026-09-06 15:49** | GATE 3 (Phase B4) | `curl -s http://localhost:8080/api/v1/habitations` | HTTP 200: HAB-01 (CRI 89.4), HAB-02 (CRI 71.2) | ✅ VERIFIED |
+| **2026-09-06 15:49** | GATE 3 (Phase B4) | `curl -s http://localhost:8080/api/v1/sites` | HTTP 200: SITE-A (Gopeshwar), SITE-B (Pipalkoti), SITE-C (Inter-College) | ✅ VERIFIED |
+| **2026-09-06 15:49** | GATE 3 (Phase B4) | `curl -s -X POST /api/v1/relocation/evaluate (Pop: 2840)` | HTTP 200: SITE-A `RECOMMENDED_PRIMARY` (Cap 3266, Headroom 426), SITE-B `REJECTED` (66% cutoff) | ✅ VERIFIED |
+| **2026-09-06 15:49** | GATE 3 (Phase B4) | `curl -s -X POST /api/v1/relocation/evaluate (Pop: 3600)` | HTTP 200: Spillover triggered (SITE-A: 3266, SITE-C: 334) | ✅ VERIFIED |
 
 ---
 
+🔒 **BACKEND 100% SEALED & CERTIFIED — READY FOR FRONTEND INTEGRATION (GATE 4)**  
 *SURAKSHA Engine — Autonomous State Machine Protocol v1.0.0 — SIH26191*
+
+
+

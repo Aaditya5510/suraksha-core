@@ -22,33 +22,39 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleResourceNotFoundException(ResourceNotFoundException ex) {
         log.warn("Resource not found: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(ApiResponse.failure(ex.getMessage()));
+                .body(ApiResponse.error(ex.getMessage()));
     }
 
     @ExceptionHandler(BusinessRuleException.class)
     public ResponseEntity<ApiResponse<Void>> handleBusinessRuleException(BusinessRuleException ex) {
         log.warn("Business rule violation: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse.failure(ex.getMessage()));
+                .body(ApiResponse.error(ex.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Map<String, String>>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        String firstErrorMessage = ex.getBindingResult().getFieldErrors().stream()
+                .map(FieldError::getDefaultMessage)
+                .findFirst()
+                .orElse("Validation failed on request payload");
+
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
-        log.warn("Request validation failed: {}", errors);
+
+        log.warn("Request validation failed: {} (First error: {})", errors, firstErrorMessage);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiResponse.failure("Validation failed on request payload", errors));
+                .body(ApiResponse.failure(firstErrorMessage, errors));
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleGlobalException(Exception ex) {
         log.error("Unhandled internal server exception: ", ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApiResponse.failure("An unexpected internal error occurred: " + ex.getMessage()));
+                .body(ApiResponse.error("An unexpected internal error occurred: " + ex.getMessage()));
     }
 }
