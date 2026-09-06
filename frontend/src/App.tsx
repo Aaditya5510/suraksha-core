@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Header } from './components/Header';
+import { TacticalMap } from './components/TacticalMap';
 import { DEFAULT_EVALUATION } from './data/baselineData';
 import type { EvaluationResultResponse } from './types/suraksha';
 import {
@@ -13,10 +14,12 @@ import {
   Users,
   XCircle,
   Layers,
+  Crosshair,
 } from 'lucide-react';
 
 export const App: React.FC = () => {
   const [evaluation] = useState<EvaluationResultResponse>(DEFAULT_EVALUATION);
+  const [selectedSiteId, setSelectedSiteId] = useState<string>('SITE-A');
   const { habitation, tacticalShelterImmediate, candidateSites, operationalDirectiveSummary } = evaluation;
 
   return (
@@ -27,18 +30,51 @@ export const App: React.FC = () => {
       {/* Main Operations Dashboard Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 space-y-6">
         {/* SDMA Operational Directive Banner */}
-        <section className="p-4 rounded-lg bg-alertRed/10 border border-alertRed/30 backdrop-blur-md">
+        <section className="p-4 rounded-xl bg-alertRed/10 border border-alertRed/30 backdrop-blur-md shadow-lg">
           <div className="flex items-start gap-3">
-            <AlertTriangle className="w-5 h-5 text-alertRed shrink-0 mt-0.5" />
+            <AlertTriangle className="w-5 h-5 text-alertRed shrink-0 mt-0.5 animate-pulse" />
             <div className="space-y-1">
-              <span className="text-xs font-mono font-bold tracking-wider text-alertRed uppercase">
-                SDMA Mandatory Operational Directive
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-mono font-bold tracking-wider text-alertRed uppercase">
+                  SDMA Mandatory Evacuation Directive
+                </span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-alertRed/20 text-alertRed border border-alertRed/40">
+                  DISASTER MANAGEMENT ACT 2005 - SEC 38
+                </span>
+              </div>
               <p className="text-sm font-mono text-slate-200 leading-relaxed">
                 {operationalDirectiveSummary}
               </p>
             </div>
           </div>
+        </section>
+
+        {/* Central Tactical GIS Geospatial Viewport */}
+        <section className="space-y-2">
+          <div className="flex items-center justify-between px-1">
+            <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
+              <Crosshair className="w-4 h-4 text-alertRed" />
+              <span className="font-bold text-slate-200 uppercase tracking-wider">
+                Geospatial Tactical Assessment & Evacuation Corridor Viewport
+              </span>
+              <span className="text-slate-600 hidden sm:inline">•</span>
+              <span className="text-slate-400 hidden sm:inline">
+                30.4150° N, 79.3240° E | SECTOR ALAKNANDA-01
+              </span>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
+              <span className="hidden md:inline px-2 py-0.5 rounded bg-slate-900 border border-borderDark text-[11px] text-emerald-400">
+                LIVE SPATIAL ROUTING ACTIVE
+              </span>
+            </div>
+          </div>
+
+          {/* Tactical Map Container */}
+          <TacticalMap
+            evaluation={evaluation}
+            selectedSiteId={selectedSiteId}
+            onSelectSite={(siteId) => setSelectedSiteId(siteId)}
+          />
         </section>
 
         {/* Tactical Metrics Quick View Grid */}
@@ -143,7 +179,12 @@ export const App: React.FC = () => {
               {candidateSites.map((site) => (
                 <div
                   key={site.siteId}
-                  className="p-2.5 rounded bg-slate-900/80 border border-borderDark flex items-center justify-between text-xs font-mono"
+                  onClick={() => setSelectedSiteId(site.siteId)}
+                  className={`p-2.5 rounded border transition-all cursor-pointer text-xs font-mono ${
+                    selectedSiteId === site.siteId
+                      ? 'bg-slate-800/90 border-infoBlue/80 shadow-md'
+                      : 'bg-slate-900/80 border-borderDark hover:border-slate-600'
+                  } flex items-center justify-between`}
                 >
                   <div className="space-y-0.5">
                     <div className="font-bold text-slate-200">{site.name}</div>
@@ -166,14 +207,14 @@ export const App: React.FC = () => {
           </div>
         </div>
 
-        {/* Phase F1 Completion Milestone Banner */}
+        {/* Phase F2 Tactical GIS Integration Milestone Bar */}
         <section className="p-4 rounded-lg bg-slate-900/60 border border-slate-800 text-xs font-mono text-slate-400 flex flex-col md:flex-row items-center justify-between gap-2">
           <span>
-            SURAKSHA Core Engine v1.0.0 • Phase F1 Baseline Scaffold Initialized • Gate 4 Active
+            SURAKSHA Geospatial Engine v1.0.0 • Phase F2 Tactical GIS Map Active • Gate 5 Ready
           </span>
           <span className="text-safeGreen flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-safeGreen" />
-            Types, Tailwind & Baseline Data Store 100% Synchronized
+            Leaflet Dark Matter Tiles + Pulsing Beacons + Evacuation Corridors Verified
           </span>
         </section>
       </main>
