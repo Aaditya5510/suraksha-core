@@ -29,7 +29,7 @@ class SurakshaEngineApplicationTests {
     @DisplayName("Context Loads and Datastore contains Chamoli Pilot Seed Data")
     void contextLoadsAndSeedDataIsPresent() {
         // Verify Habitation Seed Data
-        assertEquals(2, habitationRepository.count(), "Should have exactly 2 seeded habitations");
+        assertEquals(3, habitationRepository.count(), "Should have exactly 3 seeded habitations");
 
         Optional<Habitation> nandikotOpt = habitationRepository.findById("HAB-01");
         assertTrue(nandikotOpt.isPresent(), "HAB-01 (Nandikot) must be present");

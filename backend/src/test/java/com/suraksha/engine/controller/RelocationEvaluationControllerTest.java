@@ -32,7 +32,7 @@ class RelocationEvaluationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success", is(true)))
-                .andExpect(jsonPath("$.data", hasSize(2)))
+                .andExpect(jsonPath("$.data", hasSize(3)))
                 .andExpect(jsonPath("$.data[0].id", is("HAB-01")))
                 .andExpect(jsonPath("$.data[0].name", containsString("Nandikot")))
                 .andExpect(jsonPath("$.data[0].compositeRiskIndex", is(89.4)));

@@ -8,7 +8,10 @@ export interface ApiResponse<T> {
   data: T;
 }
 
-const API_BASE = '/api/v1';
+const RAW_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').trim().replace(/\/$/, '');
+const API_BASE = RAW_BASE_URL
+  ? (RAW_BASE_URL.endsWith('/api/v1') ? RAW_BASE_URL : `${RAW_BASE_URL}/api/v1`)
+  : '/api/v1';
 
 /**
  * Actively fetches relocation evaluation for a given habitation and simulated population.
