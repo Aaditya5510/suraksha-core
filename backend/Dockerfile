@@ -1,29 +1,20 @@
-# Stage 1: Build stage with Maven and Eclipse Temurin 17
-FROM maven:3.9-eclipse-temurin-17 AS builder
+FROM maven:3.9-eclipse-temurin-17 AS build
 WORKDIR /app
 
-# Copy project descriptor and source tree
+# Cache dependencies
 COPY pom.xml .
+RUN mvn dependency:go-offline -B || true
+
+# Copy source and build
 COPY src ./src
+RUN mvn clean package -DskipTests -Dmaven.test.skip=true
 
-# Compile and package executable JAR skipping tests
-RUN mvn clean package -DskipTests
-
-# Stage 2: Minimal runtime image with Temurin 17 JRE Alpine
+# Runtime Stage
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 
-# Non-root user setup for container security
-RUN addgroup -S suraksha && adduser -S suraksha -G suraksha
-USER suraksha:suraksha
-
-# Copy compiled artifact from builder
-COPY --from=builder /app/target/suraksha-engine-*.jar app.jar
-
-# Render dynamic port support
-EXPOSE 8080
 ENV PORT=8080
-ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0"
+EXPOSE 8080
 
-# Execute Spring Boot with dynamic port binding
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -Dserver.port=${PORT:-8080} -jar app.jar"]
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-Dserver.port=${PORT}", "-jar", "app.jar"]
