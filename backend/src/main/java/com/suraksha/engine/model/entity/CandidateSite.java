@@ -7,19 +7,9 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "candidate_sites")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class CandidateSite {
 
     @Id
@@ -49,18 +39,15 @@ public class CandidateSite {
     private Integer toiletCount;
 
     @Column(name = "existing_occupancy", nullable = false)
-    @Builder.Default
     private Integer existingOccupancy = 0;
 
     @Column(name = "allocated_population", nullable = false)
-    @Builder.Default
     private Integer allocatedPopulation = 0;
 
     @Column(name = "slope_degrees", nullable = false)
     private Double slopeDegrees;
 
     @Column(name = "multi_route_access", nullable = false)
-    @Builder.Default
     private Boolean multiRouteAccess = true;
 
     @Column(name = "bridge_cutoff_probability", nullable = false)

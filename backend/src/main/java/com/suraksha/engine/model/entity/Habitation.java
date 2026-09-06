@@ -8,19 +8,9 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "habitations")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Habitation {
 
     @Id
@@ -66,7 +56,6 @@ public class Habitation {
     private RelocationHorizon horizon;
 
     @Column(name = "is_permanently_unsuitable")
-    @Builder.Default
     private Boolean isPermanentlyUnsuitable = false;
 
     @Column(name = "red_zone_declared_date")

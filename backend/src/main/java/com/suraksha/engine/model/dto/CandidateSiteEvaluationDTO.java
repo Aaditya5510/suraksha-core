@@ -2,17 +2,7 @@ package com.suraksha.engine.model.dto;
 
 import com.suraksha.engine.model.enums.RecommendationStatus;
 import com.suraksha.engine.model.enums.SiteType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class CandidateSiteEvaluationDTO {
 
     private String siteId;
