@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   ShieldAlert,
   Map,
@@ -24,11 +25,17 @@ export const Navbar: React.FC<NavbarProps> = ({
   isLive,
   onExportOrder,
 }) => {
+  const navigate = useNavigate();
+
   return (
     <header className="h-16 bg-[#0a0d14]/90 backdrop-blur border-b border-gray-800 px-4 md:px-6 flex items-center justify-between sticky top-0 z-50 select-none">
       {/* Left: Brand, Shield Icon, Gradient Title & Subtitle */}
-      <div className="flex items-center gap-3">
-        <div className="p-2 bg-red-500/10 border border-red-500/30 rounded-lg text-red-500 flex items-center justify-center shadow-[0_0_10px_rgba(239,68,68,0.3)]">
+      <div
+        onClick={() => navigate('/')}
+        className="flex items-center gap-3 cursor-pointer group"
+        title="Return to Decision Architecture Pipeline"
+      >
+        <div className="p-2 bg-red-500/10 group-hover:bg-cyan-500/20 border border-red-500/30 group-hover:border-cyan-500/50 rounded-lg text-red-500 group-hover:text-cyan-400 flex items-center justify-center shadow-[0_0_10px_rgba(239,68,68,0.3)] transition-all">
           <ShieldAlert className="w-5 h-5 animate-pulse" />
         </div>
         <div>
