@@ -164,7 +164,17 @@ All autonomous coding agents and human engineers operating on this codebase must
     - STAGE 04 (Safety Filtering): *"Rejects large open grounds that lack sanitation to prevent fatal epidemic outbreaks."* $\to$ Pipalkoti Shelf disqualified (550 cap).
     - STAGE 05 (Surge Balancing): *"Simulates sudden pilgrim or evacuee influxes, automatically diverting overflow to secondary hubs."* $\to$ Automated spillover.
     - STAGE 06 (Statutory Order): *"Calculates logistical vehicle needs and outputs legally binding evacuation decrees under DM Act 2005."* $\to$ Requisition manifest.
-  - [x] **Task 3: Build Verification**: `npm run build` compiled in 2.27s with 0 errors.
+- [x] **Enterprise UI Overhaul Step 7 — Map Camera Reactivity & Dual-Route Transport Safety Model (`TacticalMap.tsx` & `EocTacticalMap.tsx`)**:
+  - [x] **Task 1: Dynamic Camera & Hazard Danger Zone Centering**:
+    - Configured `MapFlyToController` to trigger `map.flyTo([hab.latitude, hab.longitude], 13.5, { duration: 1.2 })` whenever active habitation changes (`HAB-01` Nandikot `[30.4158, 79.3248]`, `HAB-02` Helang `[30.5280, 79.5128]`, `HAB-03` Joshimath `[30.5560, 79.5620]`).
+    - Dynamic Red Hazard Danger Zone circle (900m/500m radius) centers directly over active village coordinates and redraws polylines/markers for the selected sector.
+  - [x] **Task 2: Dual-Route Transport Safety Model**:
+    - **Route A: "NH-58 Valley Highway"**: Low Elevation / Riverbed Corridor (Amber solid line, 88% flood/inundation risk tag: `"NH-58: Fast (12 min) | High Inundation Risk"`).
+    - **Route B: "Upper Ridge Bypass"**: High Elevation Safe Route (Emerald Green dashed polyline, 0% flood risk tag: `"Ridge Bypass: Stable (24 min) | 100% Flood-Safe Corridor"`).
+  - [x] **Task 3: Interactive Road Cutoff Simulator**:
+    - Wired `⚡ Simulate NH-58 Road Cutoff` toggle in the floating Tactical Layers tray.
+    - When clicked: Route A transitions to flashing crimson dashed line with an `X - ROAD BLOCKED` marker (`RoadBlockedMarker`), issuing alert banner: *"CRITICAL: NH-58 Valley Highway Blocked by Debris Flow. All 71 Buses auto-diverted to Upper Ridge Bypass."* Button updates to `Restore NH-58 Highway`.
+  - [x] **Task 4: Build Verification**: `npm.cmd run build` compiled with 0 errors / 0 TypeScript warnings.
 
 ---
 
@@ -203,14 +213,11 @@ All autonomous coding agents and human engineers operating on this codebase must
 | **2026-09-06 18:07** | Modal & Sidebar Views | `npm.cmd run build` in `frontend/` & HTTP check | `BUILD SUCCESS` (Statutory Directive modal overflow fix, 5 distinct sidebar views, collapsible dock polish, 0 TS errors) | ✅ VERIFIED |
 | **2026-09-06 18:21** | Cognitive Load Reduction | `npm.cmd run build` in `frontend/` & HTTP check | `BUILD SUCCESS` (Clean top bar, scannable data chips in modal, 3 simple progress lines in right dock, 0 TS errors) | ✅ VERIFIED |
 | **2026-09-06 18:25** | Landing Page Pipeline Polish | `npm.cmd run build` in `frontend/` & HTTP check | `BUILD SUCCESS` (6 stage cards updated to ResQFlow minimal standard, 0 math/code formulas, 0 TS errors) | ✅ VERIFIED |
+| **2026-09-07 04:50** | Map Camera & Dual-Route Safety | `npm.cmd run build` in `frontend/` & HTTP 200 check | `BUILD SUCCESS` (Map flyTo reactivity, active village danger zone circle, dual-route NH-58 vs Ridge Bypass, road cutoff simulation, 0 TS errors) | ✅ VERIFIED |
 
 ---
 
 🏆 **SURAKSHA SYSTEM COMPLETE & SEALED — ALL GATES, ENTERPRISE EOC SUITE & MULTI-ROUTE DECISION PIPELINE VERIFIED & GRAND FINALE JURY READY**  
 *SURAKSHA Engine — Autonomous State Machine Protocol v1.0.0 — SIH26191*
 
----
-
-🏆 **SURAKSHA SYSTEM COMPLETE & SEALED — ALL GATES, ENTERPRISE EOC SUITE & MULTI-ROUTE DECISION PIPELINE VERIFIED & GRAND FINALE JURY READY**  
-*SURAKSHA Engine — Autonomous State Machine Protocol v1.0.0 — SIH26191*
 

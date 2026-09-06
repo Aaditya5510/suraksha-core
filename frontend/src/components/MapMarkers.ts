@@ -167,6 +167,29 @@ export const JoshimathMarker = L.divIcon({
   popupAnchor: [0, -22],
 });
 
+// 7. Road Blocked Warning Marker (NH-58 Cutoff Hazard Flag)
+export const RoadBlockedMarker = L.divIcon({
+  className: 'custom-tactical-marker',
+  html: `
+    <div class="relative flex flex-col items-center justify-center -translate-x-1/2 -translate-y-1/2 cursor-pointer group z-40">
+      <div class="absolute w-12 h-12 rounded-full bg-red-600/40 animate-ping pointer-events-none"></div>
+      <div class="relative z-10 px-2.5 py-1 rounded-lg bg-red-600 border-2 border-white text-white font-mono font-black text-[10px] flex items-center gap-1 shadow-[0_0_16px_rgba(239,68,68,1)]">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+        <span>X - NH-58 BLOCKED</span>
+      </div>
+      <div class="mt-1 px-1.5 py-0.5 rounded bg-black/90 text-red-300 text-[9px] font-mono border border-red-500 font-bold shadow">
+        DEBRIS FLOW (KM 342.6)
+      </div>
+    </div>
+  `,
+  iconSize: [0, 0],
+  iconAnchor: [0, 0],
+  popupAnchor: [0, -22],
+});
+
 // Backward-compatibility aliases
 export const nandikotMarker = NandikotMarker;
 export const helangMarker = HelangMarker;
@@ -177,5 +200,4 @@ export const siteBMarker = SiteBMarker;
 export const rejectedSiteMarker = SiteBMarker;
 export const siteCMarker = SiteCMarker;
 export const transitShelterMarker = SiteCMarker;
-
-
+export const roadBlockedMarker = RoadBlockedMarker;
