@@ -9,11 +9,11 @@ import {
   GitFork,
   CheckCircle2,
   ArrowRight,
-  Compass,
+  MapPin,
   Layers,
-  Activity,
   Search,
   Sparkles,
+  X,
 } from 'lucide-react';
 
 export const DecisionArchitectureLanding: React.FC = () => {
@@ -25,116 +25,86 @@ export const DecisionArchitectureLanding: React.FC = () => {
     {
       id: 1,
       badge: 'STAGE 01: INTAKE',
-      title: 'Multi-Hazard Telemetry & SMR Intake',
-      subtitle: 'Multi-hazard telemetry & SMR slope monitoring',
+      title: 'Threat Detection',
       borderColor: 'border-red-500/40 hover:border-red-500/80',
       badgeColor: 'bg-red-500/10 text-red-400 border-red-500/30',
       accentColor: 'text-red-400',
       glowColor: 'hover:shadow-[0_0_25px_rgba(239,68,68,0.25)]',
       icon: AlertTriangle,
       description:
-        'Continuous ingestion of slope deformation, geological SMR surveys, rain gauge telemetry, and flood runout vectors across vulnerable Himalayan sectors.',
-      telemetryPoints: [
-        'Critical Slope Trigger: Angle \u2265 35\u00b0 with debris slide hazard > 70%',
-        'Hazard Runout Zone: 900m non-mitigable safety buffer',
-        'Composite Risk Index: CRI = 0.40(Slope) + 0.35(Landslide) + 0.25(Flood)',
-      ],
-      caseStudy: 'HAB-01 Nandikot Settlement (Pop: 2,840 | 42\u00b0 Slope | CRI: 89.4 \u2192 CRITICAL RED ZONE)',
+        'Continuous slope telemetry and weather feeds flag settlements entering active danger zones.',
+      actionTag:
+        'Nandikot Settlement: 2,840 residents flagged for red-zone evacuation.',
     },
     {
       id: 2,
       badge: 'STAGE 02: TRIAGE',
-      title: '0-72h Rapid Transit Triage',
-      subtitle: '0-72h transit triage & mountain route cutoff risk',
+      title: 'Corridor Recon',
       borderColor: 'border-amber-500/40 hover:border-amber-500/80',
       badgeColor: 'bg-amber-500/10 text-amber-400 border-amber-500/30',
       accentColor: 'text-amber-400',
       glowColor: 'hover:shadow-[0_0_25px_rgba(245,158,11,0.25)]',
       icon: Zap,
       description:
-        'Immediate separation between Horizon 1 emergency staging (0-72 hours) and Horizon 2 permanent resettlement to prevent valley-wide gridlock.',
-      telemetryPoints: [
-        'Haversine Mountain Tortuosity: d_mountain = d_haversine \u00d7 1.326',
-        'Cutoff Disqualification: Route bridge failure probability \u2265 50%',
-        'Transit Radius: Immediate community staging within 1.0 km radius',
-      ],
-      caseStudy: 'Govt Model Inter-College Grounds (Site-C | 0.4 km proximity | 2,850 transit capacity)',
+        'Verifies mountain road passability and marks immediate 0-72h staging havens.',
+      actionTag:
+        'Govt Inter-College: Activated for initial first-aid & intake triage.',
     },
     {
       id: 3,
       badge: 'STAGE 03: SPHERE AUDIT',
-      title: '3D Sphere Carrying-Capacity Solver',
-      subtitle: '3D capacity solver (3.5 m\u00b2 space, 15 LPD, 1:25 sanitation)',
+      title: 'Humanitarian Audit',
       borderColor: 'border-emerald-500/40 hover:border-emerald-500/80',
       badgeColor: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
       accentColor: 'text-emerald-400',
       glowColor: 'hover:shadow-[0_0_25px_rgba(16,185,129,0.25)]',
       icon: ShieldCheck,
       description:
-        'Deterministic mathematical audit across 3 non-negotiable humanitarian resource axes based on Sphere 2018 Humanitarian Charter standards.',
-      telemetryPoints: [
-        'Covered Usable Living Space: Floor Area / 3.5 m\u00b2 per individual',
-        'Daily Potable Water Supply: Daily Inflow / 15 Litres per person',
-        'Sanitation Containment: Toilet Units \u00d7 25 persons per cubicle',
-      ],
-      caseStudy: 'Gopeshwar Enclave (Site-A | 18,000 m\u00b2 | 65k LPD | 140 Toilets \u2192 3,266 Safe Intake)',
+        'Calculates true safe capacity across shelter living space, clean water, and sanitation.',
+      actionTag:
+        'Gopeshwar Enclave: Certified safe for 3,266 evacuees.',
     },
     {
       id: 4,
       badge: 'STAGE 04: BOTTLENECK',
-      title: 'Goldratt Bottleneck Constraint Isolation',
-      subtitle: 'Goldratt constraint isolation (Pipalkoti toilet cap rejection)',
+      title: 'Safety Filtering',
       borderColor: 'border-cyan-500/40 hover:border-cyan-500/80',
       badgeColor: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30',
       accentColor: 'text-cyan-400',
       glowColor: 'hover:shadow-[0_0_25px_rgba(6,182,212,0.25)]',
       icon: Filter,
       description:
-        'Applies the Theory of Constraints (ToC) to identify the single limiting resource that binds true carrying capacity, preventing fatal overcrowding.',
-      telemetryPoints: [
-        'Binding Bottleneck Formula: C_eff = min(C_space, C_water, C_sanitation) - Occupancy',
-        'Epidemic Prevention Filter: Gross land area never masks sanitation deficits',
-        'Automatic Disqualification Flag: Flagged as OPERATIONALLY_REJECTED',
-      ],
-      caseStudy: 'Pipalkoti Shelf (Site-B | 25,000 m\u00b2 space but 30 toilets strictly caps safe shelter at 550 \u2192 REJECTED)',
+        'Rejects large open grounds that lack sanitation to prevent fatal epidemic outbreaks.',
+      actionTag:
+        'Pipalkoti Shelf: Disqualified due to 30-toilet shortage (550 cap).',
     },
     {
       id: 5,
       badge: 'STAGE 05: ALLOCATE',
-      title: 'Surge Stress-Test & Auto-Spillover',
-      subtitle: 'Dynamic influx stress-test & multi-enclave auto-spillover',
+      title: 'Surge Balancing',
       borderColor: 'border-indigo-500/40 hover:border-indigo-500/80',
       badgeColor: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30',
       accentColor: 'text-indigo-400',
       glowColor: 'hover:shadow-[0_0_25px_rgba(99,102,241,0.25)]',
       icon: GitFork,
       description:
-        'Live sensitivity solving for unpredictable population surges (Yatra pilgrims, tourists, mass valley evacuations) with automated multi-site load balancing.',
-      telemetryPoints: [
-        'Dynamic Influx Slider: 1,000 to 5,000 souls with real-time recalculation',
-        'Saturation Trigger: If Demand > C_eff(Site-A), surplus overflows to Site-C',
-        'Zero-Deficit Guarantee: Evacuees are never assigned beyond safe capacity',
-      ],
-      caseStudy: 'Surge to 3,600 souls \u2192 Site-A absorbs 3,266 (saturated) + Site-C absorbs 334 (auto-spillover)',
+        'Simulates sudden pilgrim or evacuee influxes, automatically diverting overflow to secondary hubs.',
+      actionTag:
+        'Automated Spillover: Keeps shelters safe from deadly overcrowding.',
     },
     {
       id: 6,
       badge: 'STAGE 06: DISPATCH',
-      title: 'Statutory DM Act Directive & Logistics Requisition',
-      subtitle: 'Statutory DM Act Section 34 requisition & PDF order',
+      title: 'Statutory Order',
       borderColor: 'border-purple-500/40 hover:border-purple-500/80',
       badgeColor: 'bg-purple-500/10 text-purple-400 border-purple-500/30',
       accentColor: 'text-purple-400',
       glowColor: 'hover:shadow-[0_0_25px_rgba(168,85,247,0.25)]',
       icon: CheckCircle2,
       description:
-        'Generates legally-binding Disaster Management Act 2005 (Section 34) executive evacuation orders paired with calculated fleet and logistics requisitions.',
-      telemetryPoints: [
-        'Fleet Requisition: Transport Buses = ceil(N / 40)',
-        'Water Logistics: 5,000L Tankers = ceil(N \u00d7 15 / 5000)',
-        'Sanitation Units: Bio-Toilets = ceil(N / 25) | Medical Tents = ceil(N / 500)',
-      ],
-      caseStudy: 'Official SDMA / NDRF Incident Commander Dispatch Order with cryptographic audit checksum',
+        'Calculates logistical vehicle needs and outputs legally binding evacuation decrees under DM Act 2005.',
+      actionTag:
+        'Requisition Sheet: 71 Buses, 9 Water Tankers, and 114 Mobile Toilets.',
     },
   ];
 
@@ -208,32 +178,32 @@ export const DecisionArchitectureLanding: React.FC = () => {
           <div className="flex flex-wrap items-center justify-center gap-2.5 pt-2 font-mono text-xs">
             <span className="px-3 py-1 rounded-lg bg-[#0c111d] border border-gray-800 text-slate-300 flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-400" />
-              100% Deterministic Pure Java
+              100% Deterministic Engine
             </span>
             <span className="px-3 py-1 rounded-lg bg-[#0c111d] border border-gray-800 text-slate-300 flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-cyan-400" />
-              Sphere 2018 Standards Certified
+              Sphere 2018 Standards
             </span>
             <span className="px-3 py-1 rounded-lg bg-[#0c111d] border border-gray-800 text-slate-300 flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-amber-400" />
-              1.326\u00d7 Mountain Tortuosity Factor
+              Terrain-Adjusted Proximity
             </span>
             <span className="px-3 py-1 rounded-lg bg-[#0c111d] border border-gray-800 text-slate-300 flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-purple-400" />
-              DM Act 2005 (Sec 34) Enforceable
+              DM Act 2005 Enforceable
             </span>
           </div>
         </section>
 
-        {/* 3. 6-Stage Pipeline Grid (Horizontal / Responsive Connected Cards) */}
+        {/* 3. 6-Stage Pipeline Grid (Clean, ResQFlow Minimal Standard) */}
         <section className="space-y-6">
           <div className="flex items-center justify-between border-b border-gray-800 pb-3 font-mono">
             <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
               <Layers className="w-4 h-4 text-cyan-400" />
-              <span>6-Stage Sequential Mathematical Pipeline</span>
+              <span>6-Stage Sequential Decision Pipeline</span>
             </div>
             <span className="text-[11px] text-slate-500">
-              Deterministic • Zero Hallucination • Zero Native C++
+              Deterministic • Zero Bottlenecks • Fully Auditable
             </span>
           </div>
 
@@ -263,42 +233,24 @@ export const DecisionArchitectureLanding: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* Stage Title & Subtitle */}
+                    {/* Stage Title */}
                     <div>
                       <h3 className="text-base font-bold text-white tracking-tight">
                         {stage.title}
                       </h3>
-                      <p className={`text-xs font-mono mt-0.5 ${stage.accentColor}`}>
-                        {stage.subtitle}
-                      </p>
                     </div>
 
-                    {/* Operational Description */}
-                    <p className="text-xs text-slate-300 leading-relaxed">
+                    {/* Core Function (1 sentence, text-slate-300, text-sm) */}
+                    <p className="text-sm text-slate-300 leading-relaxed font-sans">
                       {stage.description}
                     </p>
                   </div>
 
-                  {/* Telemetry Rules Checklist */}
-                  <div className="space-y-2 pt-2 border-t border-gray-800/80 font-mono text-[11px]">
-                    <div className="text-[10px] uppercase font-bold text-slate-400 flex items-center gap-1">
-                      <Activity className="w-3 h-3 text-cyan-400" /> Key Telemetry & Formulas:
-                    </div>
-                    <ul className="space-y-1 text-slate-300">
-                      {stage.telemetryPoints.map((point, idx) => (
-                        <li key={idx} className="flex items-start gap-1.5">
-                          <span className="text-cyan-400 font-bold">\u2022</span>
-                          <span>{point}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    {/* Chamoli Benchmark Case Study Highlight */}
-                    <div className="p-2.5 rounded-xl bg-[#060911]/90 border border-gray-800/90 text-[10px] text-slate-300 mt-2 space-y-0.5">
-                      <span className="text-[9px] text-slate-400 uppercase font-bold block flex items-center gap-1">
-                        <Compass className="w-2.5 h-2.5 text-amber-400" /> Chamoli Pilot Benchmark:
-                      </span>
-                      <div className="text-slate-100 font-semibold">{stage.caseStudy}</div>
+                  {/* Chamoli Pilot Example (1 concise highlighted chip, text-xs) */}
+                  <div className="pt-2 border-t border-gray-800/80">
+                    <div className="p-2.5 rounded-xl bg-[#060911]/90 border border-gray-800 text-xs text-slate-300 font-mono flex items-start gap-2">
+                      <MapPin className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
+                      <span className="leading-snug">{stage.actionTag}</span>
                     </div>
                   </div>
                 </div>
@@ -307,33 +259,33 @@ export const DecisionArchitectureLanding: React.FC = () => {
           </div>
         </section>
 
-        {/* 4. Interactive Mathematical Assurance Section */}
+        {/* 4. Executive Safety Guarantee Section */}
         <section className="p-6 md:p-8 rounded-3xl bg-gradient-to-br from-[#0c111d] to-[#070b14] border border-gray-800 shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold">
                 <CheckCircle2 className="w-3.5 h-3.5" />
-                <span>THEORY OF CONSTRAINTS GUARANTEE</span>
+                <span>SAFETY FIRST ARCHITECTURE</span>
               </div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-                Why Standard Emergency Dashboards Fail
+                Why Standard Emergency Portals Fail
               </h2>
-              <p className="text-sm text-slate-300 leading-relaxed">
-                Conventional disaster portals merely sum gross land area. If a football ground spans 25,000 m², conventional software assigns 7,000 people — ignoring that having only 30 toilets causes catastrophic cholera outbreaks within 48 hours.
+              <p className="text-sm text-slate-300 leading-relaxed font-sans">
+                Conventional disaster portals merely sum gross land area. If an open ground spans 25,000 m², conventional systems assign 7,000 people — ignoring that having only 30 toilets causes catastrophic epidemic outbreaks within 48 hours.
               </p>
-              <p className="text-sm text-slate-300 leading-relaxed">
-                SURAKSHA binds carrying capacity strictly by the lowest humanitarian resource denominator. Pipalkoti is immediately disqualified, and surplus souls are automatically routed across secondary mountain enclaves.
+              <p className="text-sm text-slate-300 leading-relaxed font-sans">
+                SURAKSHA binds carrying capacity strictly by the lowest humanitarian resource denominator. Pipalkoti is immediately disqualified, and surplus evacuees are automatically routed across certified secondary enclaves.
               </p>
             </div>
 
             {/* Comparison Metrics Grid */}
             <div className="grid grid-cols-2 gap-3 font-mono text-xs">
               <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/30 space-y-1.5">
-                <span className="text-[10px] text-red-400 uppercase font-bold">Conventional Portals</span>
+                <span className="text-[10px] text-red-400 uppercase font-bold">Conventional Systems</span>
                 <div className="text-xl font-black text-white">7,142 Souls</div>
                 <p className="text-[11px] text-red-300">
-                  Gross Area Only \u2022 Ignores 30-toilet limit \u2022 High epidemic risk
+                  Gross Area Only • Ignores 30-toilet limit • High epidemic risk
                 </p>
               </div>
 
@@ -341,15 +293,15 @@ export const DecisionArchitectureLanding: React.FC = () => {
                 <span className="text-[10px] text-emerald-400 uppercase font-bold">SURAKSHA Engine</span>
                 <div className="text-xl font-black text-emerald-400">550 Souls Max</div>
                 <p className="text-[11px] text-emerald-200">
-                  Strict Goldratt Sanitation Cap \u2022 Auto-rejected for mass relocation
+                  Strict Sanitation Cap • Auto-rejected for mass relocation
                 </p>
               </div>
 
               <div className="p-4 rounded-2xl bg-blue-500/10 border border-blue-500/30 space-y-1.5">
-                <span className="text-[10px] text-blue-400 uppercase font-bold">Distance Calculation</span>
-                <div className="text-xl font-black text-white">1.326\u00d7 Factor</div>
+                <span className="text-[10px] text-blue-400 uppercase font-bold">Terrain Distance</span>
+                <div className="text-xl font-black text-white">1.326× Factor</div>
                 <p className="text-[11px] text-blue-300">
-                  Haversine with real mountain tortuosity \u2022 Accurate road transit times
+                  Mountain Road Tortuosity • Accurate transit timings
                 </p>
               </div>
 
@@ -357,7 +309,7 @@ export const DecisionArchitectureLanding: React.FC = () => {
                 <span className="text-[10px] text-purple-400 uppercase font-bold">Execution Authority</span>
                 <div className="text-xl font-black text-white">DM Act 2005</div>
                 <p className="text-[11px] text-purple-300">
-                  Section 34 statutory binding evacuation orders with legal audit log
+                  Section 34 statutory binding evacuation orders
                 </p>
               </div>
             </div>
@@ -370,7 +322,7 @@ export const DecisionArchitectureLanding: React.FC = () => {
             Ready to inspect live tactical operations?
           </h2>
           <p className="text-sm text-slate-400 max-w-xl mx-auto font-mono">
-            Switch into the full-density Incident Operations Room with real-time multi-habitation triage, road cutoff simulations, and dynamic carrying capacity solvers.
+            Access the full-density Incident Operations Room with real-time multi-habitation triage, road cutoff simulations, and dynamic carrying capacity solvers.
           </p>
 
           <div className="pt-2">
@@ -398,9 +350,9 @@ export const DecisionArchitectureLanding: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowSafeHavenModal(false)}
-                className="text-slate-400 hover:text-white text-base"
+                className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
               >
-                \u2715
+                <X className="w-5 h-5" />
               </button>
             </div>
 
@@ -415,7 +367,7 @@ export const DecisionArchitectureLanding: React.FC = () => {
                   <span>RECOMMENDED PRIMARY</span>
                 </div>
                 <div className="text-slate-300 text-[10px]">
-                  All-Weather Dual Lane Access \u2022 Capacity: 3,266 souls \u2022 Water: 65,000 LPD \u2022 Sanitation: 140 Bio-units
+                  All-Weather Dual Lane Access • Capacity: 3,266 souls • Water: 65,000 LPD • Sanitation: 140 Bio-units
                 </div>
               </div>
 
@@ -425,7 +377,7 @@ export const DecisionArchitectureLanding: React.FC = () => {
                   <span>0-72H IMMEDIATE TRANSIT</span>
                 </div>
                 <div className="text-slate-300 text-[10px]">
-                  Direct Mountain Road Access \u2022 Capacity: 2,850 souls \u2022 Proximity: 0.4 km from Nandikot
+                  Direct Mountain Road Access • Capacity: 2,850 souls • Proximity: 0.4 km from Nandikot
                 </div>
               </div>
 
@@ -447,9 +399,10 @@ export const DecisionArchitectureLanding: React.FC = () => {
                   setShowSafeHavenModal(false);
                   navigate('/app');
                 }}
-                className="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold transition-all"
               >
-                Open Tactical Command Center \u2192
+                <span>Open Tactical Command Center</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>
