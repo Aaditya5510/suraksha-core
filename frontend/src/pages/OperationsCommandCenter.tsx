@@ -1,21 +1,33 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Navbar, type NavTab } from '../components/layout/Navbar';
-import { SituationMapView } from '../components/views/SituationMapView';
+import { useNavigate } from 'react-router-dom';
+import { EocSidebar, type EocNavModule } from '../components/layout/EocSidebar';
+import { EocKpiRibbon } from '../components/EocKpiRibbon';
+import { EocTacticalMap } from '../components/eoc/EocTacticalMap';
+import { EocInspectionDrawer } from '../components/eoc/EocInspectionDrawer';
 import { ShelterMatrixView } from '../components/views/ShelterMatrixView';
 import { DispatchLogisticsView } from '../components/views/DispatchLogisticsView';
 import { SdmaDirectiveModal } from '../components/SdmaDirectiveModal';
 import { BASELINE_HABITATIONS, DEFAULT_EVALUATION } from '../data/baselineData';
 import { fetchEvaluation } from '../services/apiService';
 import type { EvaluationResultResponse, Habitation } from '../types/suraksha';
+import {
+  FileText,
+  Server,
+  Activity,
+  Workflow,
+  Compass,
+} from 'lucide-react';
 
 export const OperationsCommandCenter: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<NavTab>('map');
+  const navigate = useNavigate();
+  const [activeModule, setActiveModule] = useState<EocNavModule>('dashboard');
   const [selectedHabitationId, setSelectedHabitationId] = useState<string>('HAB-01');
   const [evaluation, setEvaluation] = useState<EvaluationResultResponse>(DEFAULT_EVALUATION);
   const [simulatedPopulation, setSimulatedPopulation] = useState<number>(2840);
   const [selectedSiteId, setSelectedSiteId] = useState<string>('SITE-A');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isLiveBackend, setIsLiveBackend] = useState<boolean>(false);
+  const [isDrawerCollapsed, setIsDrawerCollapsed] = useState<boolean>(false);
 
   // Active selected habitation record
   const selectedHabitation: Habitation =
@@ -56,54 +68,137 @@ export const OperationsCommandCenter: React.FC = () => {
   }, [selectedHabitationId, simulatedPopulation, loadEvaluation]);
 
   return (
-    <div className="min-h-screen bg-[#07090e] text-slate-100 flex flex-col font-sans selection:bg-red-500/30 selection:text-white">
-      {/* 1. Sleek Modern Top Navigation Bar */}
-      <Navbar
-        activeTab={activeTab}
-        onTabChange={(tab) => setActiveTab(tab)}
+    <div className="flex h-screen w-screen overflow-hidden bg-[#07090e] text-slate-100 font-sans select-none">
+      {/* 1. Left Dedicated Navigation Sidebar */}
+      <EocSidebar
+        activeModule={activeModule}
+        onSelectModule={(module) => setActiveModule(module)}
+        selectedHabitationId={selectedHabitationId}
+        onSelectHabitation={handleHabitationChange}
         isLive={isLiveBackend}
-        onExportOrder={() => setIsModalOpen(true)}
+        onOpenOrdersModal={() => setIsModalOpen(true)}
       />
 
-      {/* 2. Main 3-View Tab Content */}
-      <main className="flex-1 w-full flex flex-col">
-        {activeTab === 'map' && (
-          <SituationMapView
-            evaluation={evaluation}
-            selectedHabitationId={selectedHabitationId}
-            onSelectHabitation={handleHabitationChange}
-            selectedHabitation={selectedHabitation}
-            selectedSiteId={selectedSiteId}
-            onSelectSite={(siteId) => setSelectedSiteId(siteId)}
-            simulatedPopulation={simulatedPopulation}
-            onPopulationChange={handlePopulationChange}
-            onOpenDirectiveModal={() => setIsModalOpen(true)}
-          />
-        )}
-
-        {activeTab === 'shelter' && (
-          <div className="flex-1 bg-[#07090e]">
-            <ShelterMatrixView
-              evaluation={evaluation}
-              selectedHabitation={selectedHabitation}
-              simulatedPopulation={simulatedPopulation}
-              onPopulationChange={handlePopulationChange}
-              selectedSiteId={selectedSiteId}
-              onSelectSite={(siteId) => setSelectedSiteId(siteId)}
-            />
+      {/* 2. Main Enterprise Command Workspace */}
+      <div className="flex-1 flex flex-col h-full overflow-hidden">
+        {/* Top Operational Status Bar */}
+        <header className="h-14 bg-[#0a0d16] border-b border-gray-800 px-4 md:px-6 flex items-center justify-between shrink-0 font-mono text-xs">
+          {/* Active Sector Readout */}
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              <Compass className="w-4 h-4 text-cyan-400" />
+              <span className="text-slate-400 uppercase text-[10px] font-bold">ACTIVE SECTOR:</span>
+              <span className="font-extrabold text-white text-xs">
+                {selectedHabitation.id}: {selectedHabitation.name.toUpperCase()}
+              </span>
+            </div>
+            <span className="text-slate-600 hidden sm:inline">|</span>
+            <div className="hidden sm:flex items-center gap-1.5 text-slate-400 text-[11px]">
+              <span>COORDS:</span>
+              <span className="text-amber-400 font-semibold">
+                {selectedHabitation.latitude.toFixed(4)}° N, {selectedHabitation.longitude.toFixed(4)}° E
+              </span>
+            </div>
           </div>
-        )}
 
-        {activeTab === 'dispatch' && (
-          <div className="flex-1 bg-[#07090e]">
-            <DispatchLogisticsView
-              evaluation={evaluation}
-              selectedHabitation={selectedHabitation}
-              simulatedPopulation={simulatedPopulation}
-            />
+          {/* Right Status Actions */}
+          <div className="flex items-center gap-3">
+            {/* Live Engine Indicator */}
+            {isLiveBackend ? (
+              <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-bold">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <Server className="w-3 h-3 text-emerald-400" />
+                <span>SPRING BOOT (8080)</span>
+              </div>
+            ) : (
+              <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[10px] font-bold">
+                <span className="w-2 h-2 rounded-full bg-amber-400" />
+                <Activity className="w-3 h-3 text-amber-400" />
+                <span>EDGE ENGINE (OFFLINE)</span>
+              </div>
+            )}
+
+            {/* Public Pipeline Link */}
+            <button
+              type="button"
+              onClick={() => navigate('/')}
+              className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-700 hover:border-cyan-500/50 bg-slate-900/60 hover:bg-slate-800 text-slate-300 hover:text-cyan-300 text-[11px] transition-all"
+            >
+              <Workflow className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Decision Pipeline</span>
+            </button>
+
+            {/* Export DM Order Button */}
+            <button
+              type="button"
+              onClick={() => setIsModalOpen(true)}
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white font-bold shadow-[0_0_12px_rgba(239,68,68,0.35)] text-xs transition-all"
+            >
+              <FileText className="w-3.5 h-3.5" />
+              <span>Export DM Order</span>
+            </button>
           </div>
-        )}
-      </main>
+        </header>
+
+        {/* Top 6-Card KPI Ribbon */}
+        <EocKpiRibbon
+          evaluation={evaluation}
+          selectedHabitation={selectedHabitation}
+          simulatedPopulation={simulatedPopulation}
+        />
+
+        {/* Main Work Viewport */}
+        <div className="flex-1 flex overflow-hidden relative">
+          {activeModule === 'dashboard' || activeModule === 'triage' ? (
+            <>
+              {/* Clean Map Viewport without heavy overlays */}
+              <main className="flex-1 h-full relative overflow-hidden bg-[#07090e]">
+                <EocTacticalMap
+                  evaluation={evaluation}
+                  selectedHabitationId={selectedHabitationId}
+                  onSelectHabitation={handleHabitationChange}
+                  selectedHabitation={selectedHabitation}
+                  selectedSiteId={selectedSiteId}
+                  onSelectSite={(siteId) => setSelectedSiteId(siteId)}
+                  simulatedPopulation={simulatedPopulation}
+                />
+              </main>
+
+              {/* Right-Hand Inspection Drawer (380px, Docked & Collapsible) */}
+              <EocInspectionDrawer
+                evaluation={evaluation}
+                selectedHabitation={selectedHabitation}
+                simulatedPopulation={simulatedPopulation}
+                onPopulationChange={handlePopulationChange}
+                selectedSiteId={selectedSiteId}
+                onSelectSite={(siteId) => setSelectedSiteId(siteId)}
+                onOpenDirectiveModal={() => setIsModalOpen(true)}
+                isCollapsed={isDrawerCollapsed}
+                onToggleCollapse={() => setIsDrawerCollapsed(!isDrawerCollapsed)}
+              />
+            </>
+          ) : activeModule === 'sphere' ? (
+            <div className="flex-1 h-full overflow-y-auto custom-scrollbar bg-[#07090e]">
+              <ShelterMatrixView
+                evaluation={evaluation}
+                selectedHabitation={selectedHabitation}
+                simulatedPopulation={simulatedPopulation}
+                onPopulationChange={handlePopulationChange}
+                selectedSiteId={selectedSiteId}
+                onSelectSite={(siteId) => setSelectedSiteId(siteId)}
+              />
+            </div>
+          ) : (
+            <div className="flex-1 h-full overflow-y-auto custom-scrollbar bg-[#07090e]">
+              <DispatchLogisticsView
+                evaluation={evaluation}
+                selectedHabitation={selectedHabitation}
+                simulatedPopulation={simulatedPopulation}
+              />
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* 3. Printable SDMA Evacuation Directive Modal */}
       <SdmaDirectiveModal

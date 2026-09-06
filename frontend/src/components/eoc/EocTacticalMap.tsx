@@ -159,8 +159,8 @@ export const EocTacticalMap: React.FC<EocTacticalMapProps> = ({
       )}
 
       {/* Top Floating Map Tool Tray (Controls: Layer Toggles & Emergency Simulation) */}
-      <div className="absolute top-4 right-4 md:right-[380px] z-[1000] pointer-events-auto flex flex-col items-end gap-2 font-mono">
-        <div className="bg-[#0c111d]/90 backdrop-blur-xl border border-gray-800/90 rounded-2xl p-3 shadow-2xl text-xs space-y-2.5">
+      <div className="absolute top-3 right-3 z-[1000] pointer-events-auto flex flex-col items-end gap-2 font-mono">
+        <div className="bg-[#0c111d]/90 backdrop-blur-xl border border-gray-800/90 rounded-2xl p-2.5 shadow-2xl text-xs space-y-2">
           <div className="flex items-center justify-between gap-4 border-b border-gray-800 pb-1.5">
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wide flex items-center gap-1.5">
               <Layers className="w-3.5 h-3.5 text-blue-400" /> Tactical Layers
