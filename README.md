@@ -91,7 +91,7 @@ When relocating $2,840$ residents from `HAB-01` (Nandikot Settlement, slope $42^
 
 ## 3. System Specifications & Audited Documentation Index
 
-The repository features 9 pre-audited technical specifications defining every facet of the system:
+The repository features 10 pre-audited technical specifications defining every facet of the system:
 
 | Document | Purpose & Scope |
 | :--- | :--- |
@@ -102,6 +102,7 @@ The repository features 9 pre-audited technical specifications defining every fa
 | [Demo Fallback Protocol](docs/DEMO_FALLBACK.md) | 3-tier offline edge resilience, emergency runbook & TypeScript mock engine. |
 | [SIH Jury Q&A Defense](docs/SIH_QA.md) | 10 lethal jury cross-examination questions, underlying tests & strategic rebuttals. |
 | [Presentation Deck Content](docs/SIH_PPT_CONTENT.md) | 7-slide executive pitch deck structure, visual layout guidance & speaker scripts. |
+| [Pitch Narrative Playbook](docs/PITCH_NARRATIVE_PLAYBOOK.md) | Dramatic storytelling arc, stage choreography, squad roles & pitch traps. |
 | [Third-Party Services Audit](docs/THIRD_PARTY_SERVICES.md) | Sovereign edge design, OSM tile fallback, zero-binary print engine & OSS licensing audit. |
 | [AI Agent Governance](docs/AI_ASSISTED_DEVELOPMENT.md) | Zero-hallucination developer rules, 6-phase roadmap, verification gates & rollback protocol. |
 
@@ -119,6 +120,7 @@ suraksha-core/
 │   ├── DATA_SOURCES.md
 │   ├── DEMO_FALLBACK.md
 │   ├── GOLDEN_DEMO_SCENARIO.md
+│   ├── PITCH_NARRATIVE_PLAYBOOK.md
 │   ├── SIH_PPT_CONTENT.md
 │   ├── SIH_QA.md
 │   ├── TEAM_TECHNICAL_BRIEFING.md
