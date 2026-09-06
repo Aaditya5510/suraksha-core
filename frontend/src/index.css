@@ -1,0 +1,59 @@
+@import "leaflet/dist/leaflet.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-bgDark text-slate-100 font-sans antialiased selection:bg-alertRed/30 selection:text-white;
+  }
+}
+
+/* Tactical Pulse and Glow Animations */
+@keyframes tacticalPulse {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.6);
+  }
+  50% {
+    opacity: 0.6;
+    box-shadow: 0 0 4px rgba(239, 68, 68, 0.2);
+  }
+}
+
+@keyframes radarSweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.tactical-pulse-red {
+  animation: tacticalPulse 1.8s infinite ease-in-out;
+}
+
+.tactical-glow-green {
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.35);
+}
+
+.tactical-glow-amber {
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.35);
+}
+
+.tactical-glow-blue {
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.35);
+}
+
+/* Crisp Tactical Typography */
+.tactical-heading {
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  letter-spacing: 0.06em;
+}
+
+/* Tactical Glassmorphism & Borders */
+.tactical-card {
+  @apply bg-cardDark/90 border border-borderDark rounded-lg backdrop-blur-md;
+}
