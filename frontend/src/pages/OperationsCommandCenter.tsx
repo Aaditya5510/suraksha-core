@@ -58,6 +58,12 @@ export const OperationsCommandCenter: React.FC = () => {
     setSimulatedPopulation(newPop);
   };
 
+  // Handler when user selects a candidate site from map pin or drawer tab
+  const handleSelectSite = (siteId: string) => {
+    setSelectedSiteId(siteId);
+    setIsDrawerCollapsed(false); // Automatically expand inspection drawer
+  };
+
   // Debounced population sync to avoid flooding backend requests while dragging slider
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -159,7 +165,7 @@ export const OperationsCommandCenter: React.FC = () => {
                   onSelectHabitation={handleHabitationChange}
                   selectedHabitation={selectedHabitation}
                   selectedSiteId={selectedSiteId}
-                  onSelectSite={(siteId) => setSelectedSiteId(siteId)}
+                  onSelectSite={handleSelectSite}
                   simulatedPopulation={simulatedPopulation}
                 />
               </main>
@@ -171,7 +177,7 @@ export const OperationsCommandCenter: React.FC = () => {
                 simulatedPopulation={simulatedPopulation}
                 onPopulationChange={handlePopulationChange}
                 selectedSiteId={selectedSiteId}
-                onSelectSite={(siteId) => setSelectedSiteId(siteId)}
+                onSelectSite={handleSelectSite}
                 onOpenDirectiveModal={() => setIsModalOpen(true)}
                 isCollapsed={isDrawerCollapsed}
                 onToggleCollapse={() => setIsDrawerCollapsed(!isDrawerCollapsed)}
@@ -185,7 +191,7 @@ export const OperationsCommandCenter: React.FC = () => {
                 simulatedPopulation={simulatedPopulation}
                 onPopulationChange={handlePopulationChange}
                 selectedSiteId={selectedSiteId}
-                onSelectSite={(siteId) => setSelectedSiteId(siteId)}
+                onSelectSite={handleSelectSite}
               />
             </div>
           ) : (

@@ -130,6 +130,20 @@ export const EocTacticalMap: React.FC<EocTacticalMapProps> = ({
     siteAPos,
   ];
 
+  // Determine active pan target based on selection
+  let currentTargetPos: [number, number] = activeOriginPos;
+  let currentZoom = 13.5;
+  if (selectedSiteId === 'SITE-B' && siteB) {
+    currentTargetPos = siteBPos;
+    currentZoom = 14;
+  } else if (selectedSiteId === 'SITE-A' && siteA) {
+    currentTargetPos = siteAPos;
+    currentZoom = 14;
+  } else if (selectedSiteId === 'SITE-C') {
+    currentTargetPos = siteCPos;
+    currentZoom = 14.5;
+  }
+
   return (
     <div className="relative w-full h-full bg-[#07090e] overflow-hidden select-none">
       {/* Top Center Emergency Notification Banner when Road Cutoff is Active */}
@@ -233,12 +247,12 @@ export const EocTacticalMap: React.FC<EocTacticalMapProps> = ({
 
       {/* Leaflet Map Engine Container */}
       <MapContainer
-        center={activeOriginPos}
-        zoom={13}
+        center={currentTargetPos}
+        zoom={currentZoom}
         scrollWheelZoom={true}
         className="w-full h-full z-0 tactical-dark-tiles"
       >
-        <MapFlyToController targetPos={activeOriginPos} zoom={13.5} />
+        <MapFlyToController targetPos={currentTargetPos} zoom={currentZoom} />
 
         {/* Clean OpenStreetMap TileLayer with Dark Mode CSS Filter */}
         <TileLayer

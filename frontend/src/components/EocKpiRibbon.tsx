@@ -113,35 +113,35 @@ export const EocKpiRibbon: React.FC<EocKpiRibbonProps> = ({
 
         {/* Card 4: SAFE HEADROOM */}
         <div
-          className={`p-2.5 rounded-xl bg-[#060911]/90 border flex flex-col justify-between space-y-1 ${
+          className={`p-2.5 rounded-xl bg-[#060911]/90 border flex flex-col justify-between space-y-1 transition-all ${
             isDeficit
-              ? 'border-red-500/50 bg-red-500/10 shadow-[0_0_12px_rgba(239,68,68,0.2)]'
+              ? 'border-red-500/60 bg-red-500/15 shadow-[0_0_15px_rgba(239,68,68,0.3)] animate-pulse'
               : 'border-emerald-500/30 shadow-[0_0_10px_rgba(16,185,129,0.1)]'
           }`}
         >
           <div className="flex items-center justify-between text-[10px] text-slate-400">
             <span className={`uppercase font-semibold flex items-center gap-1 ${isDeficit ? 'text-red-400' : 'text-emerald-400'}`}>
-              {isDeficit ? <AlertOctagon className="w-3 h-3 text-red-500 animate-pulse" /> : <TrendingUp className="w-3 h-3 text-emerald-400" />}
+              {isDeficit ? <AlertOctagon className="w-3 h-3 text-red-500" /> : <TrendingUp className="w-3 h-3 text-emerald-400" />}
               SAFE HEADROOM
             </span>
             <span
-              className={`text-[8px] font-bold px-1 py-0.5 rounded ${
+              className={`text-[8px] font-bold px-1.5 py-0.5 rounded tracking-tight ${
                 isDeficit
-                  ? 'bg-red-950 text-red-300 border border-red-800'
+                  ? 'bg-red-600 text-white font-black animate-pulse'
                   : 'bg-emerald-950 text-emerald-300 border border-emerald-800'
               }`}
             >
-              {isDeficit ? 'DEFICIT' : 'SURPLUS'}
+              {isDeficit ? 'OVERFLOW: SPILLOVER ACTIVE' : 'SURPLUS MARGIN'}
             </span>
           </div>
           <div className="flex items-baseline gap-1.5">
             <span className={`text-xl font-black ${isDeficit ? 'text-red-400' : 'text-emerald-400'}`}>
-              {isDeficit ? residualHeadroom : `+${residualHeadroom}`}
+              {isDeficit ? `${residualHeadroom}` : `+${residualHeadroom}`}
             </span>
             <span className="text-[10px] text-slate-400">Souls</span>
           </div>
-          <div className={`text-[9px] font-semibold truncate ${isDeficit ? 'text-red-400 animate-pulse' : 'text-emerald-300'}`}>
-            {isDeficit ? 'Auto-spillover routed' : 'Surplus margin safe'}
+          <div className={`text-[9px] font-semibold truncate ${isDeficit ? 'text-red-400 font-bold' : 'text-emerald-300'}`}>
+            {isDeficit ? 'Site-A Saturated • Re-routed to Site-C' : `+${residualHeadroom} reserve headroom safe`}
           </div>
         </div>
 

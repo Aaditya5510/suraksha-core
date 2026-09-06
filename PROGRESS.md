@@ -152,11 +152,11 @@ All autonomous coding agents and human engineers operating on this codebase must
 - [x] **EOC Tactical Command Center Overhaul (`frontend/src/components/eoc/`)**:
   - [x] **Task 1: Multi-Habitation Active Incident & Demand Queue (`IncidentQueueDrawer.tsx`)**: 3 operational crisis sectors (HAB-01 Nandikot CRI 89.4 Red, HAB-02 Helang CRI 71.2 Amber, HAB-03 Joshimath CRI 84.1 Red) with live threat telemetry, Influx Stress Stepper, and quick presets (+500 Tourists, +1,500 Mass Evac).
   - [x] **Task 2: Interactive Map Controls & Road Cutoff Simulator (`EocTacticalMap.tsx`)**: Full-viewport Leaflet dark map with Top-Right floating Tool Tray (900m Hazard Runout Zones, Evac Vectors, Safe Shelters toggles) and Emergency "Simulate NH-58 Road Cutoff" toggle (flashing crimson polyline, secondary bypass detour, emergency warning banner).
-- [x] **Enterprise UI Overhaul Step 2 — ResQFlow-Grade Enterprise EOC Layout (`frontend/src/`)**:
-  - [x] **Task 1: Dedicated Tactical Sidebar Navigation (`EocSidebar.tsx`)**: Slate-950 background (`bg-[#090d16]`), SURAKSHA EOC branding, Quick Crisis Sectors picker (HAB-01, HAB-02, HAB-03), 6 operational modules, live edge engine indicator, and Incident Commander DEOC Chamoli profile.
-  - [x] **Task 2: High-Density 6-Card KPI Ribbon (`EocKpiRibbon.tsx`)**: Positioned directly above spatial map displaying live Incident CRI (89.4 Red Zone), Evacuee Demand (2,840 Souls), Primary Capacity (3,266 Gopeshwar Enclave), Safe Headroom (+426 Surplus Margin), Fleet Requisition (71 Buses), and Water Demand (42,600 LPD / 9 Heavy Tankers).
-  - [x] **Task 3: Clean Map Viewport & 380px Docked Inspection Drawer (`EocInspectionDrawer.tsx`)**: Eliminated heavy screen-obscuring overlays; map sits in a clean bordered container with top-right layer controls and road cutoff simulation; 380px right-docked collapsible drawer contains site dossiers, Sphere 2018 breakdown, Goldratt bottleneck alert, interactive surge stress stepper/slider, and DM Act Section 34 order generator.
-  - [x] **Task 4: Production Compilation & Verification**: `npm run build` compiled in 1.99s with 0 TS/JSX errors; `/app` fully interactive.
+- [x] **Enterprise UI Overhaul Step 3 — Bidirectional Map Pin & KPI Influx Synchronization (`frontend/src/`)**:
+  - [x] **Task 1: Bidirectional Pin-to-Drawer Synchronization**: Clicking any map pin (Site-A, Site-B, Site-C, HAB-01, HAB-02, HAB-03) automatically expands the right inspection drawer, syncs the active dossier tab, and triggers map auto-pan (`MapFlyToController`). Clicking Site-B triggers a red hazard ring and highlights the 30-toilet Goldratt bottleneck analysis.
+  - [x] **Task 2: Dynamic Influx & KPI Ribbon Recalculation**: Adjusting the population surge slider/stepper instantly recalculates Evacuee Demand, Safe Headroom (`3,266 - newDemand`), Fleet Requisition (`Math.ceil(N / 40)`), and Water Demand (`N * 15 LPD`). Breaching $3,266$ toggles Safe Headroom into a pulsing red badge: `OVERFLOW: SPILLOVER ACTIVE`.
+  - [x] **Task 3: Statutory Directive Modal Dynamic Binding**: "Generate SDMA Order" dispatches official DM Act 2005 (Sec 34) directive with live values reflecting the exact simulated population.
+  - [x] **Task 4: Build Verification**: `npm run build` compiled in 2.33s with 0 errors.
 
 ---
 
@@ -191,6 +191,7 @@ All autonomous coding agents and human engineers operating on this codebase must
 | **2026-09-06 17:37** | EOC Command Center | `npm.cmd run build` in `frontend/` & `Invoke-RestMethod /HAB-03` | `BUILD SUCCESS` (EOC Command Center Overhaul with 3 sectors, road cutoff simulator, live Sphere solver, 0 TS errors) | ✅ VERIFIED |
 | **2026-09-06 17:49** | Multi-Route Landing | `npm.cmd run build` in `frontend/` & Route status test | `BUILD SUCCESS` (React Router multi-route setup with 6-stage "How SURAKSHA Decides" landing page, 0 TS errors) | ✅ VERIFIED |
 | **2026-09-06 17:54** | Enterprise EOC UI | `npm.cmd run build` in `frontend/` & Route status test | `BUILD SUCCESS` (ResQFlow-grade Enterprise EOC with dedicated sidebar, 6-card KPI ribbon, clean map viewport, and 380px docked inspection drawer) | ✅ VERIFIED |
+| **2026-09-06 17:58** | Step 3 Bidirectional Sync | `npm.cmd run build` in `frontend/` & Route status test | `BUILD SUCCESS` (Bidirectional map pin-to-drawer sync, live KPI influx recalculation, OVERFLOW spillover badge, 0 TS errors) | ✅ VERIFIED |
 
 ---
 
