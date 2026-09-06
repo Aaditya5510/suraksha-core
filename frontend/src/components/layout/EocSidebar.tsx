@@ -35,7 +35,7 @@ export const EocSidebar: React.FC<EocSidebarProps> = ({
   selectedHabitationId,
   onSelectHabitation,
   isLive,
-  onOpenOrdersModal,
+  onOpenOrdersModal: _onOpenOrdersModal,
 }) => {
   const navigate = useNavigate();
 
@@ -69,7 +69,6 @@ export const EocSidebar: React.FC<EocSidebarProps> = ({
       label: 'Statutory Relocation Orders',
       icon: FileText,
       desc: 'DM Act 2005 (Sec 34) Directives',
-      action: onOpenOrdersModal,
     },
   ];
 
@@ -159,13 +158,7 @@ export const EocSidebar: React.FC<EocSidebarProps> = ({
                 <button
                   key={item.id}
                   type="button"
-                  onClick={() => {
-                    if (item.action) {
-                      item.action();
-                    } else {
-                      onSelectModule(item.id);
-                    }
-                  }}
+                  onClick={() => onSelectModule(item.id)}
                   className={`w-full text-left px-3 py-2.5 rounded-xl border transition-all flex items-center justify-between group ${
                     isActive
                       ? 'bg-gradient-to-r from-blue-600/20 to-cyan-600/20 border-cyan-500/60 text-white shadow-[0_0_12px_rgba(6,182,212,0.25)] font-bold'

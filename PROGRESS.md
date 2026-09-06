@@ -155,8 +155,16 @@ All autonomous coding agents and human engineers operating on this codebase must
 - [x] **Enterprise UI Overhaul Step 3 — Bidirectional Map Pin & KPI Influx Synchronization (`frontend/src/`)**:
   - [x] **Task 1: Bidirectional Pin-to-Drawer Synchronization**: Clicking any map pin (Site-A, Site-B, Site-C, HAB-01, HAB-02, HAB-03) automatically expands the right inspection drawer, syncs the active dossier tab, and triggers map auto-pan (`MapFlyToController`). Clicking Site-B triggers a red hazard ring and highlights the 30-toilet Goldratt bottleneck analysis.
   - [x] **Task 2: Dynamic Influx & KPI Ribbon Recalculation**: Adjusting the population surge slider/stepper instantly recalculates Evacuee Demand, Safe Headroom (`3,266 - newDemand`), Fleet Requisition (`Math.ceil(N / 40)`), and Water Demand (`N * 15 LPD`). Breaching $3,266$ toggles Safe Headroom into a pulsing red badge: `OVERFLOW: SPILLOVER ACTIVE`.
-  - [x] **Task 3: Statutory Directive Modal Dynamic Binding**: "Generate SDMA Order" dispatches official DM Act 2005 (Sec 34) directive with live values reflecting the exact simulated population.
-  - [x] **Task 4: Build Verification**: `npm run build` compiled in 2.33s with 0 errors.
+- [x] **Enterprise UI Overhaul Step 4 — Modal Layout Fix, 5-View Sidebar Navigation & Collapsible Docking (`frontend/src/`)**:
+  - [x] **Task 1: Statutory Directive Modal Viewport & Overflow Fix (`SdmaDirectiveModal.tsx`)**: Backdrop `fixed inset-0 z-[9999] bg-black/80 backdrop-blur-sm`, Dialog Card `max-h-[90vh] bg-[#0c111d] border border-gray-700 rounded-2xl flex flex-col overflow-hidden`, sticky top header with `✕` close button & ESC key listener, scrollable body (`overflow-y-auto custom-scrollbar p-6 md:p-8 space-y-6`), and sticky bottom action bar with `[Close / Dismiss]` and `[🖨️ Print Statutory Directive]`.
+  - [x] **Task 2: 5 Distinct Sidebar Module Views (`OperationsCommandCenter.tsx`, `EocSidebar.tsx`)**:
+    1. `Operations Dashboard`: Real-time tactical map + 6-card KPI ribbon + right inspection dock.
+    2. `Habitation Demands & Triage` (`HabitationTriageView.tsx`): Expanded 3-sector comparison cards (Nandikot, Helang, Joshimath), full geotechnical & vulnerability matrix table, CRI formula breakdown, and "Focus on Map →" triggers.
+    3. `Sphere Constraint Matrix` (`ShelterMatrixView.tsx`): Full-screen comparative matrix (Gopeshwar primary vs Pipalkoti rejected), Sphere progress bars, and dynamic surge slider.
+    4. `Fleet & Transport Allocations` (`DispatchLogisticsView.tsx`): Requisition dashboard with 71 Buses, 9 Water Tankers, 114 Bio-Toilets, and 3 Depot Staging charts (Gopeshwar, Joshimath, Chamoli).
+    5. `Statutory Relocation Orders` (`StatutoryOrdersView.tsx`): Official SDMA Section 34 relocation directive document workspace with cryptographic hash, QR seal, and print capabilities.
+  - [x] **Task 3: Docking Polish (`EocInspectionDrawer.tsx`)**: Right inspector dock features a clean collapse/expand button (`>` / `<`) and slim collapsed tab for 100% full-width tactical map immersion.
+  - [x] **Task 4: Build Verification**: `npm run build` compiled in 2.23s with 0 errors.
 
 ---
 
@@ -192,8 +200,10 @@ All autonomous coding agents and human engineers operating on this codebase must
 | **2026-09-06 17:49** | Multi-Route Landing | `npm.cmd run build` in `frontend/` & Route status test | `BUILD SUCCESS` (React Router multi-route setup with 6-stage "How SURAKSHA Decides" landing page, 0 TS errors) | ✅ VERIFIED |
 | **2026-09-06 17:54** | Enterprise EOC UI | `npm.cmd run build` in `frontend/` & Route status test | `BUILD SUCCESS` (ResQFlow-grade Enterprise EOC with dedicated sidebar, 6-card KPI ribbon, clean map viewport, and 380px docked inspection drawer) | ✅ VERIFIED |
 | **2026-09-06 17:58** | Step 3 Bidirectional Sync | `npm.cmd run build` in `frontend/` & Route status test | `BUILD SUCCESS` (Bidirectional map pin-to-drawer sync, live KPI influx recalculation, OVERFLOW spillover badge, 0 TS errors) | ✅ VERIFIED |
+| **2026-09-06 18:07** | Modal & Sidebar Views | `npm.cmd run build` in `frontend/` & HTTP check | `BUILD SUCCESS` (Statutory Directive modal overflow fix, 5 distinct sidebar views, collapsible dock polish, 0 TS errors) | ✅ VERIFIED |
 
 ---
 
 🏆 **SURAKSHA SYSTEM COMPLETE & SEALED — ALL GATES, ENTERPRISE EOC SUITE & MULTI-ROUTE DECISION PIPELINE VERIFIED & GRAND FINALE JURY READY**  
 *SURAKSHA Engine — Autonomous State Machine Protocol v1.0.0 — SIH26191*
+

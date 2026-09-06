@@ -4,8 +4,10 @@ import { EocSidebar, type EocNavModule } from '../components/layout/EocSidebar';
 import { EocKpiRibbon } from '../components/EocKpiRibbon';
 import { EocTacticalMap } from '../components/eoc/EocTacticalMap';
 import { EocInspectionDrawer } from '../components/eoc/EocInspectionDrawer';
+import { HabitationTriageView } from '../components/views/HabitationTriageView';
 import { ShelterMatrixView } from '../components/views/ShelterMatrixView';
 import { DispatchLogisticsView } from '../components/views/DispatchLogisticsView';
+import { StatutoryOrdersView } from '../components/views/StatutoryOrdersView';
 import { SdmaDirectiveModal } from '../components/SdmaDirectiveModal';
 import { BASELINE_HABITATIONS, DEFAULT_EVALUATION } from '../data/baselineData';
 import { fetchEvaluation } from '../services/apiService';
@@ -62,6 +64,12 @@ export const OperationsCommandCenter: React.FC = () => {
   const handleSelectSite = (siteId: string) => {
     setSelectedSiteId(siteId);
     setIsDrawerCollapsed(false); // Automatically expand inspection drawer
+  };
+
+  // Handler to focus map from Triage view
+  const handleFocusOnMap = (habId: string) => {
+    handleHabitationChange(habId);
+    setActiveModule('dashboard');
   };
 
   // Debounced population sync to avoid flooding backend requests while dragging slider
@@ -155,7 +163,7 @@ export const OperationsCommandCenter: React.FC = () => {
 
         {/* Main Work Viewport */}
         <div className="flex-1 flex overflow-hidden relative">
-          {activeModule === 'dashboard' || activeModule === 'triage' ? (
+          {activeModule === 'dashboard' ? (
             <>
               {/* Clean Map Viewport without heavy overlays */}
               <main className="flex-1 h-full relative overflow-hidden bg-[#07090e]">
@@ -183,6 +191,12 @@ export const OperationsCommandCenter: React.FC = () => {
                 onToggleCollapse={() => setIsDrawerCollapsed(!isDrawerCollapsed)}
               />
             </>
+          ) : activeModule === 'triage' ? (
+            <HabitationTriageView
+              selectedHabitationId={selectedHabitationId}
+              onSelectHabitation={handleHabitationChange}
+              onFocusOnMap={handleFocusOnMap}
+            />
           ) : activeModule === 'sphere' ? (
             <div className="flex-1 h-full overflow-y-auto custom-scrollbar bg-[#07090e]">
               <ShelterMatrixView
@@ -194,7 +208,7 @@ export const OperationsCommandCenter: React.FC = () => {
                 onSelectSite={handleSelectSite}
               />
             </div>
-          ) : (
+          ) : activeModule === 'fleet' ? (
             <div className="flex-1 h-full overflow-y-auto custom-scrollbar bg-[#07090e]">
               <DispatchLogisticsView
                 evaluation={evaluation}
@@ -202,6 +216,13 @@ export const OperationsCommandCenter: React.FC = () => {
                 simulatedPopulation={simulatedPopulation}
               />
             </div>
+          ) : (
+            <StatutoryOrdersView
+              evaluation={evaluation}
+              selectedHabitation={selectedHabitation}
+              simulatedPopulation={simulatedPopulation}
+              onOpenModal={() => setIsModalOpen(true)}
+            />
           )}
         </div>
       </div>
