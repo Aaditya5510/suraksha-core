@@ -155,16 +155,11 @@ All autonomous coding agents and human engineers operating on this codebase must
 - [x] **Enterprise UI Overhaul Step 3 — Bidirectional Map Pin & KPI Influx Synchronization (`frontend/src/`)**:
   - [x] **Task 1: Bidirectional Pin-to-Drawer Synchronization**: Clicking any map pin (Site-A, Site-B, Site-C, HAB-01, HAB-02, HAB-03) automatically expands the right inspection drawer, syncs the active dossier tab, and triggers map auto-pan (`MapFlyToController`). Clicking Site-B triggers a red hazard ring and highlights the 30-toilet Goldratt bottleneck analysis.
   - [x] **Task 2: Dynamic Influx & KPI Ribbon Recalculation**: Adjusting the population surge slider/stepper instantly recalculates Evacuee Demand, Safe Headroom (`3,266 - newDemand`), Fleet Requisition (`Math.ceil(N / 40)`), and Water Demand (`N * 15 LPD`). Breaching $3,266$ toggles Safe Headroom into a pulsing red badge: `OVERFLOW: SPILLOVER ACTIVE`.
-- [x] **Enterprise UI Overhaul Step 4 — Modal Layout Fix, 5-View Sidebar Navigation & Collapsible Docking (`frontend/src/`)**:
-  - [x] **Task 1: Statutory Directive Modal Viewport & Overflow Fix (`SdmaDirectiveModal.tsx`)**: Backdrop `fixed inset-0 z-[9999] bg-black/80 backdrop-blur-sm`, Dialog Card `max-h-[90vh] bg-[#0c111d] border border-gray-700 rounded-2xl flex flex-col overflow-hidden`, sticky top header with `✕` close button & ESC key listener, scrollable body (`overflow-y-auto custom-scrollbar p-6 md:p-8 space-y-6`), and sticky bottom action bar with `[Close / Dismiss]` and `[🖨️ Print Statutory Directive]`.
-  - [x] **Task 2: 5 Distinct Sidebar Module Views (`OperationsCommandCenter.tsx`, `EocSidebar.tsx`)**:
-    1. `Operations Dashboard`: Real-time tactical map + 6-card KPI ribbon + right inspection dock.
-    2. `Habitation Demands & Triage` (`HabitationTriageView.tsx`): Expanded 3-sector comparison cards (Nandikot, Helang, Joshimath), full geotechnical & vulnerability matrix table, CRI formula breakdown, and "Focus on Map →" triggers.
-    3. `Sphere Constraint Matrix` (`ShelterMatrixView.tsx`): Full-screen comparative matrix (Gopeshwar primary vs Pipalkoti rejected), Sphere progress bars, and dynamic surge slider.
-    4. `Fleet & Transport Allocations` (`DispatchLogisticsView.tsx`): Requisition dashboard with 71 Buses, 9 Water Tankers, 114 Bio-Toilets, and 3 Depot Staging charts (Gopeshwar, Joshimath, Chamoli).
-    5. `Statutory Relocation Orders` (`StatutoryOrdersView.tsx`): Official SDMA Section 34 relocation directive document workspace with cryptographic hash, QR seal, and print capabilities.
-  - [x] **Task 3: Docking Polish (`EocInspectionDrawer.tsx`)**: Right inspector dock features a clean collapse/expand button (`>` / `<`) and slim collapsed tab for 100% full-width tactical map immersion.
-  - [x] **Task 4: Build Verification**: `npm run build` compiled in 2.23s with 0 errors.
+- [x] **Enterprise UI Overhaul Step 5 — Cognitive Load Reduction & High-Impact Data Chips (`frontend/src/`)**:
+  - [x] **Task 1: Top Bar Cleanup (`OperationsCommandCenter.tsx`)**: Removed technical labels ("SPRING BOOT (8080)", "EDGE ENGINE (OFFLINE)") and redundant duplicate "Export DM Order" button. Replaced with clean `● System Online` status pill and single [Decision Pipeline] navigation link.
+  - [x] **Task 2: Purged Dense Text in Statutory Directive Modal (`SdmaDirectiveModal.tsx`, `StatutoryOrdersView.tsx`)**: Removed all multi-paragraph narrative essays. Replaced with 4 high-impact, scannable data chips: `SECTOR`, `APPROVED SHELTER`, `REJECTED SHELTER`, and `DISPATCH REQUISITIONS` with single `Print Order` action.
+  - [x] **Task 3: Right Dock Cleanup (`EocInspectionDrawer.tsx`)**: Removed verbose explanatory text; replaced with 3 clean progress lines (`Space: 5,142 / 2,840 [Safe]`, `Water: 4,333 / 2,840 [Safe]`, `Toilets: 3,500 / 2,840 [Safe]`) and a single clean action button: `Generate Evacuation Order`.
+  - [x] **Task 4: Build Verification**: `npm run build` compiled in 1.76s with 0 errors.
 
 ---
 
@@ -201,6 +196,7 @@ All autonomous coding agents and human engineers operating on this codebase must
 | **2026-09-06 17:54** | Enterprise EOC UI | `npm.cmd run build` in `frontend/` & Route status test | `BUILD SUCCESS` (ResQFlow-grade Enterprise EOC with dedicated sidebar, 6-card KPI ribbon, clean map viewport, and 380px docked inspection drawer) | ✅ VERIFIED |
 | **2026-09-06 17:58** | Step 3 Bidirectional Sync | `npm.cmd run build` in `frontend/` & Route status test | `BUILD SUCCESS` (Bidirectional map pin-to-drawer sync, live KPI influx recalculation, OVERFLOW spillover badge, 0 TS errors) | ✅ VERIFIED |
 | **2026-09-06 18:07** | Modal & Sidebar Views | `npm.cmd run build` in `frontend/` & HTTP check | `BUILD SUCCESS` (Statutory Directive modal overflow fix, 5 distinct sidebar views, collapsible dock polish, 0 TS errors) | ✅ VERIFIED |
+| **2026-09-06 18:21** | Cognitive Load Reduction | `npm.cmd run build` in `frontend/` & HTTP check | `BUILD SUCCESS` (Clean top bar, scannable data chips in modal, 3 simple progress lines in right dock, 0 TS errors) | ✅ VERIFIED |
 
 ---
 

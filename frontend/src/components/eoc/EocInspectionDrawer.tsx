@@ -8,7 +8,6 @@ import {
   Sparkles,
   Truck,
   FileText,
-  AlertTriangle,
   CheckCircle2,
   Users,
   Plus,
@@ -55,6 +54,12 @@ export const EocInspectionDrawer: React.FC<EocInspectionDrawerProps> = ({
   const isSpillover = simulatedPopulation > primaryCap;
   const excessEvacuees = Math.max(0, simulatedPopulation - primaryCap);
   const baselinePop = selectedHabitation.population;
+
+  // Resource capacity metrics
+  const spaceGross = currentSite.capacityAudit.grossByArea;
+  const waterGross = currentSite.capacityAudit.grossByWater;
+  const sanitationGross = currentSite.capacityAudit.grossBySanitation;
+  const effectiveCap = currentSite.capacityAudit.effectiveCapacity;
 
   // Logistics calculations
   const busesNeeded = Math.ceil(simulatedPopulation / 40);
@@ -168,15 +173,15 @@ export const EocInspectionDrawer: React.FC<EocInspectionDrawerProps> = ({
         </div>
       </div>
 
-      {/* 3. Selected Site Dossier & Goldratt Bottleneck Alert */}
+      {/* 3. Clean Progress Lines (0 Cognitive Overload) */}
       <div className="p-3 rounded-2xl bg-[#060911]/90 border border-gray-800/90 space-y-3">
         <div className="flex items-center justify-between">
           <div>
-            <h4 className="text-xs font-bold text-white flex items-center gap-1.5">
+            <h4 className="text-xs font-bold text-white">
               {currentSite.name}
             </h4>
             <span className="text-[10px] text-slate-400">
-              {isSiteB ? 'Disqualified Shelf (10.0 km mountain transit)' : 'Recommended Enclave (0.9 km access corridor)'}
+              {isSiteB ? 'Disqualified • 10.0 km Transit' : 'Approved • 0.9 km Access'}
             </span>
           </div>
           <span
@@ -190,78 +195,67 @@ export const EocInspectionDrawer: React.FC<EocInspectionDrawerProps> = ({
           </span>
         </div>
 
-        {/* Pipalkoti Explicit Goldratt Bottleneck Rejection Card */}
-        {isSiteB ? (
-          <div className="p-3 rounded-xl bg-red-500/20 border border-red-500/60 space-y-1.5 text-xs shadow-[0_0_15px_rgba(239,68,68,0.2)]">
-            <div className="flex items-center gap-1.5 text-red-400 font-bold text-[11px]">
-              <AlertTriangle className="w-4 h-4 shrink-0 text-red-500 animate-pulse" />
-              <span>REJECTED BY GOLDRATT BOTTLENECK</span>
-            </div>
-            <p className="text-[10px] text-slate-200 leading-snug">
-              30 Toilets strictly caps safe shelter at 550 individuals. Allocating {simulatedPopulation.toLocaleString()} evacuees triggers catastrophic epidemic risk.
-            </p>
-            <div className="text-[9px] text-red-300 font-semibold pt-1 border-t border-red-500/30">
-              Secondary Disqualification: 66% single-bridge mountain road cutoff probability.
-            </div>
-          </div>
-        ) : (
-          <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-[10px] text-emerald-200 leading-snug">
-            ✓ <strong>Safe Resettlement Enclave</strong>: 18,000 m² usable land, 65,000 LPD water supply, and 140 sanitation toilets provide +{Math.max(0, primaryCap - simulatedPopulation)} surplus headroom.
-          </div>
-        )}
-
-        {/* 3-Resource Sphere 2018 Carrying-Capacity Bars */}
-        <div className="space-y-2 pt-1 text-[10px]">
+        {/* 3 Clean, Simple Progress Lines */}
+        <div className="space-y-2.5 pt-1 text-[11px]">
           {/* Space */}
-          <div className="space-y-0.5">
-            <div className="flex justify-between">
-              <span className="text-slate-300 flex items-center gap-1">
-                <Maximize2 className="w-3 h-3 text-blue-400" /> Usable Space (3.5 m² / soul)
+          <div className="space-y-1">
+            <div className="flex justify-between items-center">
+              <span className="text-slate-300 flex items-center gap-1.5">
+                <Maximize2 className="w-3.5 h-3.5 text-blue-400" /> Space:
               </span>
-              <strong className="text-white">
-                {currentSite.capacityAudit.grossByArea.toLocaleString()} souls
-              </strong>
+              <div className="flex items-center gap-1.5">
+                <strong className="text-white font-mono">{spaceGross.toLocaleString()} / {simulatedPopulation.toLocaleString()}</strong>
+                <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded ${spaceGross >= simulatedPopulation ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-red-950 text-red-400 border border-red-800'}`}>
+                  {spaceGross >= simulatedPopulation ? 'Safe' : 'Deficit'}
+                </span>
+              </div>
             </div>
             <div className="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden border border-gray-800">
               <div
-                className={`h-full rounded-full ${isSiteB ? 'bg-slate-600' : 'bg-emerald-500'}`}
-                style={{ width: `${Math.min((currentSite.capacityAudit.grossByArea / 6000) * 100, 100)}%` }}
+                className={`h-full rounded-full ${spaceGross >= simulatedPopulation ? 'bg-emerald-500' : 'bg-red-500'}`}
+                style={{ width: `${Math.min((spaceGross / 6000) * 100, 100)}%` }}
               />
             </div>
           </div>
 
           {/* Water */}
-          <div className="space-y-0.5">
-            <div className="flex justify-between">
-              <span className="text-slate-300 flex items-center gap-1">
-                <Droplets className="w-3 h-3 text-cyan-400" /> Potable Water (15 LPD / soul)
+          <div className="space-y-1">
+            <div className="flex justify-between items-center">
+              <span className="text-slate-300 flex items-center gap-1.5">
+                <Droplets className="w-3.5 h-3.5 text-cyan-400" /> Water:
               </span>
-              <strong className="text-white">
-                {currentSite.capacityAudit.grossByWater.toLocaleString()} souls
-              </strong>
+              <div className="flex items-center gap-1.5">
+                <strong className="text-white font-mono">{waterGross.toLocaleString()} / {simulatedPopulation.toLocaleString()}</strong>
+                <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded ${waterGross >= simulatedPopulation ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-red-950 text-red-400 border border-red-800'}`}>
+                  {waterGross >= simulatedPopulation ? 'Safe' : 'Deficit'}
+                </span>
+              </div>
             </div>
             <div className="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden border border-gray-800">
               <div
-                className={`h-full rounded-full ${isSiteB ? 'bg-slate-600' : 'bg-cyan-500'}`}
-                style={{ width: `${Math.min((currentSite.capacityAudit.grossByWater / 6000) * 100, 100)}%` }}
+                className={`h-full rounded-full ${waterGross >= simulatedPopulation ? 'bg-cyan-500' : 'bg-red-500'}`}
+                style={{ width: `${Math.min((waterGross / 6000) * 100, 100)}%` }}
               />
             </div>
           </div>
 
-          {/* Sanitation */}
-          <div className="space-y-0.5">
-            <div className="flex justify-between">
-              <span className={`flex items-center gap-1 font-semibold ${isSiteB ? 'text-red-400' : 'text-slate-300'}`}>
-                <Sparkles className="w-3 h-3 text-amber-400" /> Sanitation (1:25 toilet standard)
+          {/* Toilets */}
+          <div className="space-y-1">
+            <div className="flex justify-between items-center">
+              <span className="text-slate-300 flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Toilets:
               </span>
-              <strong className={isSiteB ? 'text-red-400 font-black' : 'text-amber-300'}>
-                {currentSite.capacityAudit.grossBySanitation.toLocaleString()} gross ({currentSite.capacityAudit.effectiveCapacity.toLocaleString()} net)
-              </strong>
+              <div className="flex items-center gap-1.5">
+                <strong className="text-white font-mono">{sanitationGross.toLocaleString()} / {simulatedPopulation.toLocaleString()}</strong>
+                <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded ${effectiveCap >= simulatedPopulation ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-red-950 text-red-400 border border-red-800'}`}>
+                  {effectiveCap >= simulatedPopulation ? 'Safe' : isSiteB ? 'Bottleneck' : 'Deficit'}
+                </span>
+              </div>
             </div>
             <div className="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden border border-gray-800">
               <div
-                className={`h-full rounded-full ${isSiteB ? 'bg-red-600 animate-pulse' : 'bg-gradient-to-r from-amber-500 to-emerald-500'}`}
-                style={{ width: `${Math.min((currentSite.capacityAudit.grossBySanitation / 6000) * 100, 100)}%` }}
+                className={`h-full rounded-full ${effectiveCap >= simulatedPopulation ? 'bg-amber-500' : 'bg-red-500 animate-pulse'}`}
+                style={{ width: `${Math.min((sanitationGross / 6000) * 100, 100)}%` }}
               />
             </div>
           </div>
@@ -350,12 +344,12 @@ export const EocInspectionDrawer: React.FC<EocInspectionDrawerProps> = ({
           {isSpillover ? (
             <div className="p-2 rounded-xl bg-red-500/15 border border-red-500/40 text-red-400 text-[10px] font-bold flex items-center gap-1.5 animate-pulse">
               <AlertOctagon className="w-3.5 h-3.5 shrink-0" />
-              <span>DEFICIT (+{excessEvacuees.toLocaleString()} SOULS) — AUTO-SPILLOVER ROUTED TO SITE-C</span>
+              <span>DEFICIT (+{excessEvacuees.toLocaleString()} SOULS) — AUTO-SPILLOVER ACTIVE</span>
             </div>
           ) : (
             <div className="p-2 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 text-[10px] font-bold flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
-              <span>SAFE HEADROOM (+{primaryCap - simulatedPopulation} SURPLUS SOULS)</span>
+              <span>SAFE HEADROOM (+{primaryCap - simulatedPopulation} SOULS)</span>
             </div>
           )}
         </div>
@@ -399,7 +393,7 @@ export const EocInspectionDrawer: React.FC<EocInspectionDrawerProps> = ({
         </div>
       </div>
 
-      {/* 6. Action Button: Generate Statutory Evacuation Order */}
+      {/* 6. Single Clean Action: Generate Evacuation Order */}
       <div className="pt-1">
         <button
           type="button"
@@ -407,7 +401,7 @@ export const EocInspectionDrawer: React.FC<EocInspectionDrawerProps> = ({
           className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white text-xs font-bold shadow-[0_0_18px_rgba(16,185,129,0.35)] transition-all transform hover:scale-[1.01]"
         >
           <FileText className="w-4 h-4" />
-          <span>GENERATE STATUTORY EVACUATION ORDER</span>
+          <span>Generate Evacuation Order</span>
         </button>
       </div>
     </aside>

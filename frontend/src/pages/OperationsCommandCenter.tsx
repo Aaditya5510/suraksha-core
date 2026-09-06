@@ -13,9 +13,6 @@ import { BASELINE_HABITATIONS, DEFAULT_EVALUATION } from '../data/baselineData';
 import { fetchEvaluation } from '../services/apiService';
 import type { EvaluationResultResponse, Habitation } from '../types/suraksha';
 import {
-  FileText,
-  Server,
-  Activity,
   Workflow,
   Compass,
 } from 'lucide-react';
@@ -117,39 +114,20 @@ export const OperationsCommandCenter: React.FC = () => {
 
           {/* Right Status Actions */}
           <div className="flex items-center gap-3">
-            {/* Live Engine Indicator */}
-            {isLiveBackend ? (
-              <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-bold">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <Server className="w-3 h-3 text-emerald-400" />
-                <span>SPRING BOOT (8080)</span>
-              </div>
-            ) : (
-              <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[10px] font-bold">
-                <span className="w-2 h-2 rounded-full bg-amber-400" />
-                <Activity className="w-3 h-3 text-amber-400" />
-                <span>EDGE ENGINE (OFFLINE)</span>
-              </div>
-            )}
+            {/* Elegant System Status Indicator */}
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 border border-gray-800 text-[11px] font-medium">
+              <span className={`w-2 h-2 rounded-full ${isLiveBackend ? 'bg-emerald-400 animate-pulse' : 'bg-emerald-500'}`} />
+              <span className="text-slate-300">System Online</span>
+            </div>
 
             {/* Public Pipeline Link */}
             <button
               type="button"
               onClick={() => navigate('/')}
-              className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-700 hover:border-cyan-500/50 bg-slate-900/60 hover:bg-slate-800 text-slate-300 hover:text-cyan-300 text-[11px] transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-700 hover:border-cyan-500/50 bg-slate-900/60 hover:bg-slate-800 text-slate-300 hover:text-cyan-300 text-[11px] transition-all"
             >
               <Workflow className="w-3.5 h-3.5 text-cyan-400" />
               <span>Decision Pipeline</span>
-            </button>
-
-            {/* Export DM Order Button */}
-            <button
-              type="button"
-              onClick={() => setIsModalOpen(true)}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white font-bold shadow-[0_0_12px_rgba(239,68,68,0.35)] text-xs transition-all"
-            >
-              <FileText className="w-3.5 h-3.5" />
-              <span>Export DM Order</span>
             </button>
           </div>
         </header>
