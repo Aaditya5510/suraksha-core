@@ -1,7 +1,11 @@
 import React from 'react';
-import { ShieldAlert, Radio, Activity, Terminal } from 'lucide-react';
+import { ShieldAlert, Radio, Activity, Terminal, CheckCircle2, Server } from 'lucide-react';
 
-export const Header: React.FC = () => {
+interface HeaderProps {
+  isLive?: boolean;
+}
+
+export const Header: React.FC<HeaderProps> = ({ isLive = false }) => {
   return (
     <header className="w-full bg-cardDark/95 border-b border-borderDark backdrop-blur-md px-4 py-3 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
@@ -34,16 +38,24 @@ export const Header: React.FC = () => {
             <span>PILOT SECTOR: ALAKNANDA VALLEY (CRI 89.4 - RED ZONE)</span>
           </div>
 
-          {/* Operational Mode Badge */}
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/40 text-safeGreen text-xs font-mono font-medium">
-            <Activity className="w-3.5 h-3.5" />
-            <span>SYSTEM MODE: OPERATIONAL (STANDALONE / ZERO-FAILOVER)</span>
-          </div>
+          {/* Backend Connection Status Badge */}
+          {isLive ? (
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/40 text-safeGreen text-xs font-mono font-bold shadow-[0_0_10px_rgba(16,185,129,0.2)]">
+              <Server className="w-3.5 h-3.5" />
+              <span>SPRING BOOT LIVE (PORT 8080)</span>
+              <CheckCircle2 className="w-3.5 h-3.5" />
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/40 text-safeGreen text-xs font-mono font-medium">
+              <Activity className="w-3.5 h-3.5" />
+              <span>STANDALONE / ZERO-FAILOVER</span>
+            </div>
+          )}
 
-          {/* Latency / Engine Status */}
+          {/* Core Version Status */}
           <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded bg-slate-900 border border-borderDark text-xs font-mono text-slate-400">
             <Terminal className="w-3.5 h-3.5 text-infoBlue" />
-            <span>CORE V1.0.0</span>
+            <span>V1.0.0</span>
           </div>
         </div>
       </div>

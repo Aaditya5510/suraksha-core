@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { TacticalMap } from './components/TacticalMap';
 import { SphereConstraintMeter } from './components/SphereConstraintMeter';
 import { SurgeSimulator } from './components/SurgeSimulator';
 import { SdmaDirectiveModal } from './components/SdmaDirectiveModal';
 import { DEFAULT_EVALUATION } from './data/baselineData';
+import { evaluateRelocation } from './services/apiService';
 import type { EvaluationResultResponse, CandidateSiteEvaluationDTO } from './types/suraksha';
 import {
   AlertTriangle,
@@ -23,10 +24,27 @@ import {
 } from 'lucide-react';
 
 export const App: React.FC = () => {
-  const [evaluation] = useState<EvaluationResultResponse>(DEFAULT_EVALUATION);
+  const [evaluation, setEvaluation] = useState<EvaluationResultResponse>(DEFAULT_EVALUATION);
   const [simulatedPopulation, setSimulatedPopulation] = useState<number>(2840);
   const [selectedSiteId, setSelectedSiteId] = useState<string>('SITE-A');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isLiveBackend, setIsLiveBackend] = useState<boolean>(false);
+
+  // Synchronize evaluation state with backend or local zero-failover engine
+  useEffect(() => {
+    let isSubscribed = true;
+
+    evaluateRelocation('HAB-01', simulatedPopulation).then(({ data, isLive }) => {
+      if (isSubscribed) {
+        setEvaluation(data);
+        setIsLiveBackend(isLive);
+      }
+    });
+
+    return () => {
+      isSubscribed = false;
+    };
+  }, [simulatedPopulation]);
 
   const { habitation, tacticalShelterImmediate, candidateSites, operationalDirectiveSummary } = evaluation;
 
@@ -41,7 +59,7 @@ export const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-bgDark text-slate-100 flex flex-col font-sans selection:bg-alertRed/30 selection:text-white">
       {/* Tactical Top Operations Header */}
-      <Header />
+      <Header isLive={isLiveBackend} />
 
       {/* Main Operations Dashboard Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 space-y-6">
