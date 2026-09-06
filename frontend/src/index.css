@@ -33,6 +33,19 @@
   }
 }
 
+@keyframes bounceSlow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-bounce-slow {
+  animation: bounceSlow 2s ease-in-out infinite;
+}
+
 .tactical-pulse-red {
   animation: tacticalPulse 1.8s infinite ease-in-out;
 }
@@ -69,9 +82,25 @@
   @apply bg-cardDark/90 border border-borderDark rounded-lg backdrop-blur-md;
 }
 
+/* Custom Tactical Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(71, 85, 105, 0.8);
+  border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 1);
+}
+
 /* Leaflet Tactical Dark Override */
 .leaflet-container {
-  background-color: #0b0f19 !important;
+  background-color: #07090e !important;
   font-family: inherit;
 }
 
@@ -81,23 +110,23 @@
 }
 
 .leaflet-popup-content-wrapper {
-  background: rgba(17, 24, 39, 0.95) !important;
+  background: rgba(12, 17, 29, 0.95) !important;
   color: #f1f5f9 !important;
-  border: 1px solid #374151 !important;
-  border-radius: 8px !important;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.6) !important;
-  backdrop-filter: blur(8px) !important;
+  border: 1px solid #1f2937 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.8) !important;
+  backdrop-filter: blur(12px) !important;
   padding: 0 !important;
 }
 
 .leaflet-popup-content {
-  margin: 12px 14px !important;
+  margin: 10px 12px !important;
   line-height: 1.4 !important;
 }
 
 .leaflet-popup-tip {
-  background: #111827 !important;
-  border: 1px solid #374151 !important;
+  background: #0c111d !important;
+  border: 1px solid #1f2937 !important;
 }
 
 .leaflet-popup-close-button {

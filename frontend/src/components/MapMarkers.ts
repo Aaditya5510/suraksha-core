@@ -141,13 +141,41 @@ export const HelangMarker = L.divIcon({
   popupAnchor: [0, -22],
 });
 
+// 6. HAB-03: Joshimath Sub-Sector B Origin Beacon (Critical Red Zone with Double Pulse)
+export const JoshimathMarker = L.divIcon({
+  className: 'custom-tactical-marker',
+  html: `
+    <div class="relative flex flex-col items-center justify-center -translate-x-1/2 -translate-y-1/2 cursor-pointer group z-30">
+      <!-- Radar Ping Outer Rings -->
+      <div class="absolute w-12 h-12 rounded-full border-2 border-red-600/80 bg-red-600/20 radar-ping pointer-events-none"></div>
+      
+      <!-- Core Beacon -->
+      <div class="relative z-10 w-7 h-7 rounded-full bg-red-700 border-2 border-red-200 flex items-center justify-center shadow-[0_0_16px_rgba(220,38,38,0.95)]">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-white animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+      </div>
+
+      <!-- Badge Label Positioned Below Icon -->
+      <div class="mt-1.5 whitespace-nowrap px-2 py-0.5 rounded bg-slate-950/95 border border-red-600/80 text-[10px] font-mono font-bold text-red-400 shadow-[0_2px_8px_rgba(0,0,0,0.8)] pointer-events-none">
+        HAB-03 JOSHIMATH (RED ZONE)
+      </div>
+    </div>
+  `,
+  iconSize: [0, 0],
+  iconAnchor: [0, 0],
+  popupAnchor: [0, -22],
+});
+
 // Backward-compatibility aliases
 export const nandikotMarker = NandikotMarker;
 export const helangMarker = HelangMarker;
+export const joshimathMarker = JoshimathMarker;
 export const siteAMarker = SiteAMarker;
 export const recommendedPrimaryMarker = SiteAMarker;
 export const siteBMarker = SiteBMarker;
 export const rejectedSiteMarker = SiteBMarker;
 export const siteCMarker = SiteCMarker;
 export const transitShelterMarker = SiteCMarker;
+
 

@@ -75,6 +75,9 @@ export const App: React.FC = () => {
             selectedHabitation={selectedHabitation}
             selectedSiteId={selectedSiteId}
             onSelectSite={(siteId) => setSelectedSiteId(siteId)}
+            simulatedPopulation={simulatedPopulation}
+            onPopulationChange={handlePopulationChange}
+            onOpenDirectiveModal={() => setIsModalOpen(true)}
           />
         )}
 

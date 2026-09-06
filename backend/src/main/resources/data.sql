@@ -35,14 +35,14 @@ INSERT INTO habitations (
     '2024-08-15'
 );
 
--- HAB-02: Helang Lower Bastion - Amber Monitoring Zone
+-- HAB-02: Helang Bastion - Amber Monitoring Zone
 INSERT INTO habitations (
     id, name, lat, lng, population, slope_deg, landslide_risk, 
     flood_risk, vulnerability_score, cutoff_risk, composite_risk, 
     risk_zone, horizon, is_permanently_unsuitable, red_zone_declared_date
 ) VALUES (
     'HAB-02', 
-    'Helang Lower Bastion', 
+    'Helang Bastion', 
     30.5280, 
     79.5100, 
     1120, 
@@ -56,6 +56,29 @@ INSERT INTO habitations (
     'SHORT_TERM_TRANSIT', 
     false, 
     null
+);
+
+-- HAB-03: Joshimath Sub-Sector B - Critical Red Zone
+INSERT INTO habitations (
+    id, name, lat, lng, population, slope_deg, landslide_risk, 
+    flood_risk, vulnerability_score, cutoff_risk, composite_risk, 
+    risk_zone, horizon, is_permanently_unsuitable, red_zone_declared_date
+) VALUES (
+    'HAB-03', 
+    'Joshimath Sub-Sector B', 
+    30.5560, 
+    79.5620, 
+    1850, 
+    38.0, 
+    82.0, 
+    35.0, 
+    0.80, 
+    0.75, 
+    84.1, 
+    'CRITICAL_RED_ZONE', 
+    'IMMEDIATE_0_72H', 
+    true, 
+    '2024-09-01'
 );
 
 -- ----------------------------------------------------------------------------

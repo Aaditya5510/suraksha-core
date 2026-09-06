@@ -12,6 +12,7 @@ import type { EvaluationResultResponse } from '../types/suraksha';
 import {
   NandikotMarker,
   HelangMarker,
+  JoshimathMarker,
   SiteAMarker,
   SiteBMarker,
   SiteCMarker,
@@ -62,9 +63,11 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
 
   const hab01 = BASELINE_HABITATIONS.find((h) => h.id === 'HAB-01') || BASELINE_HABITATIONS[0];
   const hab02 = BASELINE_HABITATIONS.find((h) => h.id === 'HAB-02') || BASELINE_HABITATIONS[1];
+  const hab03 = BASELINE_HABITATIONS.find((h) => h.id === 'HAB-03') || BASELINE_HABITATIONS[2];
 
   const hab01Pos: [number, number] = [hab01.latitude, hab01.longitude];
   const hab02Pos: [number, number] = [hab02.latitude, hab02.longitude];
+  const hab03Pos: [number, number] = [hab03.latitude, hab03.longitude];
 
   const siteCPos: [number, number] = [
     tacticalShelterImmediate.latitude,
@@ -337,6 +340,47 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
               </div>
               <div className="pt-1 border-t border-slate-800 text-[10px] text-amber-400 font-semibold">
                 STATUS: AMBER MONITORING — PREPARE EVACUATION CORRIDORS (CLICK TO SELECT)
+              </div>
+            </div>
+          </Popup>
+        </Marker>
+
+        {/* HAB-03: Joshimath Sub-Sector B Origin Pin (Clickable) */}
+        <Marker
+          position={hab03Pos}
+          icon={JoshimathMarker}
+          eventHandlers={{ click: () => onSelectHabitation?.('HAB-03') }}
+        >
+          <Popup>
+            <div className="p-2.5 font-mono text-xs space-y-2 min-w-[220px]">
+              <div className="flex items-center justify-between border-b border-slate-700 pb-1.5">
+                <span className="font-bold text-alertRed flex items-center gap-1">
+                  <MapPin className="w-3.5 h-3.5" /> {hab03.name}
+                </span>
+                <span className="px-1.5 py-0.5 rounded text-[10px] bg-red-900/50 text-red-300 border border-red-700">
+                  HAB-03
+                </span>
+              </div>
+              <div className="space-y-1 text-slate-300 text-[11px]">
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Population:</span>
+                  <span className="font-bold text-slate-100">{hab03.population.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Composite Risk (CRI):</span>
+                  <span className="font-bold text-alertRed">{hab03.compositeRiskIndex} (CRITICAL RED)</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Slope Angle:</span>
+                  <span className="font-bold text-alertRed">{hab03.slopeDegrees}°</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Landslide Hazard:</span>
+                  <span className="font-bold text-slate-200">{hab03.landslideHazardIndex}%</span>
+                </div>
+              </div>
+              <div className="pt-1 border-t border-slate-800 text-[10px] text-red-400 font-semibold">
+                STATUS: SUBSIDENCE RED ZONE — MANDATORY EVACUATION (CLICK TO SELECT)
               </div>
             </div>
           </Popup>

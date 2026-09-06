@@ -1,7 +1,7 @@
 import type { EvaluationResultResponse, Habitation } from '../types/suraksha';
 
 /**
- * Chamoli Pilot Scenario Baseline Seed Data (Joshimath / Nandikot Sector)
+ * Chamoli Pilot Scenario Baseline Seed Data (Joshimath / Nandikot / Helang Sector)
  * SIH26191 Benchmark Dataset
  */
 
@@ -25,7 +25,7 @@ export const BASELINE_HABITATIONS: Habitation[] = [
   },
   {
     id: 'HAB-02',
-    name: 'Helang Lower Bastion',
+    name: 'Helang Bastion',
     latitude: 30.5280,
     longitude: 79.5120,
     population: 1120,
@@ -39,6 +39,23 @@ export const BASELINE_HABITATIONS: Habitation[] = [
     horizon: 'SHORT_TERM_TRANSIT',
     isPermanentlyUnsuitable: false,
     redZoneDeclaredDate: null,
+  },
+  {
+    id: 'HAB-03',
+    name: 'Joshimath Sub-Sector B',
+    latitude: 30.5560,
+    longitude: 79.5620,
+    population: 1850,
+    slopeDegrees: 38.0,
+    landslideHazardIndex: 82.0,
+    floodRiskIndex: 35.0,
+    vulnerabilityFactor: 0.80,
+    cutoffRisk: 0.75,
+    compositeRiskIndex: 84.1,
+    riskZone: 'CRITICAL_RED_ZONE',
+    horizon: 'IMMEDIATE_0_72H',
+    isPermanentlyUnsuitable: true,
+    redZoneDeclaredDate: '2024-09-01',
   },
 ];
 
@@ -122,7 +139,10 @@ export function getBaselineEvaluation(habitationId: string): EvaluationResultRes
 
   if (hab.id === 'HAB-02') {
     evalCopy.operationalDirectiveSummary =
-      'AMBER MONITORING DIRECTIVE: Helang Lower Bastion under slope stability watch (CRI 71.2). Prepare secondary transit corridor to Site-C and Site-A for rapid staging if rainfall threshold exceeds 65mm/hr.';
+      'AMBER MONITORING DIRECTIVE: Helang Bastion under slope stability watch (CRI 71.2). Prepare secondary transit corridor to Site-C and Site-A for rapid staging if rainfall threshold exceeds 65mm/hr.';
+  } else if (hab.id === 'HAB-03') {
+    evalCopy.operationalDirectiveSummary =
+      'MANDATORY EVACUATION DIRECTIVE: Joshimath Sub-Sector B (CRI 84.1, 38° slope) exhibiting rapid active subsidence. Mobilize 1,850 evacuees along arterial corridors to Site-A Gopeshwar Enclave.';
   }
 
   return evalCopy;
