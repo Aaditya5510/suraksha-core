@@ -116,12 +116,12 @@ export const SphereConstraintMeter: React.FC<SphereConstraintMeterProps> = ({
             {isDeficit ? (
               <div className="px-2.5 py-1 rounded bg-alertRed/20 border border-alertRed/50 text-alertRed text-xs font-mono font-bold flex items-center gap-1.5 animate-pulse">
                 <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-                <span>DEFICIT ({residualHeadroom} SOULS)</span>
+                <span>DEFICIT ({residualHeadroom} EVACUEES)</span>
               </div>
             ) : (
               <div className="px-2.5 py-1 rounded bg-safeGreen/20 border border-safeGreen/50 text-safeGreen text-xs font-mono font-bold flex items-center gap-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
-                <span>HEADROOM (+{residualHeadroom} SOULS)</span>
+                <span>HEADROOM (+{residualHeadroom} SURPLUS)</span>
               </div>
             )}
           </div>
@@ -133,10 +133,10 @@ export const SphereConstraintMeter: React.FC<SphereConstraintMeterProps> = ({
         <div className="p-3 rounded-lg bg-alertRed/20 border border-alertRed/60 text-xs font-mono space-y-2 animate-pulse shadow-[0_0_15px_rgba(239,68,68,0.3)]">
           <div className="flex items-center gap-1.5 text-alertRed font-extrabold text-[11px]">
             <XCircle className="w-4 h-4 shrink-0" />
-            <span>REJECTED: Sanitation Ceiling 550 Souls (30 toilets strictly violate Sphere 1:25 ratio)</span>
+            <span>REJECTED: Sanitation Ceiling 550 People (30 toilets strictly violate Sphere 1:25 ratio)</span>
           </div>
           <p className="text-[11px] text-slate-300 leading-snug">
-            With only 30 functional toilets and 200 existing occupants, Pipalkoti Shelf is mathematically limited to 550 net evacuees. Attempting to place {simulatedPopulation.toLocaleString()} evacuees creates a deadly hygiene deficit of <strong className="text-alertRed">{Math.abs(residualHeadroom).toLocaleString()} souls</strong>.
+            With only 30 functional toilets and 200 existing occupants, Pipalkoti Shelf is mathematically limited to 550 net evacuees. Attempting to place {simulatedPopulation.toLocaleString()} evacuees creates a deadly hygiene deficit of <strong className="text-alertRed">{Math.abs(residualHeadroom).toLocaleString()} people</strong>.
           </p>
           <div className="text-[10px] text-red-300 bg-red-950/60 p-1.5 rounded border border-red-800 flex items-center gap-1">
             <AlertTriangle className="w-3.5 h-3.5 text-alertRed shrink-0" />
@@ -159,7 +159,7 @@ export const SphereConstraintMeter: React.FC<SphereConstraintMeterProps> = ({
             <div className="font-bold flex items-center gap-1.5">
               <span>BINDING BOTTLENECK CEILING:</span>
               <span className="px-1.5 py-0.2 rounded bg-slate-900 font-mono text-white">
-                {effectiveCapacity.toLocaleString()} SOULS
+                {effectiveCapacity.toLocaleString()} PEOPLE
               </span>
             </div>
             <p className="text-[11px] text-slate-300">

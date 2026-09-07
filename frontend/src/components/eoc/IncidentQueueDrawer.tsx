@@ -273,12 +273,12 @@ export const IncidentQueueDrawer: React.FC<IncidentQueueDrawerProps> = ({
           {isDeficit ? (
             <div className="p-2 rounded-xl bg-red-500/15 border border-red-500/40 text-red-400 text-[10px] font-bold flex items-center gap-1.5 animate-pulse">
               <AlertOctagon className="w-3.5 h-3.5 shrink-0" />
-              <span>DEFICIT ({residualHeadroom} SOULS) — AUTO-SPILLOVER ACTIVE</span>
+              <span>DEFICIT ({residualHeadroom} EVACUEES) — AUTO-SPILLOVER ACTIVE</span>
             </div>
           ) : (
             <div className="p-2 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 text-[10px] font-bold flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
-              <span>SAFE HEADROOM (+{residualHeadroom} SOULS)</span>
+              <span>SAFE HEADROOM (+{residualHeadroom} SURPLUS)</span>
             </div>
           )}
         </div>

@@ -82,7 +82,7 @@ export const EocKpiRibbon: React.FC<EocKpiRibbonProps> = ({
             <span className="text-xl font-black text-white">
               {simulatedPopulation.toLocaleString()}
             </span>
-            <span className="text-[10px] text-slate-400">Souls</span>
+            <span className="text-[10px] text-slate-400">Evacuees</span>
           </div>
           <div className="text-[9px] text-blue-300 font-semibold truncate">
             Life-safety priority
@@ -104,7 +104,7 @@ export const EocKpiRibbon: React.FC<EocKpiRibbonProps> = ({
             <span className="text-xl font-black text-emerald-400">
               {primaryCapacity.toLocaleString()}
             </span>
-            <span className="text-[10px] text-slate-400">Souls</span>
+            <span className="text-[10px] text-slate-400">Capacity</span>
           </div>
           <div className="text-[9px] text-emerald-300 truncate">
             {primarySiteName}
@@ -138,7 +138,7 @@ export const EocKpiRibbon: React.FC<EocKpiRibbonProps> = ({
             <span className={`text-xl font-black ${isDeficit ? 'text-red-400' : 'text-emerald-400'}`}>
               {isDeficit ? `${residualHeadroom}` : `+${residualHeadroom}`}
             </span>
-            <span className="text-[10px] text-slate-400">Souls</span>
+            <span className="text-[10px] text-slate-400">Surplus</span>
           </div>
           <div className={`text-[9px] font-semibold truncate ${isDeficit ? 'text-red-400 font-bold' : 'text-emerald-300'}`}>
             {isDeficit ? 'Site-A Saturated • Re-routed to Site-C' : `+${residualHeadroom} reserve headroom safe`}

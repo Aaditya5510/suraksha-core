@@ -82,7 +82,7 @@ export const HabitationTriageView: React.FC<HabitationTriageViewProps> = ({
                 <div className="grid grid-cols-2 gap-2 text-xs pt-1">
                   <div className="p-2 rounded-xl bg-[#060911] border border-gray-800">
                     <span className="text-[10px] text-slate-400 block">Census Population</span>
-                    <strong className="text-white text-sm">{hab.population.toLocaleString()} souls</strong>
+                    <strong className="text-white text-sm">{hab.population.toLocaleString()} Residents</strong>
                   </div>
                   <div className="p-2 rounded-xl bg-[#060911] border border-gray-800">
                     <span className="text-[10px] text-slate-400 block">Composite Risk (CRI)</span>
@@ -182,7 +182,7 @@ export const HabitationTriageView: React.FC<HabitationTriageViewProps> = ({
                       </span>
                     </td>
                     <td className="py-3 px-3 font-bold text-slate-200">
-                      {hab.population.toLocaleString()} souls
+                      {hab.population.toLocaleString()} Residents
                     </td>
                     <td className="py-3 px-3 font-bold text-red-400">
                       {hab.slopeDegrees}°

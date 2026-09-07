@@ -283,7 +283,7 @@ export const DecisionArchitectureLanding: React.FC = () => {
             <div className="grid grid-cols-2 gap-3 font-mono text-xs">
               <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/30 space-y-1.5">
                 <span className="text-[10px] text-red-400 uppercase font-bold">Conventional Systems</span>
-                <div className="text-xl font-black text-white">7,142 Souls</div>
+                <div className="text-xl font-black text-white">7,142 People</div>
                 <p className="text-[11px] text-red-300">
                   Gross Area Only • Ignores 30-toilet limit • High epidemic risk
                 </p>
@@ -291,7 +291,7 @@ export const DecisionArchitectureLanding: React.FC = () => {
 
               <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 space-y-1.5 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
                 <span className="text-[10px] text-emerald-400 uppercase font-bold">SURAKSHA Engine</span>
-                <div className="text-xl font-black text-emerald-400">550 Souls Max</div>
+                <div className="text-xl font-black text-emerald-400">550 People Max</div>
                 <p className="text-[11px] text-emerald-200">
                   Strict Sanitation Cap • Auto-rejected for mass relocation
                 </p>
@@ -367,7 +367,7 @@ export const DecisionArchitectureLanding: React.FC = () => {
                   <span>RECOMMENDED PRIMARY</span>
                 </div>
                 <div className="text-slate-300 text-[10px]">
-                  All-Weather Dual Lane Access • Capacity: 3,266 souls • Water: 65,000 LPD • Sanitation: 140 Bio-units
+                  All-Weather Dual Lane Access • Capacity: 3,266 People • Water: 65,000 LPD • Sanitation: 140 Bio-units
                 </div>
               </div>
 
@@ -377,7 +377,7 @@ export const DecisionArchitectureLanding: React.FC = () => {
                   <span>0-72H IMMEDIATE TRANSIT</span>
                 </div>
                 <div className="text-slate-300 text-[10px]">
-                  Direct Mountain Road Access • Capacity: 2,850 souls • Proximity: 0.4 km from Nandikot
+                  Direct Mountain Road Access • Capacity: 2,850 People • Proximity: 0.4 km from Nandikot
                 </div>
               </div>
 

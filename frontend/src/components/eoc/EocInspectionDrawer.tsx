@@ -146,7 +146,7 @@ export const EocInspectionDrawer: React.FC<EocInspectionDrawerProps> = ({
               </span>
             </div>
             <div className="text-[11px] font-bold text-slate-200 truncate mt-0.5">{siteA.name}</div>
-            <div className="text-[9px] text-emerald-400 font-semibold">Cap: {primaryCap.toLocaleString()} souls</div>
+            <div className="text-[9px] text-emerald-400 font-semibold">Cap: {primaryCap.toLocaleString()} People</div>
           </button>
 
           {/* Site-B */}
@@ -168,7 +168,7 @@ export const EocInspectionDrawer: React.FC<EocInspectionDrawerProps> = ({
             <div className="text-[11px] font-bold text-slate-200 truncate mt-0.5">
               {siteB ? siteB.name : 'Pipalkoti Shelf'}
             </div>
-            <div className="text-[9px] text-red-400 font-semibold">Ceiling: 550 souls</div>
+            <div className="text-[9px] text-red-400 font-semibold">Ceiling: 550 People</div>
           </button>
         </div>
       </div>
@@ -344,12 +344,12 @@ export const EocInspectionDrawer: React.FC<EocInspectionDrawerProps> = ({
           {isSpillover ? (
             <div className="p-2 rounded-xl bg-red-500/15 border border-red-500/40 text-red-400 text-[10px] font-bold flex items-center gap-1.5 animate-pulse">
               <AlertOctagon className="w-3.5 h-3.5 shrink-0" />
-              <span>DEFICIT (+{excessEvacuees.toLocaleString()} SOULS) — AUTO-SPILLOVER ACTIVE</span>
+              <span>DEFICIT (+{excessEvacuees.toLocaleString()} EVACUEES) — AUTO-SPILLOVER ACTIVE</span>
             </div>
           ) : (
             <div className="p-2 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 text-[10px] font-bold flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
-              <span>SAFE HEADROOM (+{primaryCap - simulatedPopulation} SOULS)</span>
+              <span>SAFE HEADROOM (+{primaryCap - simulatedPopulation} SURPLUS)</span>
             </div>
           )}
         </div>

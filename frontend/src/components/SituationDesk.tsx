@@ -205,7 +205,7 @@ export const SituationDesk: React.FC<SituationDeskProps> = ({
           </span>
           <div className="text-white font-extrabold text-sm flex items-center gap-1">
             <span>{simulatedPopulation.toLocaleString()}</span>
-            <span className="text-[10px] text-slate-400 font-normal">souls</span>
+            <span className="text-[10px] text-slate-400 font-normal">Evacuees</span>
           </div>
         </div>
 
@@ -214,12 +214,12 @@ export const SituationDesk: React.FC<SituationDeskProps> = ({
           {isDeficit ? (
             <div className="p-2 rounded-lg bg-alertRed/15 border border-alertRed/50 text-alertRed text-[11px] font-bold flex items-center gap-1.5 animate-pulse">
               <AlertOctagon className="w-4 h-4 shrink-0" />
-              <span>OVERFLOW DEFICIT ({residualHeadroom} SOULS) — SPILLOVER MANDATED</span>
+              <span>OVERFLOW DEFICIT ({residualHeadroom} EVACUEES) — SPILLOVER MANDATED</span>
             </div>
           ) : (
             <div className="p-2 rounded-lg bg-emerald-500/15 border border-emerald-500/50 text-safeGreen text-[11px] font-bold flex items-center gap-1.5">
               <ShieldCheck className="w-4 h-4 shrink-0" />
-              <span>WITHIN SAFE HEADROOM (+{residualHeadroom} SOULS)</span>
+              <span>WITHIN SAFE HEADROOM (+{residualHeadroom} SURPLUS)</span>
             </div>
           )}
         </div>

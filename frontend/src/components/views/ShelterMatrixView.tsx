@@ -55,9 +55,9 @@ export const ShelterMatrixView: React.FC<ShelterMatrixViewProps> = ({
   const siteBDeficit = siteBEffective - simulatedPopulation;
 
   const presets = [
-    { label: 'Baseline Census', value: selectedHabitation.population, desc: `${selectedHabitation.population.toLocaleString()} souls` },
-    { label: 'Surge +25%', value: Math.round(selectedHabitation.population * 1.25), desc: `${Math.round(selectedHabitation.population * 1.25).toLocaleString()} souls` },
-    { label: 'Mass Evacuation', value: 4200, desc: '4,200 souls' },
+    { label: 'Baseline Census', value: selectedHabitation.population, desc: `${selectedHabitation.population.toLocaleString()} People` },
+    { label: 'Surge +25%', value: Math.round(selectedHabitation.population * 1.25), desc: `${Math.round(selectedHabitation.population * 1.25).toLocaleString()} Evacuees` },
+    { label: 'Mass Evacuation', value: 4200, desc: '4,200 Evacuees' },
   ];
 
   return (
@@ -82,7 +82,7 @@ export const ShelterMatrixView: React.FC<ShelterMatrixViewProps> = ({
           <div>
             <span className="text-[10px] text-slate-400 block uppercase">Current Evacuee Demand:</span>
             <div className="text-base font-extrabold text-white leading-tight">
-              {simulatedPopulation.toLocaleString()} <span className="text-xs text-slate-400 font-normal">souls</span>
+              {simulatedPopulation.toLocaleString()} <span className="text-xs text-slate-400 font-normal">Evacuees</span>
             </div>
           </div>
         </div>
@@ -134,9 +134,9 @@ export const ShelterMatrixView: React.FC<ShelterMatrixViewProps> = ({
             <div className="space-y-1">
               <div className="flex justify-between text-xs">
                 <span className="text-slate-300 flex items-center gap-1.5">
-                  <Maximize2 className="w-3.5 h-3.5 text-blue-400" /> Usable Space (3.5 m² / soul)
+                  <Maximize2 className="w-3.5 h-3.5 text-blue-400" /> Usable Space (3.5 m² / person)
                 </span>
-                <span className="text-white font-bold">{siteASpaceGross.toLocaleString()} souls</span>
+                <span className="text-white font-bold">{siteASpaceGross.toLocaleString()} People</span>
               </div>
               <div className="w-full h-2.5 bg-slate-900 rounded-full overflow-hidden border border-gray-800">
                 <div
@@ -150,9 +150,9 @@ export const ShelterMatrixView: React.FC<ShelterMatrixViewProps> = ({
             <div className="space-y-1">
               <div className="flex justify-between text-xs">
                 <span className="text-slate-300 flex items-center gap-1.5">
-                  <Droplets className="w-3.5 h-3.5 text-blue-400" /> Potable Water (15 LPD / soul)
+                  <Droplets className="w-3.5 h-3.5 text-blue-400" /> Potable Water (15 LPD / person)
                 </span>
-                <span className="text-white font-bold">{siteAWaterGross.toLocaleString()} souls</span>
+                <span className="text-white font-bold">{siteAWaterGross.toLocaleString()} People</span>
               </div>
               <div className="w-full h-2.5 bg-slate-900 rounded-full overflow-hidden border border-gray-800">
                 <div
@@ -202,7 +202,7 @@ export const ShelterMatrixView: React.FC<ShelterMatrixViewProps> = ({
 
             <div className="text-right">
               <span className="text-[10px] text-slate-400 block">Sanitation Ceiling:</span>
-              <span className="text-lg font-extrabold text-red-500">550 Souls Max</span>
+              <span className="text-lg font-extrabold text-red-500">550 People Max</span>
             </div>
           </div>
 
@@ -225,7 +225,7 @@ export const ShelterMatrixView: React.FC<ShelterMatrixViewProps> = ({
                 <span className="text-slate-300 flex items-center gap-1.5">
                   <Maximize2 className="w-3.5 h-3.5 text-blue-400" /> Usable Space (25,000 m²)
                 </span>
-                <span className="text-slate-300">{siteBSpaceGross.toLocaleString()} souls (Abundant)</span>
+                <span className="text-slate-300">{siteBSpaceGross.toLocaleString()} People (Abundant)</span>
               </div>
               <div className="w-full h-2.5 bg-slate-900 rounded-full overflow-hidden border border-gray-800">
                 <div
@@ -241,7 +241,7 @@ export const ShelterMatrixView: React.FC<ShelterMatrixViewProps> = ({
                 <span className="text-slate-300 flex items-center gap-1.5">
                   <Droplets className="w-3.5 h-3.5 text-blue-400" /> Potable Water (45,000 LPD)
                 </span>
-                <span className="text-slate-300">{siteBWaterGross.toLocaleString()} souls</span>
+                <span className="text-slate-300">{siteBWaterGross.toLocaleString()} People</span>
               </div>
               <div className="w-full h-2.5 bg-slate-900 rounded-full overflow-hidden border border-gray-800">
                 <div
@@ -257,7 +257,7 @@ export const ShelterMatrixView: React.FC<ShelterMatrixViewProps> = ({
                 <span className="text-red-400 font-bold flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-red-500" /> Sanitation Ceiling (30 Toilets)
                 </span>
-                <span className="text-red-400 font-extrabold">{siteBEffective} souls MAX ({siteBDeficit} Deficit)</span>
+                <span className="text-red-400 font-extrabold">{siteBEffective} People MAX ({siteBDeficit} Deficit)</span>
               </div>
               <div className="w-full h-2.5 bg-slate-900 rounded-full overflow-hidden border border-red-500/50">
                 <div
@@ -286,7 +286,7 @@ export const ShelterMatrixView: React.FC<ShelterMatrixViewProps> = ({
 
           <div className="text-xs font-mono text-slate-300 flex items-center gap-2">
             <span className="text-slate-400">Primary Capacity Ceiling:</span>
-            <strong className="text-emerald-400">{primaryCap.toLocaleString()} souls</strong>
+            <strong className="text-emerald-400">{primaryCap.toLocaleString()} People</strong>
           </div>
         </div>
 

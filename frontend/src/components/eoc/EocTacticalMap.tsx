@@ -381,7 +381,7 @@ export const EocTacticalMap: React.FC<EocTacticalMapProps> = ({
                     </span>
                   </div>
                   <p className="text-slate-300 text-[11px]">
-                    Sector {selectedHabitation.id}: {selectedHabitation.name} • {selectedHabitation.slopeDegrees}° critical slope • Evacuee Demand: {simulatedPopulation.toLocaleString()} souls.
+                    Sector {selectedHabitation.id}: {selectedHabitation.name} • {selectedHabitation.slopeDegrees}° critical slope • Evacuee Demand: {simulatedPopulation.toLocaleString()} Evacuees.
                   </p>
                 </div>
               </Popup>
@@ -533,7 +533,7 @@ export const EocTacticalMap: React.FC<EocTacticalMapProps> = ({
                 </span>
               </div>
               <div className="text-slate-300 space-y-0.5 text-[11px]">
-                <div>Population: <strong className="text-white">{hab01.population.toLocaleString()} souls</strong></div>
+                <div>Population: <strong className="text-white">{hab01.population.toLocaleString()} Residents</strong></div>
                 <div>Risk Index: <strong className="text-red-400">{hab01.compositeRiskIndex} (Critical Red)</strong></div>
                 <div>Slope: <strong className="text-red-400">{hab01.slopeDegrees}°</strong></div>
               </div>
@@ -561,7 +561,7 @@ export const EocTacticalMap: React.FC<EocTacticalMapProps> = ({
                 </span>
               </div>
               <div className="text-slate-300 space-y-0.5 text-[11px]">
-                <div>Population: <strong className="text-white">{hab02.population.toLocaleString()} souls</strong></div>
+                <div>Population: <strong className="text-white">{hab02.population.toLocaleString()} Residents</strong></div>
                 <div>Risk Index: <strong className="text-amber-400">{hab02.compositeRiskIndex} (Amber Zone)</strong></div>
                 <div>Slope: <strong className="text-amber-400">{hab02.slopeDegrees}°</strong></div>
               </div>
@@ -589,7 +589,7 @@ export const EocTacticalMap: React.FC<EocTacticalMapProps> = ({
                 </span>
               </div>
               <div className="text-slate-300 space-y-0.5 text-[11px]">
-                <div>Population: <strong className="text-white">{hab03.population.toLocaleString()} souls</strong></div>
+                <div>Population: <strong className="text-white">{hab03.population.toLocaleString()} Residents</strong></div>
                 <div>Risk Index: <strong className="text-red-400">{hab03.compositeRiskIndex} (Red Zone)</strong></div>
                 <div>Slope: <strong className="text-red-400">{hab03.slopeDegrees}°</strong></div>
               </div>
@@ -621,7 +621,7 @@ export const EocTacticalMap: React.FC<EocTacticalMapProps> = ({
                   </div>
                   <div className="text-slate-300 space-y-0.5 text-[11px]">
                     <div>Role: <strong className="text-amber-300">0-72h Immediate Transit</strong></div>
-                    <div>Capacity: <strong className="text-emerald-400">{tacticalShelterImmediate.capacityAudit.effectiveCapacity.toLocaleString()} souls</strong></div>
+                    <div>Capacity: <strong className="text-emerald-400">{tacticalShelterImmediate.capacityAudit.effectiveCapacity.toLocaleString()} People</strong></div>
                     <div>Distance: <strong className="text-white">{tacticalShelterImmediate.distanceKm} km</strong></div>
                   </div>
                   <div className="pt-1 border-t border-slate-800 text-[9px] text-amber-400 font-bold">
@@ -649,8 +649,8 @@ export const EocTacticalMap: React.FC<EocTacticalMapProps> = ({
                   </div>
                   <div className="text-slate-300 space-y-0.5 text-[11px]">
                     <div>Status: <strong className="text-emerald-400">RECOMMENDED PRIMARY</strong></div>
-                    <div>Sphere Intake: <strong className="text-emerald-400">{siteA.capacityAudit.effectiveCapacity.toLocaleString()} souls</strong></div>
-                    <div>Headroom: <strong className="text-emerald-300">+{siteA.capacityAudit.residualHeadroom} souls</strong></div>
+                    <div>Sphere Intake: <strong className="text-emerald-400">{siteA.capacityAudit.effectiveCapacity.toLocaleString()} People</strong></div>
+                    <div>Headroom: <strong className="text-emerald-300">+{siteA.capacityAudit.residualHeadroom} Surplus</strong></div>
                     <div>Distance: <strong className="text-white">{siteA.distanceKm} km</strong></div>
                   </div>
                   <div className="pt-1 border-t border-slate-800 text-[9px] text-emerald-400 font-bold">

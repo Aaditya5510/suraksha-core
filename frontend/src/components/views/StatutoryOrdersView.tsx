@@ -133,7 +133,7 @@ export const StatutoryOrdersView: React.FC<StatutoryOrdersViewProps> = ({
               {siteA.name}
             </div>
             <div className="text-[11px] text-emerald-300 font-semibold">
-              Safe Intake: {siteA.capacityAudit.effectiveCapacity.toLocaleString()} souls (+{Math.max(0, siteA.capacityAudit.effectiveCapacity - simulatedPopulation)} Headroom)
+              Safe Intake: {siteA.capacityAudit.effectiveCapacity.toLocaleString()} People (+{Math.max(0, siteA.capacityAudit.effectiveCapacity - simulatedPopulation)} Headroom)
             </div>
           </div>
 
@@ -151,7 +151,7 @@ export const StatutoryOrdersView: React.FC<StatutoryOrdersViewProps> = ({
               {siteB ? siteB.name : 'Pipalkoti Shelf'}
             </div>
             <div className="text-[11px] text-red-400 font-semibold">
-              Cap: 550 Souls Max • Binding Sanitation Bottleneck (30 Toilets)
+              Cap: 550 People Max • Binding Sanitation Bottleneck (30 Toilets)
             </div>
           </div>
 

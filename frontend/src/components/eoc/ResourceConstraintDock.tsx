@@ -82,7 +82,7 @@ export const ResourceConstraintDock: React.FC<ResourceConstraintDockProps> = ({
               </span>
             </div>
             <div className="text-[11px] font-bold text-slate-200 truncate mt-0.5">{siteA.name}</div>
-            <div className="text-[9px] text-emerald-400 font-semibold">Cap: {primaryCap.toLocaleString()} souls</div>
+            <div className="text-[9px] text-emerald-400 font-semibold">Cap: {primaryCap.toLocaleString()} People</div>
           </button>
 
           <button
@@ -101,7 +101,7 @@ export const ResourceConstraintDock: React.FC<ResourceConstraintDockProps> = ({
               </span>
             </div>
             <div className="text-[11px] font-bold text-slate-200 truncate mt-0.5">{siteB ? siteB.name : 'Pipalkoti Shelf'}</div>
-            <div className="text-[9px] text-red-400 font-semibold">Ceiling: 550 souls</div>
+            <div className="text-[9px] text-red-400 font-semibold">Ceiling: 550 People</div>
           </button>
         </div>
 
@@ -136,7 +136,7 @@ export const ResourceConstraintDock: React.FC<ResourceConstraintDockProps> = ({
                 <span>REJECTED BY GOLDRATT BOTTLENECK</span>
               </div>
               <p className="text-[10px] text-slate-200 leading-snug">
-                30 Toilets strictly caps safe shelter at 550 individuals. Placing {simulatedPopulation.toLocaleString()} souls would cause catastrophic epidemic risk.
+                30 Toilets strictly caps safe shelter at 550 individuals. Placing {simulatedPopulation.toLocaleString()} people would cause catastrophic epidemic risk.
               </p>
               <div className="text-[9px] text-red-300 font-semibold pt-0.5 border-t border-red-500/30">
                 Secondary Disqualification: 66% single-bridge mountain road cutoff probability.
@@ -154,10 +154,10 @@ export const ResourceConstraintDock: React.FC<ResourceConstraintDockProps> = ({
             <div className="space-y-0.5">
               <div className="flex justify-between">
                 <span className="text-slate-300 flex items-center gap-1">
-                  <Maximize2 className="w-3 h-3 text-blue-400" /> Space (3.5 m² / soul)
+                  <Maximize2 className="w-3 h-3 text-blue-400" /> Space (3.5 m² / person)
                 </span>
                 <strong className="text-white">
-                  {currentSite.capacityAudit.grossByArea.toLocaleString()} souls
+                  {currentSite.capacityAudit.grossByArea.toLocaleString()} People
                 </strong>
               </div>
               <div className="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden border border-gray-800">
@@ -172,10 +172,10 @@ export const ResourceConstraintDock: React.FC<ResourceConstraintDockProps> = ({
             <div className="space-y-0.5">
               <div className="flex justify-between">
                 <span className="text-slate-300 flex items-center gap-1">
-                  <Droplets className="w-3 h-3 text-blue-400" /> Water (15 LPD / soul)
+                  <Droplets className="w-3 h-3 text-blue-400" /> Water (15 LPD / person)
                 </span>
                 <strong className="text-white">
-                  {currentSite.capacityAudit.grossByWater.toLocaleString()} souls
+                  {currentSite.capacityAudit.grossByWater.toLocaleString()} People
                 </strong>
               </div>
               <div className="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden border border-gray-800">
@@ -214,7 +214,7 @@ export const ResourceConstraintDock: React.FC<ResourceConstraintDockProps> = ({
             <Truck className="w-3.5 h-3.5 text-amber-400" /> Logistics Requisition Matrix
           </span>
           <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800">
-            {simulatedPopulation.toLocaleString()} SOULS
+            {simulatedPopulation.toLocaleString()} EVACUEES
           </span>
         </div>
 

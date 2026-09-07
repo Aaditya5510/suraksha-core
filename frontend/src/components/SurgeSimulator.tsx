@@ -142,7 +142,7 @@ export const SurgeSimulator: React.FC<SurgeSimulatorProps> = ({
 
           {unallocatedExcess > 0 && (
             <div className="text-[11px] text-red-300 font-bold pt-1 flex items-center gap-1">
-              <span>⚠️ UNALLOCATED REGIONAL DEFICIT: {unallocatedExcess.toLocaleString()} souls require inter-district transit mobilization!</span>
+              <span>⚠️ UNALLOCATED REGIONAL DEFICIT: {unallocatedExcess.toLocaleString()} evacuees require inter-district transit mobilization!</span>
             </div>
           )}
         </div>

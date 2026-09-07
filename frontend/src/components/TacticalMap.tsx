@@ -319,7 +319,7 @@ export const TacticalMap: React.FC<TacticalMapProps> = ({
             <Popup>
               <div className="p-2 font-mono text-xs text-alertRed font-bold flex items-center gap-1">
                 <XCircle className="w-4 h-4" />
-                <span>SITE-B PIPALKOTI: SANITATION CAPACITY CEILING (550 SOULS) & 66% ROAD CUTOFF</span>
+                <span>SITE-B PIPALKOTI: SANITATION CAPACITY CEILING (550 PEOPLE) & 66% ROAD CUTOFF</span>
               </div>
             </Popup>
           </Circle>
