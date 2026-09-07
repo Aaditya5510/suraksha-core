@@ -8,7 +8,13 @@ export interface ApiResponse<T> {
   data: T;
 }
 
-const RAW_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').trim().replace(/\/$/, '');
+const RAW_BASE_URL = (
+  import.meta.env.VITE_API_BASE_URL ||
+  (typeof window !== 'undefined' && window.location.hostname.includes('onrender.com')
+    ? 'https://suraksha-backend-ilst.onrender.com'
+    : '')
+).trim().replace(/\/$/, '');
+
 const API_BASE = RAW_BASE_URL
   ? (RAW_BASE_URL.endsWith('/api/v1') ? RAW_BASE_URL : `${RAW_BASE_URL}/api/v1`)
   : '/api/v1';
