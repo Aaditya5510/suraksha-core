@@ -216,6 +216,7 @@ All autonomous coding agents and human engineers operating on this codebase must
 | **2026-09-07 04:50** | Map Camera & Dual-Route Safety | `npm.cmd run build` in `frontend/` & HTTP 200 check | `BUILD SUCCESS` (Map flyTo reactivity, active village danger zone circle, dual-route NH-58 vs Ridge Bypass, road cutoff simulation, 0 TS errors) | ✅ VERIFIED |
 | **2026-09-07 05:07** | DevOps & Cloud Deployment | `mvn clean package -DskipTests` & `npm run build` | `BUILD SUCCESS` (Render multi-service blueprint `render.yaml`, multi-stage `backend/Dockerfile`, dynamic port binding `${PORT:8080}`, SPA `_redirects`, and `VITE_API_BASE_URL` routing) | ✅ VERIFIED |
 | **2026-09-07 05:32** | Render Live Cloud Deployment | Automated Render API Provisioning & Polling | `DEPLOY SUCCESS (LIVE)` • Backend: `https://suraksha-backend-ilst.onrender.com` • Frontend: `https://suraksha-frontend-i8j2.onrender.com` | ✅ VERIFIED |
+| **2026-09-07 05:38** | Production Frontend Hardening | `npm run build` & Render Static Redeploy | `DEPLOY SUCCESS (LIVE)` • Wrapped React tree in `<ErrorBoundary>`, set `base: '/'` in `vite.config.ts`, added auto-detect Render backend API origin fallback | ✅ VERIFIED |
 
 ---
 
